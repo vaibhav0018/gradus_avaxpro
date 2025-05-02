@@ -1,0 +1,172 @@
+<app-custom-spinner></app-custom-spinner>
+<form [formGroup]="form">
+    <div fxLayout="row wrap" #resizedDiv>
+        <div fxFlex="100" class="flex-p custom-margin-top-main">
+            <mat-expansion-panel [expanded]="false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>DASHBOARD AS ON {{selectedDate}}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div fxFlex="50" class="text-inside-grid" style="float: left;">
+                    <mat-form-field class="w-25">
+                        <input matInput #ref1 [matDatepicker]="pickerDashDate" formControlName="dtDashDate" readonly
+                            [(ngModel)]="todayDate" (click)="pickerDashDate.open()" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="pickerDashDate"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerDashDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="20" class="text-inside-grid" style="float: left;">
+                    <button button mat-raised-button color="primary" (click)="onShowClickHandler(form.value)">SHOW</button>
+                </div>
+            </mat-expansion-panel>
+        </div>
+        <div fxLayout="row wrap" fxLayout.xs="column" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
+            <ng-container *ngFor="let objTitle of lblTitle; let i=index">
+                <div fxFlex="33.33" class="flex-p draggable custom-width"
+                    *ngIf="aryTxtDataSource[i]!=undefined && aryTxtDataSource[i].length>0">
+                    <mat-card>
+                        <div>
+                            <div class="text-inside-grid" style="float: left;">
+                                <h6>{{objTitle.title}}</h6>
+                            </div>
+                            <div class="text-inside-grid panel-header" style="float: right;">
+                                <mat-icon class="custom-icons" (click)="zoomDialog(objTitle.title,i,aryObjDashBoardOrder[i].chart_name)" matTooltip="Zoom">
+                                    zoom_in
+                                </mat-icon>
+                                <mat-icon class="custom-icons" (click)="changeAmtFormat(objTitle.type,i)"
+                                    matTooltip="Switch Amount Format">
+                                    monetization_on</mat-icon>
+                                <mat-icon class="custom-icons" (click)="showDashboard(objTitle.type,i,true);"
+                                    matTooltip="Switch Report Format">
+                                    keyboard_arrow_right</mat-icon>
+                            </div>
+                            <div *ngIf="aryFlgViewChart[i]==true " [@slideInOut]>
+                               
+                                <div *ngIf="aryObjDashBoardOrder[i].name=='QUARTER'">
+                                    <ngx-charts-bar-vertical-2d  [scheme]="aryColorScheme[i]" [results]="aryDataSource[i]"
+                                        [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                        [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                        [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [view]="view"
+                                        (select)="onSelect($event)">
+                                    </ngx-charts-bar-vertical-2d>
+                                </div>
+
+                                <div *ngIf="aryObjDashBoardOrder[i].name =='STOCK'">
+                                    <ngx-charts-pie-chart
+                                            [scheme]="colorScheme.domain[i]"
+                                            [results]="aryDataSource[i]"
+                                            [explodeSlices]="explodeSlices"
+                                            [labels]="showLabels"
+                                            [doughnut]="doughnut"
+                                            [gradient]="gradient"
+                                            [view]="view"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-pie-chart>
+                                </div>
+
+            
+                                <!-- <div class="w-100" *ngIf="aryObjDashBoardOrder[i].name =='RECEIVABLE' ">
+                                    <div fxFlex="50">
+                                        <h5 style="text-align:center;">AMOUNT</h5>
+                                        <ngx-charts-pie-chart
+                                            [scheme]="colorScheme"
+                                            [results]="aryDataSource[i][0]"
+                                            [explodeSlices]="explodeSlices"
+                                            [labels]="showLabels"
+                                            [doughnut]="doughnut"
+                                            [gradient]="gradient"
+                                            [view]="viewReceivablePieChart"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-pie-chart>   
+                                    </div> -->
+
+                                    <!-- <div fxFlex="50">
+                                        <h5 style="text-align:center;">PARTIES</h5>
+                                        <ngx-charts-pie-chart
+                                            [scheme]="colorScheme"
+                                            [results]="aryDataSource[i][1]"
+                                            [explodeSlices]="explodeSlices"
+                                            [labels]="showLabels"
+                                            [doughnut]="doughnut"
+                                            [gradient]="gradient"
+                                            [view]="viewReceivablePieChart"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-pie-chart>   
+                                    </div> -->
+                                   
+                                </div>
+                                
+                                <div class="w-100 y-overflow" *ngIf="aryObjDashBoardOrder[i].name =='SALES' ">
+                                   
+                                    <div fxFlex="33.33">
+                                        <h6 style="text-align: center;">SALE V/S TARGET</h6>
+                                        <ngx-charts-bar-vertical  [scheme]="aryColorScheme[i]" [results]="aryDataSource[i][0]"
+                                            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-bar-vertical>
+                                    </div>
+
+                                    <!-- <div fxFlex="33.33">
+                                        <h6 style="text-align: center;">MATERIALS</h6>
+                                        <ngx-charts-pie-chart
+                                            [scheme]="colorScheme"
+                                            [results]="aryDataSource[i][1]"
+                                            [explodeSlices]="explodeSlices"
+                                            [labels]="showLabels"
+                                            [doughnut]="doughnut"
+                                            [gradient]="gradient"
+                                            [view]="viewSalesPieChart"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-pie-chart>   
+                                    </div> -->
+
+                                    <div fxFlex="33.33">
+                                        <h6 style="text-align: center;">SALES DETAILS</h6>
+                                        <ngx-charts-bar-vertical  [scheme]="aryColorScheme[i]" [results]="aryDataSource[i][2]"
+                                            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
+                                            (select)="onSelect($event)">
+                                        </ngx-charts-bar-vertical>
+                                    </div>
+                                   
+                                  
+                    
+                                </div>
+
+
+                               
+                            </div> 
+                            <div class="w-100 h-200p div-overflow" *ngIf="aryFlgViewChart[i]==false" [@slideInOut]>
+                                <mat-table class='w-99' [dataSource]="aryTxtDataSource[i]">
+                                    <ng-container *ngFor="let column_name of aryLstColumn[i]"
+                                        matColumnDef="{{column_name.db_col}}">
+                                        <mat-header-cell class='gray-header' *matHeaderCellDef>
+                                            {{column_name['col_name']}}
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"
+                                            [ngStyle]="{ 'text-align': column_name.col_type === 'NUM' ? 'end':column_name.col_type === 'DATE' || column_name.col_type === 'LINK' ? 'center': 'left' }">
+                                            <ng-container *ngIf="column_name.flgLink; else label">
+                                                <a (click)="viewReport(element,objTitle,column_name['col_name'])"
+                                                    class="link">
+                                                    {{element[column_name.db_col]}}
+                                                </a>
+                                            </ng-container>
+                                            <ng-template #label>
+                                                <ng-container *ngIf="column_name.col_type === 'NUM'">
+                                                    {{ element[column_name.db_col]}}
+                                                </ng-container>
+                                                <ng-container *ngIf="column_name.col_type != 'NUM'">
+                                                    {{element[column_name.db_col]}}
+                                                </ng-container>
+                                            </ng-template>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="aryDisplayColumn[i];sticky:true"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: aryDisplayColumn[i];"></mat-row>
+                                </mat-table>
+                            </div>
+                        <!-- </div> -->
+                    </mat-card>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,627 @@
+<app-custom-spinner></app-custom-spinner>
+
+<!-- <ngx-spinner bdOpacity=0.9 bdColor="rgba(198,226,212,0.23)" size="medium" color="#283593" type="ball-clip-rotate"
+    [fullScreen]="true" class="ngx-spinner">
+    <p style="color: #283593"> Loading... </p>
+</ngx-spinner>
+ -->
+<span *ngIf="flgRPDetail=='N'" mat-dialog-title align='center'>
+    <span> {{title}} </span>
+    <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+        <mat-icon>highlight_off</mat-icon>
+    </button>
+</span>
+
+<span *ngIf="report_name == 'BRANCH_SALE'" mat-dialog-title align='center'>
+    <span> {{title}} </span>
+    <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+        <mat-icon>highlight_off</mat-icon>
+    </button>
+</span>
+
+<div *ngIf="flgViewChart==true">
+    <!-- <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [results]="dataSourceChart" [gradient]="gradient"
+        [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [view]="view"
+        (select)="onSelect($event)">
+    </ngx-charts-bar-vertical-2d> -->
+
+    <!-- <div *ngIf="title=='QUARTERLY SALES / TARGET DETAIL'">
+        <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [results]="dataSourceChart" [gradient]="gradient"
+            [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [view]="view"
+            (select)="onSelect($event)">
+        </ngx-charts-bar-vertical-2d>
+    </div>
+
+    <div *ngIf="title=='STOCK'">
+        <ngx-charts-pie-chart
+                [scheme]="colorScheme"
+                [results]="dataSourceChart"
+                [explodeSlices]="explodeSlices"
+                [labels]="showLabels"
+                [doughnut]="doughnut"
+                [gradient]="gradient"
+                [view]="view"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-chart>
+    </div>
+
+    <div class="w-100 div-overflow" *ngIf="title==' RECEIVABLE / COLLECTION '">
+        <div fxFlex="50">
+            <h4 style="text-align: center;">AMOUNT</h4>
+            <ngx-charts-pie-chart
+                [scheme]="colorScheme"
+                [results]="dataSourceChart[0]"
+                [explodeSlices]="explodeSlices"
+                [labels]="showLabels"
+                [doughnut]="doughnut"
+                [gradient]="gradient"
+                [view]="view"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-chart>   
+        </div>
+        <div fxFlex="50">
+            <h4 style="text-align: center;">PARTIES</h4>
+            <ngx-charts-pie-chart
+                [scheme]="colorScheme"
+                [results]="dataSourceChart[1]"
+                [explodeSlices]="explodeSlices"
+                [labels]="showLabels"
+                [doughnut]="doughnut"
+                [gradient]="gradient"
+                [view]="view"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-chart>   
+        </div> 
+    </div>
+
+    <div class="w-100 div-overflow" *ngIf="title=='SALES DETAIL'">
+        <div fxFlex="30">
+            <h4 style="text-align: center;">SALES V/S TARGET</h4>
+            <ngx-charts-bar-vertical  [scheme]="colorScheme" [results]="dataSourceChart[0]"
+            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
+            (select)="onSelect($event)">
+        </ngx-charts-bar-vertical>
+        </div>
+
+        <div fxFlex="35">
+            <h4 style="text-align: center;">MATERIALS</h4>
+            <ngx-charts-pie-chart
+                [scheme]="colorScheme"
+                [results]="dataSourceChart[1]"
+                [explodeSlices]="explodeSlices"
+                [labels]="showLabels"
+                [doughnut]="doughnut"
+                [gradient]="gradient"
+                [view]="viewSalesPieChart"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-chart>   
+        </div>
+       
+        <div fxFlex="30">
+            <h4 style="text-align: center;">SALES DETAILS</h4>
+            <ngx-charts-bar-vertical  [scheme]="colorScheme" [results]="dataSourceChart[2]"
+                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
+                (select)="onSelect($event)">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+</div> -->
+
+<div text-align='left' *ngIf="flgRPDetail=='Y'">
+    <form [formGroup]="form">
+
+        <div *ngIf="displaytypeflg">
+            <mat-grid-list cols="7" rowHeight="2rem">
+
+                <mat-grid-tile colspan="2">
+                    <div class="text-inside-grid"> {{title}}</div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid"> DISPLAY TYPE :</div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-50">
+                            <mat-select formControlName="cmbDisplayType" class="font1em"
+                                [(ngModel)]="selectedDisplayType" (selectionChange)="loadOSDetail()">
+                                <mat-option value='1'>Branch wise</mat-option>
+                                <mat-option value='2'>Regional Head wise</mat-option>
+                                <mat-option value='3'>Group Head wise</mat-option>
+                                <mat-option value='4'>Handled By wise</mat-option>
+                                <mat-option value='5'>Party wise</mat-option>
+                                <mat-option value='6'>Industry wise</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid">PERIOD : </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-50">
+                            <mat-select formControlName="cmbPeriod" class="font1em" [(ngModel)]="selectedPeriod"
+                                (selectionChange)="loadOSDetail()">
+                                <mat-option value='T'>Today</mat-option>
+                                <mat-option value='PM'>Previous Month end</mat-option>
+                                <mat-option value='LY'>Previous Year end</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div mat-dialog-title align='center'>
+                        <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+                            <mat-icon>highlight_off</mat-icon>
+                        </button>
+                    </div>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </div>
+
+        <div *ngIf="fromdateflg">
+
+            <mat-grid-list cols="8" rowHeight="2rem">
+
+                <mat-grid-tile colspan="2">
+                    <div class="text-inside-grid"> {{title}}</div>
+                </mat-grid-tile>
+
+                <!-- <mat-grid-tile *ngIf="fmdateflg">
+                    <div class="text-inside-grid">FROM DATE:</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="fmdateflg">
+                    <div class="text-inside-grid">
+                        <mat-form-field>
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </div>
+                </mat-grid-tile> -->
+
+                <!-- <mat-grid-tile *ngIf="dateflg">
+                    <div class="text-inside-grid">FROM DATE:</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="dateflg">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <input matInput #ref1 [matDatepicker]="pickerDEDueDate" formControlName="dtFromDate"
+                                readonly [(ngModel)]="monthStartDate" (click)="pickerDEDueDate.open()">
+                            <mat-datepicker-toggle matSuffix [for]="pickerDEDueDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerDEDueDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile> -->
+
+                <!-- <mat-grid-tile *ngIf="currentDtFlg">
+                    <div class="text-inside-grid"> TO DATE:</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="currentDtFlg">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <input matInput #pickerToDate [matDatepicker]="pickerToDate" formControlName="dtToDate"
+                                readonly [(ngModel)]="todayDate1" (click)="pickerToDate.open()">
+                            <mat-datepicker-toggle matSuffix [for]="pickerToDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerToDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile> -->
+
+                <!-- <mat-grid-tile *ngIf="trgFlg">
+                    <div class="text-inside-grid"> TO DATE : </div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="trgFlg">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <input matInput #ref1 [matDatepicker]="pickerAODate" formControlName="dtTrgDate" readonly
+                                [(ngModel)]="todayDate" (click)="pickerAODate.open()" [min]="minDate" [max]="maxDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerAODate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerAODate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile> -->
+
+
+                <mat-grid-tile *ngIf="fromdateflg">
+                    <!-- <div colspan="9"> -->
+                    <div class="text-inside-grid">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+                            <button mat-raised-button color="primary" type="button" (click)="onSubmitClickHandler()">
+                                SHOW
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div mat-dialog-title align='center'>
+                        <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+                            <mat-icon>highlight_off</mat-icon>
+                        </button>
+                    </div>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </div>
+
+        <div *ngIf="docsflg">
+
+            <mat-grid-list cols="16" rowHeight="2rem">
+
+                <mat-grid-tile colspan="2">
+                    <div class="text-inside-grid"> {{title}}</div>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                    <div class="text-inside-grid"> DISPLAY ORDER :</div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbDisplayOrder" class="font1em"
+                                [(ngModel)]="selectedDisplayType">
+                                <mat-option value='1'>Party</mat-option>
+                                <mat-option value='2'>Item Maingroup</mat-option>
+                                <mat-option value='3'>Item Subgroup</mat-option>
+                                <mat-option value='4'>Catrefno</mat-option>
+                                <mat-option value='5'>Item Code</mat-option>
+                                <mat-option value='6'>Industry</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid">SELECTION :</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="flgselection">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbSelection" class="font1em"
+                                [(ngModel)]="selectedDisplayOrder" (selectionChange)="loadOSDetail()">
+                                <mat-option value='BR'>Branch</mat-option>
+                                <mat-option value='INTRY'>Industry</mat-option>
+                                <mat-option value='ITMAIN'>Item Maingroup</mat-option>
+                                <!-- <mat-option value='ITSUB'>Item Subgroup</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="flgselected">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbSelection" class="font1em"
+                                [(ngModel)]="selectedDisplayOrder" (selectionChange)="loadPendingDocs()">
+                                <mat-option value='BR'>Branch</mat-option>
+                                <mat-option value='INTRY'>Industry</mat-option>
+                                <mat-option value='ITMAIN'>Item Maingroup</mat-option>
+                                <!-- <mat-option value='ITSUB'>Item Subgroup</mat-option> -->
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <!--branch list-->
+                <!-- placeholder="{{ 'session.reports.stock_report.item_ledger.branch.label' | translate }}" -->
+                <mat-grid-tile *ngIf="branchFlg">
+                    <div class="text-inside-grid">BRANCH:</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="branchFlg">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="grid wp-250">
+                            <mat-select
+                                placeholder="{{ 'session.reports.stock_report.item_ledger.branch.label' }}"
+                                formControlName="cmbBranchList" [compareWith]="compareBranch">
+                                <mat-option class='dropdown-panel' *ngFor="let branch of branchList" [value]="branch">
+                                    {{branch.branch_city}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <!-- ITEM MAIN GROUP -->
+                <mat-grid-tile *ngIf='flgitemmaingroup'>
+                    <div class="text-inside-grid"> ITEM MAIN GROUP:</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf='flgitemmaingroup'>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="grid wp-250">
+                            <mat-select formControlName="cmbItemMainGroup">
+                                <mat-option *ngFor="let itmMainG of itemMainGroupList" [value]="itmMainG.group_code"
+                                    (onSelectionChange)="onGroupChange($event, itmMainG.group_code)">
+                                    {{itmMainG.group_name | uppercase}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <!-- ITEM SUB GROUP -->
+                <mat-grid-tile *ngIf='flgitemsubgroup'>
+                    <div class="text-inside-grid"> ITEM SUB GROUP :</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf='flgitemsubgroup'>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="grid wp-250">
+                            <mat-select formControlName="cmbItemSubGroup">
+                                <mat-option *ngFor="let itmSubG of itemSubGroupList" [value]="itmSubG.group_code">
+                                    {{itmSubG.group_name | uppercase }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="flgindustry">
+                    <div class="text-inside-grid"> INDUSTRY :</div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="flgindustry">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-50">
+                            <mat-select formControlName="cmbIndustry">
+                                <mat-option value="0">--SELECT--</mat-option>
+                                <mat-option *ngFor="let indus of industryTypeList" [value]="indus.element_code">
+                                    {{indus.element_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="docsflg">
+                    <div colspan="13">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+                            <button mat-raised-button color="primary" type="button" (click)="onSubmitShow()">
+                                SHOW
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div mat-dialog-title align='center'>
+                        <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+                            <mat-icon>highlight_off</mat-icon>
+                        </button>
+                    </div>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </div>
+
+        <div *ngIf="showStkValFlag">
+            <mat-grid-list cols="12" rowHeight="2rem">
+
+                <mat-grid-tile colspan="1">
+                    <div class="text-inside-grid"> {{title}}</div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid">AS ON DATE :</div>
+                </mat-grid-tile>
+                <!-- <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <mat-form-field class=width-25>
+                            <input matInput #ref1 [matDatepicker]="pickerAsOnDate" formControlName="txtAsOnDate"
+                                readonly [(ngModel)]="asOnDate" (click)="pickerAsOnDate.open()" [min]="minDate"
+                                [max]="maxDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerAsOnDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerAsOnDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile> -->
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid"> SELECT OPTION :</div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbSelOption" (selectionChange)="loadOSDetail()">
+                                <mat-option value='1'>Branch</mat-option>
+                                <mat-option value='2'>Product</mat-option>
+                                <mat-option value='3'>Make</mat-option>
+                                <span *ngIf="rpt_type !='TOTAL VALUE(0)'">
+                                    <mat-option value='4'>Item Code</mat-option>
+                                </span>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <!-- <!-- placeholder="{{ 'session.reports.stock_report.item_ledger.branch.label' | translate }}" --> -->
+                <mat-grid-tile *ngIf="branchFlg">
+                    <div class="text-inside-grid">BRANCH:</div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="4" *ngIf="branchFlg">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="grid wp-250">
+                            <mat-select
+                                placeholder="{{ 'session.reports.stock_report.item_ledger.branch.label'}}"
+                                formControlName="cmbBranchList" [compareWith]="compareBranch">
+                                <mat-option class='dropdown-panel' *ngFor="let branch of branchList" [value]="branch">
+                                    {{branch.branch_city}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="flgitemmaingroup">
+                    <div class="text-inside-grid"> ITEM MAIN GROUP :</div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="4" *ngIf="flgitemmaingroup">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbItemMainGroup">
+                                <mat-option *ngFor="let itmMainG of itemMainGroupList" [value]="itmMainG.group_code">
+                                    {{itmMainG.group_name | uppercase}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="flgitemsubgroup">
+                    <div class="text-inside-grid">MAKE :</div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="4" *ngIf="flgitemsubgroup">
+                    <div class="text-inside-grid">
+                        <mat-form-field class="width-25">
+                            <mat-select formControlName="cmbMake">
+                                <mat-option class='dropdown-panel' *ngFor="let make of makeLists" [value]="make">
+                                    {{make.make_short_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+
+                <span *ngIf="flgindustry">
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">SEARCH ITEM :</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan='3'>
+                        <div class="text-inside-grid">
+                            <mat-form-field class="width-25">
+                                <input matInput type="text" formControlName="txtItem" value="">
+                            </mat-form-field>
+                            <button mat-button type="button">
+                                <mat-icon (click)="searchItem()">search</mat-icon>
+                            </button>
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">
+                            <mat-form-field class="width-25">
+                                <mat-select formControlName="cmbItem">
+                                    <mat-option class='dropdown-panel' *ngFor="let rowItem of itemList"
+                                        [value]="rowItem">
+                                        {{ rowItem.item_code }} -- {{rowItem.item_name}} --
+                                        {{rowItem.catrefno}} -- {{rowItem.item_make}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </mat-grid-tile>
+                </span>
+
+                <mat-grid-tile>
+                    <div class="text-inside-grid">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+                            <button mat-raised-button color="primary" type="button"
+                                (click)="onStockValSubmitClickHandler()">SHOW
+                            </button>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div mat-dialog-title align='center'>
+                        <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+                            <mat-icon>highlight_off</mat-icon>
+                        </button>
+                    </div>
+                </mat-grid-tile>
+
+
+            </mat-grid-list>
+        </div>
+
+    </form>
+</div>
+
+<div class="pagination-container" *ngIf="flgViewChart==false">
+    <div class="component data component-card">
+        <div>
+            <mat-expansion-panel [expanded]="showFlag1" (opened)="showFlag1 = true" (closed)="showFlag1 = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{title}}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <main class="scroll">
+                    <mat-table class="table" [dataSource]="dataSource">
+                        <ng-container class="container" *ngFor="let column_name of lstColumn"
+                            matColumnDef="{{column_name.db_col}}">
+                            <mat-header-cell class='gray-header header-cell' *matHeaderCellDef>
+                                {{column_name['col_name']}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class='cell'
+                                [ngStyle]="{ 'text-align': column_name.col_type === 'NUM' || column_name.col_type === 'NUM_WO_DECIMAL' ? 'end':column_name.col_type === 'DATE' || column_name.col_type === 'LINK' ? 'center': 'left' }">
+                                <ng-container *ngIf="column_name.flgLink; else label">
+                                    <a (click)="viewReport(element,column_name['col_name'])" class="link">
+                                        {{element[column_name.db_col]}}
+                                    </a>
+                                </ng-container>
+                                <ng-template #label>
+                                    <ng-container *ngIf="column_name.col_type === 'NUM'">
+                                        {{element[column_name.db_col]}}
+                                    </ng-container>
+                                    <ng-container *ngIf="column_name.col_type === 'NUM_WO_DECIMAL'">
+                                        {{element[column_name.db_col]| number : '1.0'}}
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="column_name.col_type != 'NUM' && column_name.col_type != 'NUM_WO_DECIMAL'">
+                                        {{element[column_name.db_col]}}
+                                    </ng-container>
+                                </ng-template>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="lstDisplayCoumn;sticky:true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: lstDisplayCoumn;"></mat-row>
+                    </mat-table>
+                </main>
+            </mat-expansion-panel>
+        </div>
+        <div *ngIf="table2">
+            <div *ngIf="showFlag1==false">
+                <mat-expansion-panel [expanded]="showFlag2" (opened)="showFlag2 = true" (closed)="showFlag2 = false">
+                    <mat-expansion-panel-header>
+                    </mat-expansion-panel-header>
+                    <main class="scroll">
+                        <mat-table class="table" [dataSource]="dataSource1">
+                            <ng-container class="container" *ngFor="let column_name1 of lstColumn1"
+                                matColumnDef="{{column_name1.db_col1}}">
+                                <mat-header-cell class='gray-header header-cell' *matHeaderCellDef>
+                                    {{column_name1['col_name1']}}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" class='cell'
+                                    [ngStyle]="{ 'text-align': column_name1.col_type1 === 'NUM' || column_name1.col_type1 === 'NUM_WO_DECIMAL' ? 'end':column_name1.col_type1 === 'DATE' || column_name1.col_type1 === 'LINK' ? 'center': 'left' }">
+                                    <ng-container *ngIf="column_name1.flgLink1; else label1">
+                                        {{element[column_name1.db_col1]}}
+                                    </ng-container>
+                                    <ng-template #label1>
+                                        <ng-container *ngIf="column_name1.col_type1 === 'NUM'">
+                                            <!-- {{element[column_name1.db_col1] | number : '1.2'}} -->
+                                            {{element[column_name1.db_col1]}}
+                                        </ng-container>
+                                        <ng-container *ngIf="column_name1.col_type1 === 'NUM_WO_DECIMAL'">
+                                            {{element[column_name1.db_col1]| number : '1.0'}}
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="column_name1.col_type1 != 'NUM' && column_name1.col_type1 != 'NUM_WO_DECIMAL'">
+                                            {{element[column_name1.db_col1]}}
+                                        </ng-container>
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="lstDisplayCoumn1;sticky:true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: lstDisplayCoumn1;"></mat-row>
+                        </mat-table>
+                    </main>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</div>

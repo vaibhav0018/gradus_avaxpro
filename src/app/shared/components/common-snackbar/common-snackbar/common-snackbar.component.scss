@@ -1,0 +1,20 @@
+.data {
+    color: #0500fb;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: white;
+    opacity: 0.8;
+    padding-left:10px;
+}
+
+::ng-deep .mat-snack-bar-container {
+    background: white !important;
+    padding: 5px !important;
+    opacity: 0.8;
+    border: 5px double gainsboro;
+    border-radius: 20px !important;
+}
+
+.material-icons {
+    font-size: 16px;
+}
