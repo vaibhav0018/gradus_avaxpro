@@ -6,7 +6,7 @@ import { CommonsService } from '../../../shared/services/commons.service'; // Us
 import { formatDate } from '@angular/common';                     
 import { environment } from '../../../environments/environment';
 import { HttpServiceResponseModel } from '../../../core/models/HttpServiceResponseModel';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const QTR_DATA = 'getdashdata-qtr'
 const SALES_DATA = 'getdashdata-sales'
@@ -90,8 +90,9 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
             usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
           },
         }
+        
         console.log("3--");
-        return this.http.post(this.completeUrl, this.payload);
+        return this.http.post<any>(this.completeUrl, this.payload);
       }
     
       getSalesData(as_on_date: any): Observable<any> {

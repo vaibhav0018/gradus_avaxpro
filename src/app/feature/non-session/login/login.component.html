@@ -1,0 +1,34 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 90vh;">
+    <mat-card class="mat-elevation-z6" style="width: 400px; max-width: 90%;">
+      <div style="text-align: center; background: #3f51b5; padding: 1rem;">
+        <img [src]="companyLogo" width="60%" style="background-color:white;">
+      </div>
+
+      <mat-card-content style="padding: 2rem;">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <h3 style="text-align: center; margin-bottom: 1.5rem;">Member - Login</h3>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="User Id / Email Id" formControlName="username" />
+            <mat-error *ngIf="form.controls['username'].errors?.['required']">
+              User Id/Email Id is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [type]="txtType" placeholder="Password" formControlName="password" />
+            <button mat-icon-button matSuffix type="button" (click)="viewPassword()" tabindex="-1">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+            <mat-error *ngIf="form.controls['password'].errors?.['required']">
+              Password is required
+            </mat-error>
+          </mat-form-field>
+
+          <div style="text-align: center; margin-top: 1rem;">
+            <button mat-raised-button color="primary" type="submit">SIGN IN</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

@@ -98,6 +98,8 @@ export class InfoCardsComponent implements OnInit {
    fromDate: any;
    toDate: any;
 
+
+   
    //piechart
   public showLabels = true
   public explodeSlices = false
@@ -377,8 +379,13 @@ export class InfoCardsComponent implements OnInit {
       })
     );
   }
+  
+// 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEwIiwiaWF0IjoxNzQ3MTM4MDQxfQ.1KJm6HKBBrE45drjZL82wcMOxRo41bELkym6WyQxF2dkY3kr54KB0NHcBHSUmwWFCIiLhiB55agpWYJcXP-1pg'
+
 
   ngOnInit() {
+    sessionStorage.setItem('token', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEwIiwiaWF0IjoxNzQ3MTM4MDQxfQ.1KJm6HKBBrE45drjZL82wcMOxRo41bELkym6WyQxF2dkY3kr54KB0NHcBHSUmwWFCIiLhiB55agpWYJcXP-1pg');
+    console.log('Retrieved token in InfoCardsComponent:');
     this.user_and_company = atob(sessionStorage.getItem(btoa('usr_company_code')) || '')+atob(sessionStorage.getItem(btoa('userId')) || '');
     this.refreshDashboard()
   }

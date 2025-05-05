@@ -7,6 +7,7 @@ import { DiskSpaceComponent } from './disk-space/disk-space.component';
 import { TodoComponent } from './todo/todo.component';
 import { DragulaModule } from 'ng2-dragula';
 import { InfoCardsComponent } from './info-cards/info-cards.component';
+import { LoginComponent } from "../../feature/non-session/login/login.component";
 
 @Component({
     selector: 'app-dashboard',
@@ -18,7 +19,8 @@ import { InfoCardsComponent } from './info-cards/info-cards.component';
     DiskSpaceComponent,
     TodoComponent,
     DragulaModule,
-    InfoCardsComponent
+    InfoCardsComponent,
+    LoginComponent
 ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'

@@ -11,6 +11,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns'; 
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 
 
 export const appConfig: ApplicationConfig = {
@@ -29,6 +30,7 @@ export const appConfig: ApplicationConfig = {
       useFactory: adapterFactory
     })),
     { provide: OverlayContainer, useClass: CustomOverlayContainer },
+    
   ]
 };
 
