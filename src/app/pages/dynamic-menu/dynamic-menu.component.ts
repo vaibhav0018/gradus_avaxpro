@@ -3,7 +3,7 @@ import { DynamicMenuService } from '@services/dynamic-menu.service';
 import { MenuService } from '@services/menu.service';
 import { listTransition } from '../../theme/utils/app-animation';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { VerticalMenuComponent } from '../../theme/components/menu/vertical-menu/vertical-menu.component';
+import { VerticalMenuComponent } from '../../shared/components/menu/vertical-menu/vertical-menu.component';
 import { Menu } from '../../common/models/menu.model';
 import { debounceTime } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

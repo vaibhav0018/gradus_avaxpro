@@ -76,7 +76,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
 
     refreshDashboard(): Observable<any> {
         this.commonsService.show()
-        this.completeUrl = environment.baseUrl2 + '/refreshDashboard'
+        this.completeUrl = environment.baseUrl + '/refreshDashboard'
         this.payload = {
           userInformationDto: {
             usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),

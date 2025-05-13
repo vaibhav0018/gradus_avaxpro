@@ -3,6 +3,7 @@ import { Router, NavigationEnd, NavigationExtras } from '@angular/router'
 import { Location } from '@angular/common'
 import { ConstantsService } from '../../core/services/constants.service'
 import { BehaviorSubject } from 'rxjs'
+import { ConstantsServiceAvaxPro } from '../../core/services/constants_avaxpro.service'
 // import { ConstantsServiceAvaxPro } from 'src/app/core/services/constants_avaxpro.service'
 
 @Injectable({
@@ -76,15 +77,15 @@ export class RouterService {
 //  //   this.doNavigation( ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_STOCK_QUERY)
 //   }
 
-//   showStoppageClr = (): void => {
-//     //window.open(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS + '/' +ConstantsServiceAvaxPro.ROUTE_STOPPAGE_CLEARANCE, '_blank'), { };
-//     this.doNavigation(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS+ '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS_MODULE+ '/' +ConstantsServiceAvaxPro.ROUTE_STOPPAGE_CLEARANCE);
-//  //   this.doNavigation( ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_STOCK_QUERY)
-//   }
+  showStoppageClr = (): void => {
+    //window.open(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS + '/' +ConstantsServiceAvaxPro.ROUTE_STOPPAGE_CLEARANCE, '_blank'), { };
+    this.doNavigation(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS+ '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS_MODULE+ '/' +ConstantsServiceAvaxPro.ROUTE_STOPPAGE_CLEARANCE);
+ //   this.doNavigation( ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_STOCK_QUERY)
+  }
 
-//   showServicePage = (): void => {
-//     this.doNavigation(ConstantsService.ROUTE_DASHBOARD + '/' + ConstantsService.ROUTE_MENU)
-//   }
+  showServicePage = (): void => {
+    this.doNavigation(ConstantsService.ROUTE_DASHBOARD + '/' + ConstantsService.ROUTE_MENU)
+  }
 
 //   showRecentMenuPage = (): void => {
 //     this.doNavigation(ConstantsService.ROUTE_DASHBOARD + '/' + ConstantsService.ROUTE_MENU)

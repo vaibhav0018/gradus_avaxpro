@@ -17,7 +17,7 @@ import { FlagsMenuComponent } from '../theme/components/flags-menu/flags-menu.co
 import { ApplicationsComponent } from '../theme/components/applications/applications.component';
 import { MessagesComponent } from '../theme/components/messages/messages.component';
 import { UserMenuComponent } from '../theme/components/user-menu/user-menu.component';
-import { HorizontalMenuComponent } from '../theme/components/menu/horizontal-menu/horizontal-menu.component';
+import { HorizontalMenuComponent } from '../shared/components/menu/horizontal-menu/horizontal-menu.component';
 import { BreadcrumbComponent } from '../theme/components/breadcrumb/breadcrumb.component';
 
 @Component({

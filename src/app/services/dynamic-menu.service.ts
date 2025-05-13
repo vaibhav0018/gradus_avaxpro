@@ -1,6 +1,6 @@
 import { Injectable, ViewContainerRef, EmbeddedViewRef } from '@angular/core';
 import { Menu } from '../common/models/menu.model';
-import { VerticalMenuComponent } from '../theme/components/menu/vertical-menu/vertical-menu.component';
+import { VerticalMenuComponent } from '../shared/components/menu/vertical-menu/vertical-menu.component';
 
 @Injectable()
 export class DynamicMenuService {

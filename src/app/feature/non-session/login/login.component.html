@@ -1,34 +1,35 @@
-<div style="display: flex; justify-content: center; align-items: center; height: 90vh;">
-    <mat-card class="mat-elevation-z6" style="width: 400px; max-width: 90%;">
-      <div style="text-align: center; background: #3f51b5; padding: 1rem;">
-        <img [src]="companyLogo" width="60%" style="background-color:white;">
+<div style="max-width: 400px; margin: 2rem auto; border: 1px solid #ccc; border-radius: 8px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+  <div style="text-align: center; background: #3f51b5; padding: 1rem;">
+  </div>
+
+  <div style="padding: 2rem;">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h3 style="text-align: center;">Member - Login</h3>
+
+      <div style="margin-bottom: 1rem;">
+        <label for="username" style="display: block; margin-bottom: 0.25rem;">User Id / Email Id</label>
+        <input id="username" type="text" formControlName="username" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+        <div *ngIf="form.controls['username'].errors?.['required']" style="color: red; font-size: 0.8rem; margin-top: 0.25rem;">
+          User Id/Email Id is required
+        </div>
       </div>
 
-      <mat-card-content style="padding: 2rem;">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <h3 style="text-align: center; margin-bottom: 1.5rem;">Member - Login</h3>
+      <div style="margin-bottom: 1rem;">
+        <label for="password" style="display: block; margin-bottom: 0.25rem;">Password</label>
+        <div style="position: relative;">
+          <input id="password" [type]="txtType" formControlName="password" style="width: 100%; padding: 0.5rem; padding-right: 2rem; border: 1px solid #ccc; border-radius: 4px;">
 
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="User Id / Email Id" formControlName="username" />
-            <mat-error *ngIf="form.controls['username'].errors?.['required']">
-              User Id/Email Id is required
-            </mat-error>
-          </mat-form-field>
+        </div>
+        <div *ngIf="form.controls['password'].errors?.['required']" style="color: red; font-size: 0.8rem; margin-top: 0.25rem;">
+          Password is required
+        </div>
+      </div>
 
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput [type]="txtType" placeholder="Password" formControlName="password" />
-            <button mat-icon-button matSuffix type="button" (click)="viewPassword()" tabindex="-1">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
-            <mat-error *ngIf="form.controls['password'].errors?.['required']">
-              Password is required
-            </mat-error>
-          </mat-form-field>
-
-          <div style="text-align: center; margin-top: 1rem;">
-            <button mat-raised-button color="primary" type="submit">SIGN IN</button>
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
+      <div style="text-align: center;">
+        <button type="submit" style="padding: 0.5rem 1rem; background-color: #3f51b5; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          SIGN IN
+        </button>
+      </div>
+    </form>
   </div>
+</div>

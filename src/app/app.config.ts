@@ -7,11 +7,16 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { CustomOverlayContainer } from './theme/utils/custom-overlay-container';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { UsersData } from '@data/users-data';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns'; 
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { HttpConfigInterceptor } from './core/interceptors/httpConfig.interceptor';
+import { HttpService } from './core/services/http.service';
+
+
+
 
 
 export const appConfig: ApplicationConfig = {
@@ -24,12 +29,15 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     provideNativeDateAdapter(),
-    importProvidersFrom(InMemoryWebApiModule.forRoot(UsersData, { delay: 1000 })),
+    // importProvidersFrom(InMemoryWebApiModule.forRoot(UsersData, { delay: 1000 })),
     importProvidersFrom(CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
     })),
     { provide: OverlayContainer, useClass: CustomOverlayContainer },
+
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
+    // { provide: HTTP_INTERCEPTORS, useClass: HttpService, multi: true },
     
   ]
 };

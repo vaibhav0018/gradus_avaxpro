@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';  
 import { Settings, SettingsService } from '../../../services/settings.service';
 import { MenuService } from '../../../services/menu.service';
-import { VerticalMenuComponent } from '../menu/vertical-menu/vertical-menu.component';
+import { VerticalMenuComponent } from '../../../shared/components/menu/vertical-menu/vertical-menu.component';
 
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { NgScrollbarModule } from 'ngx-scrollbar';
