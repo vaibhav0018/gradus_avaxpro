@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-non-session',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './non-session.component.html',
   styleUrl: './non-session.component.scss'
 })

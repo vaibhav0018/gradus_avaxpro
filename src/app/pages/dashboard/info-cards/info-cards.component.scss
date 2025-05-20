@@ -7,9 +7,10 @@
       margin-right: 4px;
   }
 }
-.custom-width{
-max-width: 33.33% !important;
-}
+// .custom-width{
+// max-width: 33.33% !important;
+// }
+
 .link {
 background: none !important;
 border: none; 
@@ -42,9 +43,15 @@ mat-cell, mat-footer-cell, mat-header-cell {
 
 mat-footer-row, mat-header-row, mat-row {
   display: table-row;
-  border-width: 0px;
-  line-height:0.5 !important;
+  border-width: 0px; //0.5
+  line-height:1 !important;
   white-space:nowrap !important;
+}
+
+
+* {
+    margin: 0;
+    padding: 3px;
 }
 
 mat-table {
@@ -121,7 +128,7 @@ margin-top: -15px !important;
 }
 
 .custom-margin-top-main{
-margin-bottom: -15px !important;
+margin-bottom: -5px !important;
 margin-top: -10px !important;
 }
 ::ng-deep .custom-mat-form-field > .mat-form-field-infix { padding: 0px !important;}
@@ -181,3 +188,29 @@ width: 350px !important;
 max-height: 200px;
 overflow-x: auto;
 }
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  align-items: start;
+}
+
+:host {
+  display: block;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.grid-card {
+  width: 100%;
+}
+
+
+.expansion-controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 10px 0 0 10px;
+}
+

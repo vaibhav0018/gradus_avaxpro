@@ -1,0 +1,263 @@
+<app-custom-spinner> </app-custom-spinner>
+<form [formGroup]="makeform">
+  <mat-accordion>
+    <!--     <mat-card> -->
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <label> MAKE MASTER</label>
+        </mat-panel-title>  
+      </mat-expansion-panel-header>
+      <ng-container class="mat-elevation-z8">
+        <div class="wrapper">
+          <mat-form-field class="grid w-75">
+            <input type="text" placeholder="Make Code" matInput formControlName="txtMakeCode" maxlength="3"
+              appValidation />
+          </mat-form-field>
+          <mat-form-field class="grid w-75">
+            <input type="text" placeholder="Make Short Name" aria-label="Number" matInput
+              formControlName="txtMakeShortName" maxlength="20" appValidation />
+          </mat-form-field>
+          <mat-form-field class="grid w-75">
+            <input type="text" placeholder="Make Description" aria-label="Number" matInput formControlName="txtMakeDesc"
+              maxlength="50" />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+          <div fxLayout="row" fxLayoutAlign="center">
+            <button button mat-raised-button color="primary" (click)="openDialog()">ADD MAKE</button>
+            <!--  <button button mat-raised-button color="primary" (click)="validateMakeCode()">ADD MAKE</button> -->
+            <!--  <button mat-raised-button color="primary" type="button" id="btnAdd" (click)="addMake()"> Submit New Make</button> -->
+          </div>
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
+    <!--     </mat-card> -->
+  </mat-accordion>
+
+     
+
+  <!-- #filterInput creates a reference to the input DOM element. -->
+   <!-- On every keyup, you're passing filterInput.value directly — no $event needed. -->
+    <!-- It’s cleaner and avoids any typing issue because Angular knows it's an input. --> 
+<ng-container class="mat-elevation-z8">
+  <div class="wrapper" style="margin-top: 1%">
+    <mat-form-field class="grid w-75">
+      <!-- <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Filter"> -->
+       <input matInput formControlName="filterControl" (keyup)="applyFilter(makeform.controls.filterControl.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+</ng-container>
+
+
+  <!-- 
+  <div class="pagination-container">
+    <div class="component data component-card">
+      <main class="scroll">
+        <mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="table">
+          <ng-container matColumnDef="make_code">
+            <mat-header-cell *matHeaderCellDef class="header-cell"> MAKE CODE</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.make_code}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="make_short_name">
+            <mat-header-cell *matHeaderCellDef class="header-cell"> MAKE SHORT NAME</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <ng-container *ngIf="!element.show"> {{element.make_short_name}}
+              </ng-container>
+              <ng-container *ngIf="element.show">
+                <mat-form-field class="grid w-75">
+                  <input type="text" placeholder="Make Short Name" aria-label="Number" matInput appValidation
+                    formControlName="txtMakeShortNameUpdate{{element.make_code}}" value="{{element.make_short_name}}">
+                </mat-form-field>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="make_description">
+            <mat-header-cell *matHeaderCellDef class="header-cell"> MAKE DESCRIPTION </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <ng-container *ngIf="!element.show"> {{element.make_description}}
+              </ng-container>
+              <ng-container *ngIf="element.show">
+                <mat-form-field class="grid w-75">
+                  <input type="text" placeholder="Make Description" aria-label="Number" matInput appValidation
+                    formControlName="txtMakeDescUpdate{{element.make_code}}" value="{{element.make_description}}">
+                </mat-form-field>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="make_principle">
+            <mat-header-cell *matHeaderCellDef class="header-cell"> MAKE PRINCIPAL MFG FLG </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.make_principle}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef class="header-cell">SELECT</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div *ngIf="!element.show">
+                <button mat-button matTooltip="click on edit" (click)="makeMasterModify(element)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div *ngIf="element.show">
+                <button mat-button matTooltip="click on update" (click)="makeMasterUpdate(element)">
+                  <mat-icon>save</mat-icon>
+                </button>
+                <button mat-button matTooltip="click to Cancel" (click)="makeMasterModify(element)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+
+      </main>
+    </div>
+  </div>
+ -->
+  <main class="scroll">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="make_code">
+        <mat-header-cell class="header-cell" *matHeaderCellDef> MAKE CODE</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.make_code}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="make_short_name">
+        <mat-header-cell class="header-cell" *matHeaderCellDef> MAKE SHORT NAME</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.show"> {{element.make_short_name}}
+          </ng-container>
+          <ng-container *ngIf="element.show">
+            <mat-form-field class="grid w-75">
+              <input type="text" placeholder="Make Short Name" aria-label="Number" matInput appValidation
+                formControlName="txtMakeShortNameUpdate{{element.make_code}}" value="{{element.make_short_name}}">
+            </mat-form-field>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="make_description">
+        <mat-header-cell class="header-cell" *matHeaderCellDef> MAKE DESCRIPTION </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <ng-container *ngIf="!element.show"> {{element.make_description}}
+          </ng-container>
+          <ng-container *ngIf="element.show">
+            <mat-form-field class="grid w-75">
+              <input type="text" placeholder="Make Description" aria-label="Number" matInput appValidation
+                formControlName="txtMakeDescUpdate{{element.make_code}}" value="{{element.make_description}}">
+            </mat-form-field>
+          </ng-container>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="make_principle">
+        <mat-header-cell class="header-cell" *matHeaderCellDef> MAKE PRINCIPAL MFG FLG </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.make_principle}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="select">
+        <mat-header-cell class="header-cell" *matHeaderCellDef>SELECT</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div *ngIf="!element.show">
+            <button mat-button matTooltip="click on edit" (click)="makeMasterModify(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="element.show">
+            <button mat-button matTooltip="click on update" (click)="makeMasterUpdate(element)">
+              <mat-icon>save</mat-icon>
+            </button>
+            <button mat-button matTooltip="click to Cancel" (click)="makeMasterModify(element)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </main>
+
+  <!--   <mat-card style="margin-top: 1%">
+    <ng-container class="mat-elevation-z8" style="margin-top: 1%">
+      <div class="wrapper">
+        <mat-form-field class="grid w-75">
+          <input matInput (keyup)="applyFilter($event.target.value,false)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <div class="example-container mat-elevation-z8">
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="make_code">
+          <mat-header-cell *matHeaderCellDef> MAKE CODE</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.make_code}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_short_name">
+          <mat-header-cell *matHeaderCellDef> MAKE SHORT NAME</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container *ngIf="!element.show"> {{element.make_short_name}}
+            </ng-container>
+            <ng-container *ngIf="element.show">
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Make Short Name" aria-label="Number" matInput appValidation
+                  formControlName="txtMakeShortNameUpdate{{element.make_code}}" value="{{element.make_short_name}}">
+              </mat-form-field>
+            </ng-container>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_description">
+          <mat-header-cell *matHeaderCellDef> MAKE DESCRIPTION </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container *ngIf="!element.show"> {{element.make_description}}
+            </ng-container>
+            <ng-container *ngIf="element.show">
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Make Description" aria-label="Number" matInput appValidation
+                  formControlName="txtMakeDescUpdate{{element.make_code}}" value="{{element.make_description}}">
+              </mat-form-field>
+            </ng-container>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_principle">
+          <mat-header-cell *matHeaderCellDef> MAKE PRINCIPAL MFG FLG </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.make_principle}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>SELECT</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <div *ngIf="!element.show">
+              <button mat-button matTooltip="click on edit" (click)="makeMasterModify(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="element.show">
+              <button mat-button matTooltip="click on update" (click)="makeMasterUpdate(element)">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-button matTooltip="click to Cancel" (click)="makeMasterModify(element)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </mat-card>
+ -->
+
+</form>

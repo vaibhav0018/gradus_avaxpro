@@ -35,7 +35,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
     payload: object = {}
     completeUrl: string
   
-    constructor(private httpService: HttpService, private commonsService: CommonsService,private http: HttpClient) { }
+    constructor(private httpService: HttpService, private commonsService: CommonsService, private http:HttpClient) { }
   
     getQtrData(as_on_date: any): Observable<any> {
       this.commonsService.show()
@@ -75,6 +75,16 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
     }
 
     refreshDashboard(): Observable<any> {
+
+      const token = atob(sessionStorage.getItem(btoa('token')) || '');
+      console.log('token', token);
+
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': token    // or `Bearer ${token}`
+        });
+
+
         this.commonsService.show()
         this.completeUrl = environment.baseUrl + '/refreshDashboard'
         this.payload = {
@@ -92,7 +102,15 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
         }
         
         console.log("3--");
-        return this.http.post<any>(this.completeUrl, this.payload);
+        // return this.http.post<any>(this.completeUrl, this.payload, {headers});
+        return this.httpService.post(this.completeUrl, this.payload).pipe(
+              map((res: HttpServiceResponseModel) => {
+                // this.commonsService.hide()
+                res['payload'] = res
+                return res['payload']
+          })
+        )
+        
       }
     
       getSalesData(as_on_date: any): Observable<any> {

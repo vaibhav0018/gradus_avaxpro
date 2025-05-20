@@ -16,19 +16,19 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     request = request.clone({
       setHeaders: {
-        Authorization: atob(localStorage.getItem(btoa('token')) || ''),
-        username: atob(localStorage.getItem(btoa('username')) || ''),
+        Authorization: atob( sessionStorage.getItem(btoa('token')) || ''),
+        username: atob( sessionStorage.getItem(btoa('username')) || ''),
 
-        userId: atob(localStorage.getItem(btoa('userId')) || ''),     
-        usr_name: atob(localStorage.getItem(btoa('usr_name')) || ''),
-        usr_of_siscon: atob(localStorage.getItem(btoa('usr_of_siscon')) || ''),
-        usr_of_branch: atob(localStorage.getItem(btoa('usr_of_branch')) || ''),
-        fin_year_beg: atob(localStorage.getItem(btoa('fin_year_beg')) || ''),
-        fin_year_end: atob(localStorage.getItem(btoa('fin_year_end')) || ''),
-        fin_year_format: atob(localStorage.getItem(btoa('fin_year_format')) || ''),
-        usr_br_city: atob(localStorage.getItem(btoa('usr_br_city')) || ''),
-        usr_br_name: atob(localStorage.getItem(btoa('usr_br_name')) || ''),
-        usr_company_code: atob(localStorage.getItem(btoa('usr_company_code')) || ''),
+        userId: atob( sessionStorage.getItem(btoa('userId')) || ''),     
+        usr_name: atob( sessionStorage.getItem(btoa('usr_name')) || ''),
+        usr_of_siscon: atob( sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob( sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        fin_year_beg: atob( sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+        fin_year_end: atob( sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob( sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_br_city: atob( sessionStorage.getItem(btoa('usr_br_city')) || ''),
+        usr_br_name: atob( sessionStorage.getItem(btoa('usr_br_name')) || ''),
+        usr_company_code: atob( sessionStorage.getItem(btoa('usr_company_code')) || ''),
       },
     })
 

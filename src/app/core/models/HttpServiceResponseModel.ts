@@ -1,7 +1,7 @@
 export class HttpServiceResponseModel {
     private _responseData: any
     private _responseHeader: ResponseHeader
-    private payload?:any; // for now type any 
+    private payload: any;
 
     get responseData(): any {
       return this._responseData

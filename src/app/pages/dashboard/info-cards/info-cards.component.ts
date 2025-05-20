@@ -383,12 +383,17 @@ export class InfoCardsComponent implements OnInit {
 // 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEwIiwiaWF0IjoxNzQ3MTM4MDQxfQ.1KJm6HKBBrE45drjZL82wcMOxRo41bELkym6WyQxF2dkY3kr54KB0NHcBHSUmwWFCIiLhiB55agpWYJcXP-1pg'
 
 
-  ngOnInit() {
-    sessionStorage.setItem('token', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMDEwIiwiaWF0IjoxNzQ3MTM4MDQxfQ.1KJm6HKBBrE45drjZL82wcMOxRo41bELkym6WyQxF2dkY3kr54KB0NHcBHSUmwWFCIiLhiB55agpWYJcXP-1pg');
-    console.log('Retrieved token in InfoCardsComponent:');
-    this.user_and_company = atob(sessionStorage.getItem(btoa('usr_company_code')) || '')+atob(sessionStorage.getItem(btoa('userId')) || '');
-    this.refreshDashboard()
-  }
+ngOnInit() {
+  localStorage.setItem(btoa('token'), btoa('Bearer QmVhcmVyIGV5SmhiR2NpT2lKSVV6VXhNaUo5LmV5SnpkV0lpT2lJd01ERXdJaXdpYVdGMElqb3hOelEzTVRNNE1EUXhmUS4xS0ptNkhLQkJyRTQ1ZHJqWkw4MndjTU94Um80MWJFTGt5bTZXeVF4RjJka1kza3I1NEtCME5IY0JIU1Vtd1dGQ0lpTGhpQjU1YWdwV1lKY1hQLTFwZw=='));
+
+  console.log('Retrieved token in InfoCardsComponent:', atob(localStorage.getItem(btoa('token')) || ''));
+
+  this.user_and_company = atob(sessionStorage.getItem(btoa('usr_company_code')) || '') +
+                          atob(sessionStorage.getItem(btoa('userId')) || '');
+
+  this.refreshDashboard();
+}
+
 
   shiftDashBoard() {
     // added any 
@@ -1873,6 +1878,8 @@ export class InfoCardsComponent implements OnInit {
   refreshDashboard() {
     this.objservice.refreshDashboard().
       subscribe(data => {
+        console.log("data is coming: ",data)
+        
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           this.refresh_dashboard = data.responseData[0]
           if(!sessionStorage.hasOwnProperty(data.responseData[0]+this.user_and_company)) {

@@ -116,6 +116,7 @@ export class ConstantsService {
   public static ROUTE_LOGIN = 'login'
   public static ROUTE_DASHBOARD = 'template_home'
   public static ROUTE_MENU = 'db-quickmenu'
+  public static ROUTE_NON_SESSION_LOGIN = 'non-session/login'
 
   /*
    *

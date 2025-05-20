@@ -1,0 +1,47 @@
+
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.mat-header-row {
+  min-height: 30px !important;
+  background-color: #4072b4 !important;
+}
+ 
+.mat-form-field {
+  font-size: 12px;
+  width: 100%;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid:nth-last-child(-n + 3) {
+  grid-row-start: 3;
+}
+
+.mat-header-cell{
+  font-weight: bold;
+  font-size: 8;
+  color: black
+}
+.header-row,
+    .header-cell {
+      margin: 0 auto;
+      min-height: 36px !important;
+      text-align: center;
+      vertical-align: middle;
+      align-self: center;
+      background-color: #4072b4 !important;
+      color: white;
+      position: sticky !important;
+      top: 0px !important;
+    }

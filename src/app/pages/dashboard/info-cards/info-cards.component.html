@@ -19,7 +19,9 @@
                 </div>
             </mat-expansion-panel>
         </div>
-        <div fxLayout="row wrap" fxLayout.xs="column" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
+        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="20px grid" fxLayoutAlign="start start" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle"> -->
+
+        <div class="grid-container" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
             <ng-container *ngFor="let objTitle of lblTitle; let i=index">
                 <div fxFlex="33.33" class="flex-p draggable custom-width"
                     *ngIf="aryTxtDataSource[i]!=undefined && aryTxtDataSource[i].length>0">
@@ -64,11 +66,11 @@
                                 </div>
 
             
-                                <!-- <div class="w-100" *ngIf="aryObjDashBoardOrder[i].name =='RECEIVABLE' ">
+                                <div class="w-100" *ngIf="aryObjDashBoardOrder[i].name =='RECEIVABLE' ">
                                     <div fxFlex="50">
                                         <h5 style="text-align:center;">AMOUNT</h5>
                                         <ngx-charts-pie-chart
-                                            [scheme]="colorScheme"
+                                            [scheme]="colorScheme.domain[i]"
                                             [results]="aryDataSource[i][0]"
                                             [explodeSlices]="explodeSlices"
                                             [labels]="showLabels"
@@ -77,12 +79,12 @@
                                             [view]="viewReceivablePieChart"
                                             (select)="onSelect($event)">
                                         </ngx-charts-pie-chart>   
-                                    </div> -->
+                                    </div> 
 
-                                    <!-- <div fxFlex="50">
+                                     <div fxFlex="50">
                                         <h5 style="text-align:center;">PARTIES</h5>
                                         <ngx-charts-pie-chart
-                                            [scheme]="colorScheme"
+                                            [scheme]="colorScheme.domain[i]"
                                             [results]="aryDataSource[i][1]"
                                             [explodeSlices]="explodeSlices"
                                             [labels]="showLabels"
@@ -91,9 +93,9 @@
                                             [view]="viewReceivablePieChart"
                                             (select)="onSelect($event)">
                                         </ngx-charts-pie-chart>   
-                                    </div> -->
+                                    </div> 
                                    
-                                </div>
+                                 </div>
                                 
                                 <div class="w-100 y-overflow" *ngIf="aryObjDashBoardOrder[i].name =='SALES' ">
                                    
@@ -105,10 +107,10 @@
                                         </ngx-charts-bar-vertical>
                                     </div>
 
-                                    <!-- <div fxFlex="33.33">
+                                    <div fxFlex="33.33">
                                         <h6 style="text-align: center;">MATERIALS</h6>
                                         <ngx-charts-pie-chart
-                                            [scheme]="colorScheme"
+                                            [scheme]="colorScheme.domain[i]"
                                             [results]="aryDataSource[i][1]"
                                             [explodeSlices]="explodeSlices"
                                             [labels]="showLabels"
@@ -117,7 +119,7 @@
                                             [view]="viewSalesPieChart"
                                             (select)="onSelect($event)">
                                         </ngx-charts-pie-chart>   
-                                    </div> -->
+                                    </div>
 
                                     <div fxFlex="33.33">
                                         <h6 style="text-align: center;">SALES DETAILS</h6>
@@ -132,8 +134,7 @@
                                 </div>
 
 
-                               
-                            </div> 
+                            </div>
                             <div class="w-100 h-200p div-overflow" *ngIf="aryFlgViewChart[i]==false" [@slideInOut]>
                                 <mat-table class='w-99' [dataSource]="aryTxtDataSource[i]">
                                     <ng-container *ngFor="let column_name of aryLstColumn[i]"
@@ -163,7 +164,7 @@
                                     <mat-row *matRowDef="let row; columns: aryDisplayColumn[i];"></mat-row>
                                 </mat-table>
                             </div>
-                        <!-- </div> -->
+                        </div>
                     </mat-card>
                 </div>
             </ng-container>

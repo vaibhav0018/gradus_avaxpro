@@ -3,26 +3,25 @@ import { RouterModule, Routes } from '@angular/router';
 import { NonSessionComponent } from './non-session.component';
 import { ConstantsService } from '../../core/services/constants.service';
 
-const routes: Routes = [
+export const nonSessionRoutes: Routes = [
   {
     path: '',
     component: NonSessionComponent,
     children: [
+      //       {
+      //   path: ConstantsService.ROUTE_HOME,
+      //   loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent),
+      //   data: { breadcrumb: 'Non Session Login' },
+      // },
+
       {
         path: ConstantsService.ROUTE_LOGIN,
-        loadComponent: () =>
-          import('./login/login.component').then((m) => m.LoginComponent),
-        data: { breadcrumb: 'Non Session Login' },
+        loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent),
+        data: { breadcrumb: 'Login' },
       },
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class NonSessionRoutingModule {}
 
 
 // {

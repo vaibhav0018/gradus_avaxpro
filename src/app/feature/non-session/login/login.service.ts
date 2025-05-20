@@ -10,56 +10,8 @@ import { HttpService } from '../../../core/services/http.service';
   providedIn: 'root',
 })
 export class LoginService {
-  // baseUrl = environment.baseUrl
-
-  // constructor(private httpService: HttpService) {
-  // }
-
-  // getUser(payload: any): Observable<any> {
-  //   const url = environment.baseUrl + '/encrypt-pwd/'
-  //   console.log(payload)  
-  //   return this.httpService
-  //     .post(url, payload)
-  //     .pipe(map((res: HttpServiceResponseModel) => res))
-  // }
   
-  // public userLogin(payload: any): Observable<any> {
-  //   const url = environment.baseUrl2 + '/login/'
-  //   console.log(url)
-  //   return this.httpService
-  //     .post(url, payload)
-  //     .pipe(map((res: HttpServiceResponseModel) => res))
-  // }
-
-  // getUserPreference(): Observable<any> {
-  //   let completeUrl = environment.baseUrl2 + '/get-user-preference'
-  //   let payload = {
-  //     userInformationDto: {
-  //       usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),   
-  //       usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
-  //       fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
-  //       fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
-  //       fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
-  //       usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
-  //       usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
-  //       usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
-  //       usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
-
-  //     },
-  //   }
-  //   return this.httpService.post(completeUrl, payload).pipe(
-  //     map((res: HttpServiceResponseModel) => {
-  //       res['payload'] = res
-  //       return res['payload']
-  //     })
-  //   )
-  // }
-  
-  // private baseUrl = 'http://15.206.59.170/AvaxPro/avaxpro/api/login/'; 
-
-
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private httpService: HttpService) {}
 
 
   // let url = this.baseUrl+"/login/"; 
@@ -86,10 +38,21 @@ export class LoginService {
   }
 
 
-  userLogin(payload: any): Observable<any> {
-    return this.http.post(environment.baseUrl + '/login/', payload).pipe(
-      map((res: any) => res)
-    );
+  // userLogin(payload: any): Observable<any> {
+  //   return this.http.post(environment.baseUrl + '/login/', payload).pipe(
+  //     map((res: any) => res)
+  //   );
+  // }
+
+    public userLogin(payload: any): Observable<any> {
+    const url = environment.baseUrl + '/login/'
+    console.log(url)
+    return this.httpService.post(url, payload).pipe
+    (map((res: HttpServiceResponseModel) =>{
+        res['payload'] = res
+        // console.log(res)
+        return res['payload']
+      }))
   }
 
 
@@ -114,6 +77,56 @@ export class LoginService {
       map((res: any) => res)
     );
   }  
+
+  // ==============================================================================================================================
+
+  // baseUrl = environment.baseUrl
+
+  // constructor(private httpService: HttpService) {
+  // }
+
+  // getUser(payload: any): Observable<any> {
+  //   const url = environment.baseUrl + '/encrypt-pwd/'
+  //   console.log(payload)  
+  //   return this.httpService
+  //     .post(url, payload)
+  //     .pipe(map((res: HttpServiceResponseModel) => res))
+  // }
+  
+  // public userLogin(payload: any): Observable<any> {
+  //   const url = environment.baseUrl + '/login/'
+  //   console.log(url)
+  //   return this.httpService
+  //     .post(url, payload)
+  //     .pipe(map((res: HttpServiceResponseModel) => res))
+  // }
+
+  // getUserPreference(): Observable<any> {
+  //   let completeUrl = environment.baseUrl + '/get-user-preference'
+  //   let payload = {
+  //     userInformationDto: {
+  //       usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+  //       usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+  //       fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+  //       fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+  //       fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+  //       usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+  //       usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+  //       usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+  //       usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+  //     },
+  //   }
+  //   return this.httpService.post(completeUrl, payload).pipe(
+  //     map((res: HttpServiceResponseModel) => {
+  //       res['payload'] = res
+  //       return res['payload']
+  //     })
+  //   )
+  // }
+
+
+
+
 
 
   }
