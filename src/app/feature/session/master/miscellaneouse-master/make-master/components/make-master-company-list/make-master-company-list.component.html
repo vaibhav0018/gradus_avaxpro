@@ -1,1 +1,55 @@
-<p>make-master-company-list works!</p>
+<form [formGroup]="makecompanyform">
+    <app-custom-spinner></app-custom-spinner>
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="company_list">
+      <mat-header-cell *matHeaderCellDef> COMPANY NAMES</mat-header-cell>
+      <mat-cell *matCellDef="let element let ind=index; ">
+        <!-- shatr -->
+        <!-- <ng-container *ngIf="element.excluded">
+          <mat-checkbox (change)="enableRadiobtn(ind)" [checked]="element.flg_extend=='Y'"
+            formControlName="chkcmp{{element.company_code}}" [disabled]="true" value="{{element.company_short_name}}">
+            {{element.company_short_name}} </mat-checkbox>
+        </ng-container> -->
+        <!-- <ng-container *ngIf="!element.excluded">
+          <mat-checkbox (change)="enableRadiobtn(ind)" [checked]="element.flg_extend=='Y'"
+            formControlName="chkcmp{{element.company_code}}" value="{{element.company_short_name}}">
+            {{element.company_short_name}} </mat-checkbox>
+        </ng-container> -->
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="radio_btn">
+      <mat-header-cell *matHeaderCellDef> Principal Flag </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        sfsuifsdfkj
+        <!-- <ng-container *ngIf="!element.show && element.flg_extend === 'N '"> -->
+        <!-- <ng-container *ngIf="!element.excluded">
+          <mat-radio-group formControlName="rdbmfgflag{{element.company_code}}" aria-label="Select an option">
+            <mat-radio-button value="Y" [disabled]="element.flg_extend=='N'"
+              [checked]="element.cmk_principal_mfg_flg=='Y'">YES </mat-radio-button>
+            <mat-radio-button value="N" [disabled]="element.flg_extend=='N'"
+              [checked]="element.cmk_principal_mfg_flg=='N'"> No </mat-radio-button>
+          </mat-radio-group>
+        </ng-container> -->
+
+        
+        <!-- <ng-container *ngIf="element.excluded">
+          <mat-radio-group formControlName="rdbmfgflag{{element.company_code}}" aria-label="Select an option">
+            <mat-radio-button value="Y"  [checked]="element.cmk_principal_mfg_flg=='Y'"> YES</mat-radio-button>
+            <mat-radio-button value="N"  [checked]="element.cmk_principal_mfg_flg=='N'"> No</mat-radio-button>
+          </mat-radio-group>
+        </ng-container> -->
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" type="submit" mat-dialog-close
+      (click)="save(makecompanyform.value)">Submit</button>
+    <button mat-raised-button color="primary" type="button" [mat-dialog-close]="true">Cancel</button>
+  </mat-dialog-actions>
+
+</form>

@@ -123,6 +123,22 @@ export class RouterService {
     )
   }
 
+    showPartyQuery = (): void => {
+    window.open(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_PARTY_QUERY, '_blank'), { };
+    //this.doNavigation( ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_PARTY_QUERY)
+  }
+ 
+  showStockQuery = (): void => {
+    window.open(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_STOCK_QUERY, '_blank'), { };
+//   this.doNavigation( ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_QUERY + '/' +ConstantsServiceAvaxPro.ROUTE_STOCK_QUERY)
+  }
+ 
+  showStoppageView = (): void => {
+     window.open(ConstantsService.ROUTE_SESSION + '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS+ '/' +ConstantsServiceAvaxPro.ROUTE_MISCELLANEOUS_MODULE+ '/' +ConstantsServiceAvaxPro.ROUTE_STOPPAGE_CLEARANCE, '_blank'), { };
+  }
+ 
+ 
+
   showStockReport = (): void => {
     this.doNavigation(
       ConstantsService.ROUTE_SESSION +

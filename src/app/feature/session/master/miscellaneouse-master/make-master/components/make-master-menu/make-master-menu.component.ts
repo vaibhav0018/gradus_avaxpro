@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 // import { PageEvent, MatSnackBar, MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray, AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpService } from '../../../../../../../core/services/http.service';
@@ -26,12 +26,16 @@ export interface DialogData {
   name: string;
 }
 
+
+// imports: [CustomSpinnerComponent, FormsModule, MatAccordion, MatExpansionModule, MatFormFieldModule, MatTableModule, MatIcon, ReactiveFormsModule],
+
+
 @Component({
   selector: 'make-master',
-  imports: [CustomSpinnerComponent, FormsModule, MatAccordion, MatExpansionModule, MatFormFieldModule, MatTableModule, MatIcon, ReactiveFormsModule],
   templateUrl: './make-master-menu.component.html',
   styleUrl: './make-master-menu.component.scss',
-  standalone:true
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 
@@ -140,6 +144,7 @@ export class MakeMasterMenuComponent implements OnInit {
 
   addNewMake() {
     this.addShow = true;
+    console.log("dekh bhai",this.addShow)
   }
 
   makeMasterView() {
@@ -151,7 +156,7 @@ export class MakeMasterMenuComponent implements OnInit {
           return new MakeMasterTableModel(
             item.make_code,
             item.make_short_name,
-            item.make_desc,
+            item.make_description,
             item.cmk_principal_mfg_flg,
             true,
             false
@@ -187,7 +192,7 @@ export class MakeMasterMenuComponent implements OnInit {
     }
   }
 
-  makeMasterUpdate(row: any) {
+  makeMasterUpdate(row: any):any {
   //  console.log('Val Of Row ', row);
    // console.log('Val Of Make Code ', row.make_code);
 
@@ -216,11 +221,12 @@ export class MakeMasterMenuComponent implements OnInit {
       dialogConfig.autoFocus = true
       dialogConfig.data = {
         make_code: row.make_code,
+         make_short_name1: row.make_short_name,
         make_short_name: this.make_short_name,
         make_description: this.make_description,
         value: 'update'
       }
-      const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig)
+      const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(item => {
         //this.setPage(0);
         //  this.pageSize=10;
@@ -228,13 +234,15 @@ export class MakeMasterMenuComponent implements OnInit {
       })
       this.makeMasterView()
     }
+    
   }
 
-  openDialog() {
+  openDialog(): any {
+      
     this.make_code_txt = this.makeform.get('txtMakeCode')?.value
     let make_short_name = this.makeform.get('txtMakeShortName')?.value
     let make_desc = this.makeform.get('txtMakeDesc')?.value
-    if (this.make_code_txt == '' || this.make_code_txt == null) {
+    if (this.make_code_txt == '' || this.make_code_txt == null || this.make_code_txt == undefined) {
       this.openSnackBar("Please Enter Make Code");
       return false;
     } else if (this.make_code_txt.length != 3) {
@@ -253,11 +261,12 @@ export class MakeMasterMenuComponent implements OnInit {
       this.openSnackBar("Fill The Values");
       return false;
     } else {
-      this.makemasterservice.chkDuplicateMake(this.make_code_txt).subscribe(data => {
+     this.makemasterservice.chkDuplicateMake(this.make_code_txt).subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           this.make_status = data.responseData[0]
           const dialogConfig = new MatDialogConfig()
-          dialogConfig.width = '500px'
+          dialogConfig.minHeight = '90%';
+          dialogConfig.minHeight='90%';
           dialogConfig.disableClose = true
           dialogConfig.autoFocus = true
           dialogConfig.data = {
@@ -267,33 +276,20 @@ export class MakeMasterMenuComponent implements OnInit {
             make_short_name: this.makeform.get('txtMakeShortName')?.value,
             make_description: this.makeform.get('txtMakeDesc')?.value
           }
-          const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig)
+          const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig);
           dialogRef.afterClosed().subscribe(item => {
-            //    //this.setPage(0)
+          //   //    //this.setPage(0)
             this.form.reset()
             this.makeMasterView()
           })
-          this.makeMasterView()
+          // this.makeMasterView()
         } else {
           this.make_status = data.responseData[0]
           this.openSnackBar('Make Code ' + this.make_code_txt + ' Already Exist');
           return false;
         }
+        return;     
       })
-
-
-      /*     if (this.makeform.get('txtMakeCode').value == '' || this.makeform.get('txtMakeCode').value == null) {
-            this.openSnackBar("Please Enter Make Code");
-          } else if (this.makeform.get('txtMakeCode').value.match(/^([A-Z,a-z])+$/)) {
-            this.openSnackBar("Please Enter Valid Make Code");
-          } else if (this.makeform.get('txtMakeShortName').value == '' || this.makeform.get('txtMakeDesc').value == '') {
-            this.openSnackBar("Fill The Values");
-          } else { */
-      /*      const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig)
-           dialogRef.afterClosed().subscribe(item => {
-             this.makeMasterView(this.pageNumber, this.pageSize)
-           }) */
-      //  }
     }
   }
 

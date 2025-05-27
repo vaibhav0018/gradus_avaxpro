@@ -1,47 +1,133 @@
 
+// .example-header {
+//   min-height: 64px;
+//   padding: 8px 24px 0;
+// }
+
+// .mat-header-row {
+//   min-height: 30px !important;
+//   background-color: #4072b4 !important;
+// }
+ 
+// .mat-form-field {
+//   font-size: 12px;
+//   width: 100%;
+// }
+
+// .mat-table {
+//   overflow: auto;
+//   max-height: 500px;
+// }
+
+// .wrapper {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr 1fr;
+// }
+
+// .grid:nth-last-child(-n + 3) {
+//   grid-row-start: 3;
+// }
+
+// .mat-header-cell{
+//   font-weight: bold;
+//   font-size: 8;
+//   color: black
+// }
+// .header-row,
+//     .header-cell {
+//       margin: 0 auto;
+//       min-height: 36px !important;
+//       text-align: center;
+//       vertical-align: middle;
+//       align-self: center;
+//       background-color: #4072b4 !important;
+//       color: white;
+//       position: sticky !important;
+//       top: 0px !important;
+//     }
+
+
+
+
+/* ========== UPDATED CSS FOR UNIFORM TABLE DISPLAY ========== */
+
 .example-header {
   min-height: 64px;
   padding: 8px 24px 0;
 }
 
+/* ✅ Header row background and sizing */
 .mat-header-row {
   min-height: 30px !important;
   background-color: #4072b4 !important;
 }
- 
+
+/* ✅ Input styling (Filter, Add fields) */
 .mat-form-field {
   font-size: 12px;
   width: 100%;
 }
 
+/* ✅ Ensure table height scrolls properly */
 .mat-table {
   overflow: auto;
   max-height: 500px;
+  width: 100%; /* added to fix width overflow */
+  border-collapse: collapse; /* smoother edge alignment */
 }
 
+/* ✅ Fix layout form alignment */
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; /* added spacing between inputs */
+  margin-bottom: 2px; /* spacing between form and table */
 }
 
-.grid:nth-last-child(-n + 3) {
-  grid-row-start: 3;
-}
+/* ❌ Removed unused grid-child styling */
+/* .grid:nth-last-child(-n + 3) {...} — not needed */
 
-.mat-header-cell{
+/* ✅ Improve table cell font and padding */
+.mat-header-cell, .mat-cell {
+  font-size: 12px; /* corrected font size from 8 (invalid) */
   font-weight: bold;
-  font-size: 8;
-  color: black
+  padding: 4px 8px;
+  text-align: center;
+  vertical-align: middle;
 }
-.header-row,
-    .header-cell {
-      margin: 0 auto;
-      min-height: 36px !important;
-      text-align: center;
-      vertical-align: middle;
-      align-self: center;
-      background-color: #4072b4 !important;
-      color: white;
-      position: sticky !important;
-      top: 0px !important;
-    }
+
+/* ✅ Sticky header with better style */
+.header-row, .header-cell {
+  margin: 0 auto;
+  min-height: 2px !important;           /*36px*/
+  text-align: center;
+  vertical-align: middle;
+  align-self: center;
+  background-color: #4072b4 !important;
+  color: white;
+  position: sticky !important;
+  top: 0px !important;
+  z-index: 2; /* ensure sticky header overlays scrollable area */
+}
+
+/* ✅ Prevent description/short name overflow */
+.mat-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; /* optional: cap wide strings */
+}
+
+mdc-form-field-infix {
+    padding-top: 10px;
+    padding-bottom: 2px;
+}
+
+/* ========== END OF UPDATED TABLE CSS ========== */
+
+
+
+
+
+
+

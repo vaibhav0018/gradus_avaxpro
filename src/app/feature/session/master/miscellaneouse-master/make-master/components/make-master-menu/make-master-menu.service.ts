@@ -99,6 +99,8 @@ export class MakeMasterService {
     this.completeUrl = environment.baseUrl + '/' + GET_DUPLICATE_MAKE
     this.payload = {
       make_code: make_code,
+      // make_short_name: make_short_name,
+      // make_description: make_description,
       userInformationDto: {
         usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
         usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),

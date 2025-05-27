@@ -15,7 +15,7 @@ export const routes: Routes = [
       // },
       {
         path: ConstantsServiceAvaxPro.ROUTE_MAKE_MASTER,
-        loadComponent: () => import('./make-master/components/make-master-menu/make-master-menu.component').then(m => m.MakeMasterMenuComponent),
+        loadChildren: () => import('./make-master/make-master.module').then(m => m.MakeMasterModule),
       },
       // {
       //   path: ConstantsServiceAvaxPro.ROUTE_PHYSICAL_LOCATION_MASTER,

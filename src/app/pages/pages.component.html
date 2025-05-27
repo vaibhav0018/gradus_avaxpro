@@ -1,4 +1,4 @@
-<mat-sidenav-container [dir]="settings.rtl ? 'rtl' : 'ltr'">
+<!-- <mat-sidenav-container [dir]="settings.rtl ? 'rtl' : 'ltr'">
     @if (settings.menu == 'vertical') {
         <mat-sidenav [opened]="settings.sidenavIsOpened" [mode]="settings.sidenavIsPinned ? 'side' : 'over'" #sidenav (openedStart)="showSidenav = !showSidenav" (closedStart)="showSidenav = !showSidenav" class="sidenav mat-elevation-z6">
             <app-sidenav></app-sidenav>
@@ -151,4 +151,75 @@
 
     </mat-sidenav>
 
+</mat-sidenav-container> -->
+
+
+
+<mat-sidenav-container>
+    <mat-sidenav *ngIf="settings.menu == 'vertical'" [opened]="settings.sidenavIsOpened"
+        [mode]="sidemenu_mode" #sidenav class="sidenav mat-elevation-z6">
+        <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <!-- <mat-sidenav-content id="main" perfectScrollbar [disabled]="settings.fixedHeader" (psScrollY)="onPsScrollY($event)"> -->
+    <mat-sidenav-content id="main" >
+        <mat-toolbar color="primary" class="flex-p-x custom-menu">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+                <div fxLayout="row" fxLayoutAlign="center center" class="w-20">
+                    <button *ngIf="settings.menu == 'vertical'" mat-icon-button (click)="toggleSidenav()">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <a *ngIf="settings.menu == 'horizontal'" mat-raised-button color="accent" routerLink="/"
+                        (click)="closeSubMenus()" class="small-logo">G</a>
+                    <a *ngIf="settings.menu == 'horizontal'" class="logo" routerLink="/"
+                        (click)="closeSubMenus()">GRADUS</a>
+                        <form [formGroup]="form">
+                            <mat-select formControlName="cmbMenu" style="width: 100px !important;" class="font1em" [(ngModel)]="selectedMenu"  >
+                                <!-- <mat-option *ngFor="let qmenu of q_menu" [value]="qmenu.value" (onSelectionChange)="openPage()">
+                                    {{qmenu.viewValue}}
+                                  </mat-option> -->
+                                <mat-option value='1' (click)="openPage1()">Recently visited</mat-option>
+                                <mat-option value='2' (click)="openPage1()">Favourites</mat-option>
+                                <mat-option value='3' (click)="openPage1()">All Services</mat-option>
+                                <mat-option value='4' (click)="openPage1()" >Dashboard</mat-option>
+                                <mat-option value='5' (click)="openPage1()">Party Query</mat-option>
+                                <mat-option value='6' (click)="openPage1()">Stock Query</mat-option>
+                                <mat-option value='7' (click)="openPage1()">Item Query</mat-option>
+                                <mat-option value='8' (click)="openPage1()">Stoppage Clearance</mat-option>
+                                <mat-option value='9' (click)="openPage1()">User Information</mat-option>
+                            </mat-select>
+                        </form>
+                        <!-- <mat-icon class='mat-icon' (click)='updateUserDefaultPage()'>stars</mat-icon> -->
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class='font1em'>{{userName}}</span>
+                </div>
+                <div fxLayout="row" class="mat-body w-20 font1em">
+                    
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end center" class="w-20">
+                    <span class="font1em">{{loggedInBranch}}</span>&nbsp;&nbsp;&nbsp;
+                    <span class="font1em">{{loggedInYear}}</span>
+                    <app-fullscreen></app-fullscreen>
+                    <!-- <app-flags-menu fxShow="false" fxShow.gt-sm></app-flags-menu>
+                    <app-applications fxShow="false" fxShow.gt-sm></app-applications>
+                    <app-messages fxShow="false" fxShow.gt-xs></app-messages> -->
+                    <app-user-menu></app-user-menu>
+                </div>
+            </div>
+        </mat-toolbar>
+
+        <!-- <div id="main-content" class="inner-sidenav-content transition-2" perfectScrollbar
+            [disabled]="!settings.fixedHeader" (psScrollY)="onPsScrollY($event)"
+            [class.horizontal-menu-hidden]="isStickyMenu"> -->
+        <div id="main-content" #divMain class="inner-sidenav-content transition-2" 
+            [class.horizontal-menu-hidden]="isStickyMenu">
+            <app-breadcrumb></app-breadcrumb>
+            <router-outlet></router-outlet>
+        </div>
+        <div #backToTop fxLayout="row" fxLayoutAlign="center center" class="back-to-top" (click)="scrollToTop()">
+            <mat-icon>arrow_upward</mat-icon>
+        </div>
+        <div #backToBottom fxLayout="row" fxLayoutAlign="center center" class="back-to-bottom" (click)="scrollToBottom()">
+            <mat-icon>arrow_downward</mat-icon>
+          </div>
+
+    </mat-sidenav-content>
 </mat-sidenav-container>
