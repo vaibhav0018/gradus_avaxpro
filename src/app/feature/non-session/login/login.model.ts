@@ -1,4 +1,5 @@
 export class Login {
-    userName: string | undefined
-    password: string | undefined
+    userName: string
+    password: string
   }
+  

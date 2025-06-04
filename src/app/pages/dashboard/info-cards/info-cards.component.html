@@ -19,7 +19,7 @@
                 </div>
             </mat-expansion-panel>
         </div>
-        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="20px grid" fxLayoutAlign="start start" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle"> -->
+        <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="20px grid" fxLayoutAlign="start start" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
 
         <div class="grid-container" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
             <ng-container *ngFor="let objTitle of lblTitle; let i=index">
@@ -170,4 +170,5 @@
             </ng-container>
         </div>
     </div>
+</div>
 </form>

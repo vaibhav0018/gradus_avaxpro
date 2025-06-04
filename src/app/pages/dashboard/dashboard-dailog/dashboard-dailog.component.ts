@@ -51,12 +51,10 @@ import { MatInputModule } from '@angular/material/input';
     MatExpansionModule,
     MatTableModule,
     MatDialogModule,
-    MatDatepicker,
     FormsModule,
     MatInputModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    MatSuffix,
     MatFormFieldModule
 
 ],

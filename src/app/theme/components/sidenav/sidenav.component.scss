@@ -39,10 +39,20 @@
         height: $sidenav-user-block-height;
     }      
 } 
- 
-ng-scrollbar.sidenav-menu-outer {
-    height: calc(100% - #{$toolbar-height});
-    &.user-block-show{        
-        height: calc(100% - #{$toolbar-height + $sidenav-user-block-height}); 
-    }  
+
+.sidenav-menu-outer{
+    .ps{
+        // height: calc(100% - #{$toolbar-height}); 
+        height: 100%
+    }       
+    &.user-block-show{
+        .ps{        
+            // height: calc(100% - #{$toolbar-height + $sidenav-user-block-height}); 
+            height: 100%
+        }
+    }
+    .vertical-menu {
+        padding-right: 20px;
+        padding-bottom: 80px;
+    }
 }

@@ -16,19 +16,19 @@ export class CommonsService {
     this.spinnerService?.show() // ✅ Safe optional chaining
   }
 
-  date_ymd(dateValue: any): string {
+  date_ymd(dateValue: any) {
     return moment(dateValue).format(ConstantsService.DATE_YMD);
   }
 
-  date_dmy(dateValue: any): string {
+  date_dmy(dateValue: any){
     return moment(dateValue).format(ConstantsService.DATE_DMY);
   }
 
-  date_dmmmy(dateValue: any): string {
+  date_dmmmy(dateValue: any){
     return moment(dateValue).format(ConstantsService.DATE_DMMMY);
   }
 
-  date_diff_ymd(startDate: any, endDate: any): number | undefined {
+  date_diff_ymd(startDate: any, endDate: any) {
     if (startDate && endDate) {
       const end = moment(endDate, ConstantsService.DATE_YMD);
       const start = moment(startDate, ConstantsService.DATE_YMD);
@@ -37,7 +37,7 @@ export class CommonsService {
     return undefined;
   }
 
-  date_diff_days_ymd(currentDate: any, noOfDays: number): moment.Moment | undefined {
+  date_diff_days_ymd(currentDate: any, noOfDays: number){
     if (currentDate && noOfDays) {
       const current = moment(currentDate, ConstantsService.DATE_YMD);
       return current.subtract(noOfDays, 'days');
@@ -45,7 +45,7 @@ export class CommonsService {
     return undefined;
   }
 
-  date_last_date_of_the_month(currentDate: any): moment.Moment | undefined {
+  date_last_date_of_the_month(currentDate: any){
     if (currentDate) {
       const lastDay = moment(currentDate, ConstantsService.DATE_DMY);
       return lastDay.endOf('month');
@@ -53,11 +53,11 @@ export class CommonsService {
     return undefined;
   }
 
-  show(): void {
+  show(){
     this.spinnerService?.show();
   }
 
-  hide(): void {
+  hide(){
     this.spinnerService?.hide();
   }
 }

@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Settings, SettingsService } from './services/settings.service';
-import { NgClass } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoginComponent } from "./feature/non-session/login/login.component";
+import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -11,7 +11,6 @@ import { LoginComponent } from "./feature/non-session/login/login.component";
     RouterOutlet,
     NgClass,
     MatProgressSpinnerModule,
-    LoginComponent
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'

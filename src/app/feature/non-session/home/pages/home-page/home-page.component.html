@@ -1,0 +1,17 @@
+<table style="display: flex;justify-content: center;align-items: center;height: 50%;">
+    <tr>
+      <td></td>
+      <td><button mat-button class='float-right' color="primary" type="button" (click)="close_tab()">
+        <mat-icon>highlight_off</mat-icon>
+      </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <div [ngStyle]="{'color':flg==='EMAIL VERIFICATION FAILED'?'red': flg === 'YOUR EMAIL ID IS VERIFIED SUCCESSFULLY, THANK YOU'?'green':'black'}">
+        <p>{{flg}}</p>
+      </div>
+     </td>
+    <td></td>
+    </tr>
+  </table> 

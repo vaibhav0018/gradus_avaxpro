@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Settings } from '@services/settings.service';
 import { AppSettings } from '../../app.settings';
-import { Settings } from '../../app.settings.model';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -13,9 +13,10 @@ export class NonSessionComponent implements OnInit {
   public settings: Settings
 
   constructor(public appSettings: AppSettings) {
-    this.settings = this.appSettings.settings
   }
+  // The constructor initializes the settings property with the appSettings.settings value.
+  // The settings property is of type Settings, which is imported from the @services/settings.service module.
+  // The constructor is called when an instance of the NonSessionComponent class is created.    
 
   ngOnInit() {}
 }
-

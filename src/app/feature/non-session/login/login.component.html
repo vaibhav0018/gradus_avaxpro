@@ -1,35 +1,70 @@
-<div style="max-width: 400px; margin: 2rem auto; border: 1px solid #ccc; border-radius: 8px; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-  <div style="text-align: center; background: #3f51b5; padding: 1rem;">
-  </div>
+<mat-sidenav-container class="login-container">
 
-  <div style="padding: 2rem;">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <h3 style="text-align: center;">Member - Login</h3>
-
-      <div style="margin-bottom: 1rem;">
-        <label for="username" style="display: block; margin-bottom: 0.25rem;">User Id / Email Id</label>
-        <input id="username" type="text" formControlName="username" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
-        <div *ngIf="form.controls['username'].errors?.['required']" style="color: red; font-size: 0.8rem; margin-top: 0.25rem;">
-          User Id/Email Id is required
-        </div>
-      </div>
-
-      <div style="margin-bottom: 1rem;">
-        <label for="password" style="display: block; margin-bottom: 0.25rem;">Password</label>
-        <div style="position: relative;">
-          <input id="password" [type]="txtType" formControlName="password" style="width: 100%; padding: 0.5rem; padding-right: 2rem; border: 1px solid #ccc; border-radius: 4px;">
-
-        </div>
-        <div *ngIf="form.controls['password'].errors?.['required']" style="color: red; font-size: 0.8rem; margin-top: 0.25rem;">
-          Password is required
-        </div>
-      </div>
-
-      <div style="text-align: center;">
-        <button type="submit" style="padding: 0.5rem 1rem; background-color: #3f51b5; color: white; border: none; border-radius: 4px; cursor: pointer;">
-          SIGN IN
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="login-wrapper">
+  
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" fxFlex="80" fxFlex.gt-sm="30" fxFlex.sm="60">
+  
+        <mat-card class="mat-elevation-z24 login-card" *ngIf="!flgPwdChange">
+          <div class="login-header bg-primary">
+            <!-- <img [src]="companyLogo" width="60%;" style="background-color:white;"> -->
+          </div>
+          <mat-card-content class="login-content">
+            <mat-card class="mat-elevation-z12 login-inner-card">
+              <span class="login-title">MEMBER - LOGIN</span>
+              <table>
+                <tr>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <input matInput placeholder="User Id / Email Id" formControlName="username" title="uname">
+                      <mat-error *ngIf="form.controls.username.errors?.required">User Id/Email Id is required</mat-error>
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <input matInput [type]="txtType" placeholder="Password" formControlName="password">
+                    </mat-form-field>
+                  </td>
+                  <td>
+                    <mat-icon (click)="viewPassword()">remove_red_eye</mat-icon>
+                  </td>
+                </tr>
+              </table>
+            </mat-card>
+            <button mat-raised-button color="primary" class="login-button" type="submit">SIGN IN</button>
+          </mat-card-content>
+        </mat-card>
+  
+        <mat-card class="mat-elevation-z24 login-card" *ngIf="flgPwdChange">
+          <div class="login-header bg-primary"></div>
+          <mat-card-content class="login-content">
+            <mat-card class="mat-elevation-z12 login-inner-card">
+              <span class="login-title">CHANGE PASSWORD</span>
+              <table>
+                <tr>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <input matInput [type]="txtType" placeholder="New Password" formControlName="txtNewPassword">
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <input matInput [type]="txtType" placeholder="Confirm Password" formControlName="txtConfirmPassword">
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </mat-card>
+            <button mat-raised-button color="primary" class="login-button" type="button" (click)="savePassword()">SAVE</button>
+          </mat-card-content>
+        </mat-card>
+  
+      </form>
+  
+    </div>
+  
+  </mat-sidenav-container>
+  
