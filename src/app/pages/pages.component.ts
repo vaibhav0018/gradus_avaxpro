@@ -31,6 +31,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InfoCardsService } from './dashboard/info-cards/info-cards.service';
+import { MatSelect } from '@angular/material/select';
  
  
 export interface Quick_Menu {
@@ -53,6 +54,7 @@ export interface Quick_Menu {
     NgScrollbarModule,
     SidenavComponent,
     FullScreenComponent,
+    MatSelect,
     // FlagsMenuComponent,
     // ApplicationsComponent,
     // MessagesComponent,
@@ -378,7 +380,7 @@ export class PagesComponent implements OnInit {
   }
  
   openPage1() {
-   // console.log(' CAlling 1111111 ', this.selectedMenu)
+   console.log(' CAlling 1111111 ', this.selectedMenu)
     // console.log( ' txtitemCode ',this.form.get('cmbMenu').value)
  
     if (this.selectedMenu == '4') {

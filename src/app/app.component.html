@@ -2,6 +2,7 @@
 <!-- <app-login></app-login> -->
 
 
+<!-- <h1>Dialog-box</h1> -->
 
 <div id="app" class="app" [dir]="settings.rtl ? 'rtl' : 'ltr'"
             [ngClass]="settings.theme" 
@@ -10,6 +11,8 @@
             [class.compact]="settings.menuType == 'compact'" 
             [class.mini]="settings.menuType == 'mini'">
 <router-outlet></router-outlet>
+
+
 
 <!-- <div >
     <mat-spinner color="primary"></mat-spinner>  

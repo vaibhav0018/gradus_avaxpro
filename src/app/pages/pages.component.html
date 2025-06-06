@@ -173,7 +173,7 @@
                     <a *ngIf="settings.menu == 'horizontal'" class="logo" routerLink="/"
                         (click)="closeSubMenus()">GRADUS</a>
                         <form [formGroup]="form">
-                            <mat-select formControlName="cmbMenu" style="width: 100px !important;" class="font1em" [(ngModel)]="selectedMenu"  >
+                            <mat-select formControlName="cmbMenu" style="width: 150px !important;" class="font1em" [(ngModel)]="selectedMenu">
                                 <!-- <mat-option *ngFor="let qmenu of q_menu" [value]="qmenu.value" (onSelectionChange)="openPage()">
                                     {{qmenu.viewValue}}
                                   </mat-option> -->
@@ -186,7 +186,7 @@
                                 <mat-option value='7' (click)="openPage1()">Item Query</mat-option>
                                 <mat-option value='8' (click)="openPage1()">Stoppage Clearance</mat-option>
                                 <mat-option value='9' (click)="openPage1()">User Information</mat-option>
-                            </mat-select>
+                            </mat-select>&nbsp;
                         </form>
                         <mat-icon class='mat-icon' (click)='updateUserDefaultPage()'>stars</mat-icon>
                         &nbsp;&nbsp;&nbsp;&nbsp;<span class='font1em'>{{userName}}</span>
