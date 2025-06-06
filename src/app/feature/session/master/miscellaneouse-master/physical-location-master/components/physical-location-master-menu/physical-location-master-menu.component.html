@@ -1,0 +1,145 @@
+<app-custom-spinner></app-custom-spinner>
+<form [formGroup]="phylocatioform">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <label> PHYSICAL LOCATION MASTER </label>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+        <div fxLayout="row" fxLayoutAlign="center">
+          <mat-form-field class="grid wp-250">
+            <mat-select placeholder="Godown" matTooltip="List" formControlName="godown">
+              <mat-option *ngFor="let godown of godownLists" [value]="godown">
+                {{ godown.godown_name | uppercase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <select >
+  <option *ngFor="let godown of godownLists" [value]="godown.godown_code">
+    {{ godown.godown_name | uppercase }}
+  </option>
+</select> -->
+
+
+        </div>
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
+        <div fxLayout="row" fxLayoutAlign="center">
+          <button button mat-raised-button color="primary" (click)="addNewLocation()">
+            ADD
+          </button>
+          <button button mat-raised-button color="primary" (click)="searchLocation()" style="margin-left: 3%">
+            SEARCH
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <ng-container *ngIf="deleteshow">
+    <ng-container class="mat-elevation-z8" style="margin-top: 1%">
+      <div class="wrapper">
+        <mat-form-field class="grid w-75">
+          <input #filterInput matInput (keyup)="applyFilter(filterInput.value, false)" placeholder="Filter" />
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <div style="padding-top: 1%">
+      <main class="scroll">
+        <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="serial_no">
+            <mat-header-cell class="header-cell" *matHeaderCellDef>
+              SERIAL NUMBER
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.serial_no }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="physical_location">
+            <mat-header-cell class="header-cell" *matHeaderCellDef>
+              PHYSICAL LOCATION
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.gpl_loc }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="scrap_flag">
+            <mat-header-cell class="header-cell" *matHeaderCellDef>
+              SCRAP FLAG</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.gpl_phyloc_flg }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell class="header-cell" *matHeaderCellDef>SELECT</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-button (click)="deleteElementConfig(element)" matTooltip="click to Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-button (click)="addToScrap(element)" [disabled]="element.gpl_phyloc_flg == 'Y'"
+                matTooltip="Click on Scrap">
+                <mat-icon>exit_to_app</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+      </main>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="addshow">
+    <mat-card style="margin-top: 1%">
+      <div style="padding-top: 3%">
+        <mat-table [dataSource]="adddataSource" class="mat-elevation-z8" formArrayName="arrayAddLocation">
+          <ng-container matColumnDef="serial_no">
+            <mat-header-cell *matHeaderCellDef>SR NO</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+              {{ i + 1 }}.
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="physical_location">
+            <mat-header-cell *matHeaderCellDef>
+              PHYSICAL LOCATION
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+              <mat-form-field>
+                <input matInput type="text" id="txtPhysicalLocation{{ i + 1 }}" formControlName="txtPhysicalLocation"
+                  maxlength="50" />
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>ADD/DELETE</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+              <mat-icon matSuffix matTooltip="Add Row" *ngIf="showIconFlag[i] == true"
+                (click)="addNewCardRow(i, arrayAddLocation, 'addNewRow')">add
+              </mat-icon>
+              <mat-icon matSuffix matTooltip="Remove Row" *ngIf="showIconFlag[i] == false"
+                (click)="deleteCardRow(i, arrayAddLocation)">delete
+              </mat-icon>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="addColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: addColumns"></mat-row>
+        </mat-table>
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly" [ngStyle]="{ 'margin-top': '10px' }">
+          <div fxLayout="row" fxLayoutAlign="center">
+            <button mat-raised-button color="primary" type="button" (click)="onClickConfirm(arrayAddLocation)">
+              CONFIRM
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </ng-container>
+</form>

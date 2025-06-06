@@ -5,18 +5,19 @@ import { MakeMasterRoutingModule } from './components/make-master-routing.module
 import { MakeMasterMenuComponent } from './components/make-master-menu/make-master-menu.component';
 
 import { SharedModule } from '../../../../../shared/shared.module';
-// import { CoreModule } from 'src/app/core/core.module'
+import { CoreModule } from '@ngbracket/ngx-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ValidationDirective } from './components/make-master-menu/comman/validation.directive';
-import { MakeMasterCompanyListComponent } from './components/make-master-company-list/make-master-company-list.component';
+//import { MakeMasterCompanyListComponent } from './components/make-master-company-list/make-master-company-list.component';
 
 
 
 // ValidationDirective
 @NgModule({
-  declarations: [ MakeMasterMenuComponent,MakeMasterCompanyListComponent ],
+  declarations: [ MakeMasterMenuComponent ],
   imports: [
     CommonModule,
+    CoreModule,
     MakeMasterRoutingModule,
     SharedModule,
     ReactiveFormsModule,

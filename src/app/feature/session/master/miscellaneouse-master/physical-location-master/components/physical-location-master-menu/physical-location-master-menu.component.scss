@@ -1,0 +1,51 @@
+  
+
+  .example-container {
+    height: 400px;
+    overflow: auto;
+    min-width: 400px;
+  }
+
+
+  
+  table {
+    width: 100% ;
+  }
+  
+    
+  td.mat-column-star {
+    width: 20px;
+    padding-right: 8px;
+  }
+  
+  th.mat-column-position, td.mat-column-position {
+    padding-left: 8px;
+  }
+  .mat-table-sticky:first-child {
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  .mat-table-sticky:last-child {
+    border-left: 1px solid #e0e0e0;
+  }
+  tr.mat-footer-row {
+    font-weight: bold;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .header-row,
+    .header-cell {
+      margin: 0 auto;
+      min-height: 36px !important;
+      text-align: center;
+      vertical-align: middle;
+      align-self: center;
+      background-color: #4072b4 !important;
+      color: white;
+      position: sticky !important;
+      top: 0px !important;
+    }

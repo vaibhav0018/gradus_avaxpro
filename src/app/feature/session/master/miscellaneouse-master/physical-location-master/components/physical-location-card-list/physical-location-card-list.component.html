@@ -1,0 +1,52 @@
+<form [formGroup]="carddetailsform">
+  <div class="example-container mat-elevation-z8">
+      <div *ngIf="intRecordCount==0">
+          NO DATA FOUND.
+      </div>
+    <div *ngIf="intRecordCount>0">
+ 
+     <mat-table [dataSource]="dataSource">
+       
+      <ng-container matColumnDef="card_no">
+        <mat-header-cell *matHeaderCellDef> CARD NO</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stm_card_no}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="item">
+        <mat-header-cell *matHeaderCellDef> ITEM </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stm_item_code}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="prod_code">
+        <mat-header-cell *matHeaderCellDef> PRODUCT CODE </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.it_prod_code}} </mat-cell>
+        
+      </ng-container>
+
+      <ng-container matColumnDef="make">
+        <mat-header-cell *matHeaderCellDef> MAKE </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stm_make}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="bal_qty">
+        <mat-header-cell *matHeaderCellDef> BALANCE QTY </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.stm_balance_quantity}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="uom">
+        <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.um_short_desc}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+  </div>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" type="submit" mat-dialog-close (click)="save()">Update</button>
+    <button mat-raised-button color="primary" type="button" [mat-dialog-close]="true">Cancel</button>
+  </mat-dialog-actions>
+
+</form>

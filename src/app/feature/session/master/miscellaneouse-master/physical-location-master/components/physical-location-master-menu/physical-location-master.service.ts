@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { HttpServiceResponseModel } from '../../../../../../../core/models/HttpServiceResponseModel';
+import { HttpService } from '../../../../../../../core/services/http.service';
 import { HttpClient } from '@angular/common/http'
-import { HttpServiceResponseModel } from '../../models/HttpServiceResponseModel';
-import { HttpService } from '../http.service';
-import { environment } from '../../../environments/environment';
 
 const POST_PHYSICAL_LOCATION_DATA = 'addPhysicalLoactionData';
 const POST_DELETE_PHYSICAL_LOCATION_DATA = 'deletePhysicalLoactionData';
@@ -35,7 +35,7 @@ export class PhysicalLocationMasterService {
       })
     )
   }
-  deletePhysicalLocation(phy_location: any,godown_code: any): Observable<any> {
+  deletePhysicalLocation(phy_location: any, godown_code: any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + POST_DELETE_PHYSICAL_LOCATION_DATA
     this.payload = {
       gpl_loc: phy_location,
@@ -53,7 +53,7 @@ export class PhysicalLocationMasterService {
     )
   }
 
-  addToScrapPhysicalLocation(phy_location: any,godown_code: any): Observable<any> {
+  addToScrapPhysicalLocation(phy_location: any, godown_code: any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + POST_SCRAP_PHYSICAL_LOCATION_DATA
     this.payload = {
       gpl_loc: phy_location,
@@ -80,7 +80,7 @@ export class PhysicalLocationMasterService {
       gpl_godown_code: godown_code,
       userInformationDto: {
         usr_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || '')
       }
     }
     console.log('payload ', this.payload);
@@ -139,13 +139,5 @@ export class PhysicalLocationMasterService {
         return ''
       })
     )
-
-    //  return this.httpService.post(this.completeUrl, this.payload).pipe(
-    //   map((res: HttpServiceResponseModel) => {
-    //     res['payload'] = res
-    //     return res['payload']
-    //   })
-    // )
-
   }
 }

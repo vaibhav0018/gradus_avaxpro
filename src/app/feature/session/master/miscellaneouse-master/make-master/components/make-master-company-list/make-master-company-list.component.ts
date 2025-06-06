@@ -7,6 +7,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarMasterComponent } from '../../../../snackbar-master/snackbar-master.component';
 import { SharedModule } from '../../../../../../../shared/shared.module';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -15,11 +17,12 @@ import { SharedModule } from '../../../../../../../shared/shared.module';
   styleUrl: './make-master-company-list.component.scss',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush
+  
 })
 
 export class MakeMasterCompanyListComponent implements OnInit {
 
-  dataSource = new BehaviorSubject<AbstractControl[]>([]);
+  dataSource:any =[];
   public makecompanyform: FormGroup
   tableData: any;
   company_code: string;
@@ -34,87 +37,96 @@ export class MakeMasterCompanyListComponent implements OnInit {
   var:any;
   flgdisable: boolean = false;
   // @Output() childSettingsFormOutput = new EventEmitter()
-  // private dialogRef: MatDialogRef<MakeMasterCompanyListComponent>
+  
   settingsForm: any;
-  constructor(public formBuilder: FormBuilder,
+  constructor(
+    public formBuilder: FormBuilder,
     private makemasterservice: MakeMasterService,
+    private dialogRef: MatDialogRef<MakeMasterCompanyListComponent>,
     public snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) 
     {
     this.makecompanyform = this.formBuilder.group({
     });
     this.Flag = data.value;
-    this.val = data.name;
-    this.make_code = data.make_code
-      this.make_short_name = data.make_name
+    this.val = 'OPL';
+    this.make_code = 'OPL'
+      this.make_short_name = 'OPL',
       this.make_description = data.make_description
   }
 
   displayedColumns: string[] = ['company_list', 'radio_btn'];
   ngOnInit() {
+    console.log('in dialog comp')
     this.CompanyList();
   }
 
   CompanyList(): void {
     this.data.make_code,
       this.data.value
-    this.makemasterservice.getCompanyList(this.data.make_code, this.data.value).subscribe(data => {
-      if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-        //       console.log(data.responseData, '....data....');
-        this.tableData = data.responseData[0].map((item: any) => {
-          //    console.log(item.cmk_principal_mfg_flg, '....ITEM DATA....');
-          //    console.log(item.flg_extend, '....ITEM flg_extend....');
-          //    debugger
-          if (item.flg_extend == 'Y') {
-            this.flgdisable = true
-          } else {
-            this.flgdisable = false
-          }
-          return new FilterModel(
-            item.company_code,
-            item.company_short_name,
-            item.flg_extend,
-            item.make_cmp_flag,
-            this.flgdisable
-          )
-          //   console.log(item,'....data....');
-          // console.log(item.make_cmp_flag,'....@@data....');
+    this.makemasterservice.getCompanyList(this.data.make_code, this.data.value).subscribe(
+      data => {
+        if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
+          //       console.log(data.responseData, '....data....');
+          this.tableData = data.responseData[0].map((item: any) => {
+            //    console.log(item.cmk_principal_mfg_flg, '....ITEM DATA....');
+            //    console.log(item.flg_extend, '....ITEM flg_extend....');
+            //    debugger
+            if (item.flg_extend == 'Y') {
+              this.flgdisable = true
+            } else {
+              this.flgdisable = false
+            }
+            return new FilterModel(
+              item.company_code,
+              item.company_short_name,
+              item.flg_extend,
+              item.make_cmp_flag,
+              this.flgdisable
+            )
+            //   console.log(item,'....data....');
+            // console.log(item.make_cmp_flag,'....@@data....');
 
-          // if (this.data.value == 'insert') {
-          //   console.log('In If');
-          //   return new FilterModel(
-          //     item.company_code,
-          //     item.company_short_name,
-          //     "N",
-          //     item.make_cmp_flag
-          //   )
-          // } else {
-          //   console.log('In ELse');
-          //   return new FilterModel(
-          //     item.company_code,
-          //     item.company_short_name,
-          //     item.flg_extend,
-          //     item.make_cmp_flag
-          //   )
-          // }
-        })
-      }
-      this.dataSource = this.tableData
-      let group: { [key: string]: FormControl } = {}
-      this.tableData.forEach((item: any) => {
-        group['chkcmp' + item.company_code] = new FormControl('', Validators.required);
-        group['rdbmfgflag' + item.company_code] = new FormControl('', Validators.required);
-        group['rdbmfgflag' + item.company_code].setValue(item.cmk_principal_mfg_flg);
-        if (item.flg_extend == 'Y') {
-          group['chkcmp' + item.company_code] = new FormControl(item.flg_extend);
+            // if (this.data.value == 'insert') {
+            //   console.log('In If');
+            //   return new FilterModel(
+            //     item.company_code,
+            //     item.company_short_name,
+            //     "N",
+            //     item.make_cmp_flag
+            //   )
+            // } else {
+            //   console.log('In ELse');
+            //   return new FilterModel(
+            //     item.company_code,
+            //     item.company_short_name,
+            //     item.flg_extend,
+            //     item.make_cmp_flag
+            //   )
+            // }
+          })
         }
-      })
-      this.makecompanyform = new FormGroup(group);
-    },
+        this.dataSource = new MatTableDataSource(this.tableData);
+        let group: Record<string, FormControl> = {};
+        this.tableData.forEach((item: any) => {
+          group['chkcmp' + item.company_code] = new FormControl('', Validators.required);
+          group['rdbmfgflag' + item.company_code] = new FormControl('', Validators.required);
+          group['rdbmfgflag' + item.company_code].setValue(item.cmk_principal_mfg_flg);
+          if (item.flg_extend == 'Y') {
+            group['chkcmp' + item.company_code] = new FormControl(item.flg_extend);
+          }
+        })
+        this.makecompanyform = new FormGroup(group);
+        console.log("sahil" , this.makecompanyform.value)
+        
+      },
       error => {
         console.log(error)
-      })
+      }
+    )
   }
+  
+
   save(values: any) {
     if (this.data.value == 'insert') {
     //    console.log(values, "values")

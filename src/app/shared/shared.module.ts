@@ -46,6 +46,8 @@ import { NgxSpinnerModule } from 'ngx-spinner'
 // import { SharedMatTableDynamicComponent } from './components/shared-mat-table-dynamic/shared-mat-table-dynamic.component'
 import { CustomSpinnerComponent } from '../feature/session/custom-spinner/custom-spinner.component'
 import { S } from '@angular/cdk/keycodes'
+import { MakeMasterCompanyListComponent } from '../feature/session/master/miscellaneouse-master/make-master/components/make-master-company-list/make-master-company-list.component'
+import { ReactiveFormsModule } from '@angular/forms'
 // import { DocCalcViewComponent } from '../feature/session/entry/commons/doc-calc-view/doc-calc-view.component'
 //import { PartySecurityChequeDtlComponent } from '../feature/session/common-module/party-security-cheque-dtl/party-security-cheque-dtl.component'
 // import { UtilityMatTableViewComponent } from '../feature/session/common-module/utility-mat-table-view/utility-mat-table-view.component'
@@ -140,6 +142,7 @@ const SHARED_COMPONENTS_AVAXPRO = [
     SharedMaterialModule,
     SHARED_COMPONENTS,
     SHARED_COMPONENTS_AVAXPRO,
+    ReactiveFormsModule
     // SharedTranslateModule,
     // PerfectScrollbarModule,
     // RouterModule,
@@ -177,7 +180,9 @@ const SHARED_COMPONENTS_AVAXPRO = [
     // { provide: OverlayContainer, useClass: CustomOverlayContainer },
     SHARED_SERVICES,
   ],
-  // declarations: [SHARED_COMPONENTS, SHARED_COMPONENTS_AVAXPRO],
+  declarations: [
+    MakeMasterCompanyListComponent
+  ],
   // entryComponents: [SettingsComponent, CommonSnackbarComponent, CommonConfirmationDialogComponent, UserInfoDetailsComponent, GroupOsPageComponent,
     // FollActEntryPageComponent, MiscPartyMaintenanceMenuComponent,ViewUserInfoComponent,SharedCommanDialogBoxComponent],
 })

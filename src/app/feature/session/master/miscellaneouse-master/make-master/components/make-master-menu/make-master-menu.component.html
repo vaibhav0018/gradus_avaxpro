@@ -25,7 +25,7 @@
         </div>
         <div fxLayout="row wrap" fxLayoutAlign="space-evenly">
           <div fxLayout="row" fxLayoutAlign="center">
-            <button button mat-raised-button color="primary" (click)="openDialog()">ADD MAKE</button>
+            <button mat-raised-button color="primary" (click)="openDialog()">ADD MAKE</button>
             <!--  <button button mat-raised-button color="primary" (click)="validateMakeCode()">ADD MAKE</button> -->
             <!--  <button mat-raised-button color="primary" type="button" id="btnAdd" (click)="addMake()"> Submit New Make</button> -->
           </div>
@@ -43,8 +43,8 @@
 <ng-container class="mat-elevation-z8">
   <div class="wrapper" style="margin-top: 1%">
     <mat-form-field class="grid w-75">
-      <!-- <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Filter"> -->
-       <input matInput formControlName="filterControl" (keyup)="applyFilter(makeform.controls.filterControl.value)" placeholder="Filter">
+      <input matInput #filterInput (keyup)="applyFilter(filterInput.value)" placeholder="Filter">
+       <!-- <input matInput formControlName="filterControl" (keyup)="applyFilter(makeform.controls.filterControl.value)" placeholder="Filter"> -->
     </mat-form-field>
   </div>
 </ng-container>

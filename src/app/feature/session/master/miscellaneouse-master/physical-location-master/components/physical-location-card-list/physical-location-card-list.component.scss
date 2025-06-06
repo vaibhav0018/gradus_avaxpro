@@ -1,0 +1,12 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .example-container {
+    height: 500px;
+    overflow: auto;
+  }
+
+  table {
+    width: 100% ;
+  }

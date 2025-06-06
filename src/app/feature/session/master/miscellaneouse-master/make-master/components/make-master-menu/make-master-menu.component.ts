@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, inject } from '@angular/core';
 // import { PageEvent, MatSnackBar, MatPaginator, MatSort, MatTableDataSource } from '@angular/material'
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray, AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpService } from '../../../../../../../core/services/http.service';
@@ -20,6 +20,8 @@ import { CustomSpinnerComponent } from "../../../../../custom-spinner/custom-spi
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
+import { DailogBoxComponent } from '../dailog-box/dailog-box.component';
+import { Dialog } from '@angular/cdk/dialog';
 
 export interface DialogData {
   animal: string;
@@ -114,15 +116,18 @@ export class MakeMasterMenuComponent implements OnInit {
 
   dataSource: MatTableDataSource<MakeMasterTableModel>
 
+
+
   constructor(
     private httpService: HttpService,
     public fb: FormBuilder,
     private makemasterservice: MakeMasterService,
     private router: Router,
     private utilityService: UtilityService,
-    public dialog: MatDialog,
+
     public snackBar: MatSnackBar,
-    private _el: ElementRef
+    private _el: ElementRef,
+    // public dailog: MatDialog,
 
   ) {
     this.makeform = this.fb.group({
@@ -150,9 +155,9 @@ export class MakeMasterMenuComponent implements OnInit {
   makeMasterView() {
     this.makemasterservice.getMakeMasterView().subscribe(data => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-        // console.log('Data ',data);
+        console.log('Data ',data);
         this.tableData = data.responseData[0].map((item: any) => {
-          // console.log(' item ',item);
+          console.log(' item ',item);
           return new MakeMasterTableModel(
             item.make_code,
             item.make_short_name,
@@ -237,6 +242,18 @@ export class MakeMasterMenuComponent implements OnInit {
     
   }
 
+  readonly dialog = inject(MatDialog);
+  // openDialog() {
+  //   this.dialog.open(DailogBoxComponent, {
+  //     width: '500px',
+  //     data: {
+  //       animal: 'Dog',
+  //       name: 'Sam'
+  //     } 
+  //   })
+  // }
+
+
   openDialog(): any {
       
     this.make_code_txt = this.makeform.get('txtMakeCode')?.value
@@ -265,8 +282,8 @@ export class MakeMasterMenuComponent implements OnInit {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           this.make_status = data.responseData[0]
           const dialogConfig = new MatDialogConfig()
-          dialogConfig.minHeight = '90%';
-          dialogConfig.minHeight='90%';
+          dialogConfig.minWidth = '90%';
+          dialogConfig.minHeight= '90%';
           dialogConfig.disableClose = true
           dialogConfig.autoFocus = true
           dialogConfig.data = {
@@ -277,18 +294,20 @@ export class MakeMasterMenuComponent implements OnInit {
             make_description: this.makeform.get('txtMakeDesc')?.value
           }
           const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig);
-          dialogRef.afterClosed().subscribe(item => {
-          //   //    //this.setPage(0)
-            this.form.reset()
+          // dialogRef.afterClosed().subscribe(item => {
+          // //   //    //this.setPage(0)
+          //   this.form.reset()
             this.makeMasterView()
-          })
-          // this.makeMasterView()
+          // })
+          console.log('1212');
+          this.makeMasterView()
+          return true;
         } else {
           this.make_status = data.responseData[0]
           this.openSnackBar('Make Code ' + this.make_code_txt + ' Already Exist');
           return false;
         }
-        return;     
+             
       })
     }
   }

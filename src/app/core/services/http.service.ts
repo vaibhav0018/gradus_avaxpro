@@ -161,7 +161,30 @@ export class HttpService implements HttpInterceptor {
   }
 
   get(url: string): Observable<HttpServiceResponseModel> {
-    return this.httpClient.get<HttpServiceResponseModel>(url)
+
+      const headers = new HttpHeaders(
+      {
+        Authorization: atob(sessionStorage.getItem(btoa('token')) || ''),
+        userId: atob(sessionStorage.getItem(btoa('usr_userid')) || ''),
+        usr_name: atob(sessionStorage.getItem(btoa('usr_name')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        df_year_beg: atob(sessionStorage.getItem(btoa('df_year_beg')) || ''),
+        df_year_end: atob(sessionStorage.getItem(btoa('df_year_end')) || ''),
+        df_doc_no_ts_format: atob(sessionStorage.getItem(btoa('df_doc_no_ts_format')) || ''),
+        br_city: atob(sessionStorage.getItem(btoa('br_city')) || ''),
+        br_name: atob(sessionStorage.getItem(btoa('br_name')) || ''),
+        br_company_code: atob(sessionStorage.getItem(btoa('br_company_code')) || ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_br_city: atob(sessionStorage.getItem(btoa('usr_br_city')) || ''),
+        usr_br_name: atob(sessionStorage.getItem(btoa('usr_br_name')) || ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || '')
+      })
+
+
+    return this.httpClient.get<HttpServiceResponseModel>(url, { headers })
   }
 
   post(url: string, data: any): Observable<any> {

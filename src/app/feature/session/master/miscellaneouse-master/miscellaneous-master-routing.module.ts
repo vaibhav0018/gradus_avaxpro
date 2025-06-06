@@ -17,11 +17,10 @@ export const routes: Routes = [
         path: ConstantsServiceAvaxPro.ROUTE_MAKE_MASTER,
         loadChildren: () => import('./make-master/make-master.module').then(m => m.MakeMasterModule),
       },
-      // {
-      //   path: ConstantsServiceAvaxPro.ROUTE_PHYSICAL_LOCATION_MASTER,
-      //   loadChildren: './physical-location-master/physical-location-master.module#PhysicalLocationMasterModule',
-      //   data: { breadcrumb: 'Physical Location Master' },
-      // },
+      {
+        path: ConstantsServiceAvaxPro.ROUTE_PHYSICAL_LOCATION_MASTER,
+        loadChildren: () => import('./physical-location-master/physical-location-master.module').then(m => m.PhysicalLocationMasterModule),
+      },
       // {
       //   path: ConstantsServiceAvaxPro.ROUTE_CUSTOMER_BANK_MASTER,
       //   loadChildren: './customer-bank-master/customer-bank-master.module#CustomerBankMasterModule',
