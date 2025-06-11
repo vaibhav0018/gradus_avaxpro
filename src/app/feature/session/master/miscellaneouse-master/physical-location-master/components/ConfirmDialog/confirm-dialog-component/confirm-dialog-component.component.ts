@@ -22,9 +22,10 @@ export class ConfirmDialogComponentComponent implements OnInit {
 
   constructor(private PhysicalLocationMasterService: PhysicalLocationMasterService, public formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, public snackBar: MatSnackBar) {
     this.dailogform = this.formBuilder.group({
+
     });
     this.phy_loc = data.gpl_loc;
-    this.godownCode = data.gpl_godown_code;
+    this.godownCode = data.godown_code;
   }
 
   ngOnInit() {

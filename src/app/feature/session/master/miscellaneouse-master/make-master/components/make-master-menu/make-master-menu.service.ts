@@ -20,6 +20,7 @@ export class MakeMasterService {
   payload: any = {}
   completeUrl: string
   constructor(private http: HttpClient, private httpService: HttpService) { }
+
   createNewMake(make_code: any, make_short_name: any, make_desc: any, values: any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + POST_MAKE_MASTER_DATA
     this.payload = {
@@ -31,7 +32,36 @@ export class MakeMasterService {
         usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
       }
     }
-  //  console.log('payload ', this.payload);
+    //  console.log('payload ', this.payload);
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel | null) => {
+        if (res) {
+          res['payload'] = res;
+          return res['payload'];
+        } else {
+          console.error('No response received from createNewMake API');
+          return {
+            responseStatus: 'FAILURE',
+            responseCode: 'RES_NULL',
+            message: 'No response received from server'
+          };
+        }})
+    )
+  }
+  getCompanyList(make_code: any, flag: any, make_short_name: any, make_desc: any, values: any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + POST_COMPANY_LIST
+    this.payload = {
+      make_code: make_code,
+      make_short_name: make_short_name,
+      make_desc: make_desc,
+      companyList: values,
+      flg_extend: flag,
+      userInformationDto: {
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+        usr_userid1: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      }
+    }
+    //   console.log('payload ', this.payload);
     return this.httpService.post(this.completeUrl, this.payload).pipe(
       map((res: HttpServiceResponseModel) => {
         res['payload'] = res
@@ -39,6 +69,8 @@ export class MakeMasterService {
       })
     )
   }
+
+
   getMakeMasterView(): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + POST_MAKE_MASTER_LIST
     this.payload = {
@@ -57,26 +89,9 @@ export class MakeMasterService {
       })
     )
   }
-  getCompanyList(make_code: any, flag: any): Observable<any> {
-    this.completeUrl = environment.baseUrl + '/' + POST_COMPANY_LIST
-    this.payload = {
-      make_code: make_code,
-      flg_extend:flag,
-      userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
-        usr_userid1: atob(sessionStorage.getItem(btoa('userId')) || ''),
-      }
-    }
- //   console.log('payload ', this.payload);
-    return this.httpService.post(this.completeUrl, this.payload).pipe(
-      map((res: HttpServiceResponseModel) => {
-        res['payload'] = res
-        return res['payload']
-      })
-    )
-  }
 
-  updateMakeMasterData(make_short_name:any , make_desc:any, make_code:any, values:any): Observable<any> {
+
+  updateMakeMasterData(make_short_name: any, make_desc: any, make_code: any, values: any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + POST_UPDATE_MAKE
     this.payload = {
       make_short_name: make_short_name,
@@ -87,7 +102,7 @@ export class MakeMasterService {
         usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
       }
     }
-  //  console.log('payload ', this.payload);
+    //  console.log('payload ', this.payload);
     return this.httpService.post(this.completeUrl, this.payload).pipe(
       map((res: HttpServiceResponseModel) => {
         res['payload'] = res
@@ -106,7 +121,7 @@ export class MakeMasterService {
         usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
       }
     }
-   // console.log('payload ', this.payload);
+    // console.log('payload ', this.payload);
     return this.httpService.post(this.completeUrl, this.payload).pipe(
       map((res: HttpServiceResponseModel) => {
         res['payload'] = res

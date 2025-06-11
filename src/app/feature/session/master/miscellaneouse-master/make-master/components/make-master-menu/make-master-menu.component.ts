@@ -294,11 +294,11 @@ export class MakeMasterMenuComponent implements OnInit {
             make_description: this.makeform.get('txtMakeDesc')?.value
           }
           const dialogRef = this.dialog.open(MakeMasterCompanyListComponent, dialogConfig);
-          // dialogRef.afterClosed().subscribe(item => {
+          dialogRef.afterClosed().subscribe(item => {
           // //   //    //this.setPage(0)
-          //   this.form.reset()
+            this.form.reset()
             this.makeMasterView()
-          // })
+          })
           console.log('1212');
           this.makeMasterView()
           return true;

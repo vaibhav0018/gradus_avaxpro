@@ -334,7 +334,7 @@ export class PhysicalLocationMasterMenuComponent implements OnInit {
         this.addshow = false;
         this.updateView
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.physicalLocationList = data.responseData.map((item: any) => {
+          this.physicalLocationList = data.responseData[0].map((item: any) => {
             return new PhysicalLocationModel(
               item.gpl_loc,
               item.gpl_phyloc_flg,
@@ -356,83 +356,163 @@ export class PhysicalLocationMasterMenuComponent implements OnInit {
   }
 
 
-  onClickConfirm(values: any) {
+//   onClickConfirm(values: any) {
+//     values.value.splice(values.value.length-1,1)
+//     for (var index in values.value) {
+//       if (!values.value[index].txtPhysicalLocation.match(/^([A-Z,a-z,0-9,\-,\s])+$/)) {
+//         this.openSnackBar("Please enter Valid Physical Location !");
+//         return false;
+//       }
+
+//     }
+
+//     let lstCheckDuplicate: any = [];
+
+//     for (let index = 0; index < this.arrayAddLocation.value.length; index++) {
+//       let current_var = this.arrayAddLocation.value[index].txtPhysicalLocation;
+//       // alert(current_var)
+//       if (lstCheckDuplicate.indexOf(current_var) < 0) {
+//         lstCheckDuplicate.push(current_var);
+//       }
+//       else {
+//         this.openSnackBar('Duplicate value');
+//       }
+//     }
+
+//     //debugger
+//     //alert(this.arrayAddLocation);
+//     let tempValue: any;
+//     // console.log("this.arrayAddConsignor.value[i]======before", this.arrayAddConsignor.value[i])
+//  //   console.log("values.value=======", values.value)
+//     tempValue = values.value
+//  //   console.log("values.value=======", values.value)
+//     let i = this.arrayAddLocation.value.length - 1;
+//     if (this.arrayAddLocation.value[i] != undefined && this.arrayAddLocation.value[i] != "") {
+//       if (this.arrayAddLocation.value[i].txtPhysicalLocation == "") {
+//         this.openSnackBar("Please enter Physical Location !");
+//         return false;
+//       } else {
+
+//          this.PhysicalLocationMasterService.addNewPhysicalLocation(tempValue, this.godown_code).subscribe(data => {
+//               if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
+//                 console.log('data.responseData', data.responseData);
+//               }})
+
+//       //   const dialogConfig = new MatDialogConfig()
+//       //   // dialogConfig.width = '350px !important'
+//       //   dialogConfig.disableClose = true
+//       //   dialogConfig.autoFocus = true
+//       //   dialogConfig.data = {
+
+//       //   }
+//       //   const dialogRef = this.dialog.open(ConfirmationDailogComponent, dialogConfig)
+//       //   dialogRef.afterClosed().subscribe(item => {
+//       //     if (!item == true) {
+//       //      console.log("values.value after", values.value)
+//       //       this.PhysicalLocationMasterService.addNewPhysicalLocation(tempValue, this.godown_code).subscribe(data => {
+//       //         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
+//       //           this.tableData = data.responseData[0].map((item: any) => {
+//       //             if (item.n != undefined) {
+//       //               this.tempDataN.push(item.n)
+//       //             }
+//       //             if (item.y != undefined) {
+//       //               this.tempDataY.push(item.y)
+//       //             }
+//       //           })
+//       //           console.log('this.tempDataN', this.tempDataN.length);
+//       //           console.log('this.tempDataY', this.tempDataY.length);
+//       //           if (this.tempDataN.length == 0) {
+//       //             this.openSnackBar(' Physical Location ' + this.tempDataY + ' Added Successfully');
+//       //           } else if (this.tempDataY.length == 0) {
+//       //             this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists ');
+//       //           } else {
+//       //             this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists And Physical Location ' + this.tempDataY + ' Added Successfully');
+//       //           }
+//       //           this.addshow = false;
+//       //         }
+//       //       })
+//       //     }
+//       //   })
+//       }
+//     }
+//     else {
+//       this.openSnackBar("Please enter Physical Location !");
+//       return false
+//     }
+//     this.phylocatioform.reset()
+//     let len = this.arrayAddLocation.length
+//     for (let index = 1; index <= len; index++) {
+//       this.arrayAddLocation.removeAt(this.arrayAddLocation.length - index)
+//     }
+//     this.updateView();
+//     this.adddataSource = new BehaviorSubject<AbstractControl[]>([]);
+//     return true;
+//   }
+
+onClickConfirm(values: any): boolean {
     values.value.splice(values.value.length-1,1)
     for (var index in values.value) {
       if (!values.value[index].txtPhysicalLocation.match(/^([A-Z,a-z,0-9,\-,\s])+$/)) {
         this.openSnackBar("Please enter Valid Physical Location !");
         return false;
       }
-
     }
 
     let lstCheckDuplicate: any = [];
+    let hasDuplicate = false;
 
     for (let index = 0; index < this.arrayAddLocation.value.length; index++) {
       let current_var = this.arrayAddLocation.value[index].txtPhysicalLocation;
-      // alert(current_var)
       if (lstCheckDuplicate.indexOf(current_var) < 0) {
         lstCheckDuplicate.push(current_var);
       }
       else {
         this.openSnackBar('Duplicate value');
+        hasDuplicate = true;
       }
     }
 
-    //debugger
-    //alert(this.arrayAddLocation);
+    if (hasDuplicate) {
+      return false;
+    }
+
     let tempValue: any;
-    // console.log("this.arrayAddConsignor.value[i]======before", this.arrayAddConsignor.value[i])
- //   console.log("values.value=======", values.value)
     tempValue = values.value
- //   console.log("values.value=======", values.value)
     let i = this.arrayAddLocation.value.length - 1;
     if (this.arrayAddLocation.value[i] != undefined && this.arrayAddLocation.value[i] != "") {
       if (this.arrayAddLocation.value[i].txtPhysicalLocation == "") {
         this.openSnackBar("Please enter Physical Location !");
         return false;
       } else {
-
-         this.PhysicalLocationMasterService.addNewPhysicalLocation(tempValue, this.godown_code).subscribe(data => {
+        const dialogConfig = new MatDialogConfig()
+        dialogConfig.disableClose = true
+        dialogConfig.autoFocus = true
+        dialogConfig.data = {}
+        const dialogRef = this.dialog.open(ConfirmationDailogComponent, dialogConfig)
+        dialogRef.afterClosed().subscribe(item => {
+          if (!item == true) {
+            this.PhysicalLocationMasterService.addNewPhysicalLocation(tempValue, this.godown_code).subscribe(data => {
               if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-                console.log('data.responseData', data.responseData);
-              }})
-
-      //   const dialogConfig = new MatDialogConfig()
-      //   // dialogConfig.width = '350px !important'
-      //   dialogConfig.disableClose = true
-      //   dialogConfig.autoFocus = true
-      //   dialogConfig.data = {
-
-      //   }
-      //   const dialogRef = this.dialog.open(ConfirmationDailogComponent, dialogConfig)
-      //   dialogRef.afterClosed().subscribe(item => {
-      //     if (!item == true) {
-      //      console.log("values.value after", values.value)
-      //       this.PhysicalLocationMasterService.addNewPhysicalLocation(tempValue, this.godown_code).subscribe(data => {
-      //         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-      //           this.tableData = data.responseData[0].map((item: any) => {
-      //             if (item.n != undefined) {
-      //               this.tempDataN.push(item.n)
-      //             }
-      //             if (item.y != undefined) {
-      //               this.tempDataY.push(item.y)
-      //             }
-      //           })
-      //           console.log('this.tempDataN', this.tempDataN.length);
-      //           console.log('this.tempDataY', this.tempDataY.length);
-      //           if (this.tempDataN.length == 0) {
-      //             this.openSnackBar(' Physical Location ' + this.tempDataY + ' Added Successfully');
-      //           } else if (this.tempDataY.length == 0) {
-      //             this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists ');
-      //           } else {
-      //             this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists And Physical Location ' + this.tempDataY + ' Added Successfully');
-      //           }
-      //           this.addshow = false;
-      //         }
-      //       })
-      //     }
-      //   })
+                this.tableData = data.responseData[0].map((item: any) => {
+                  if (item.n != undefined) {
+                    this.tempDataN.push(item.n)
+                  }
+                  if (item.y != undefined) {
+                    this.tempDataY.push(item.y)
+                  }
+                })
+                if (this.tempDataN.length == 0) {
+                  this.openSnackBar(' Physical Location ' + this.tempDataY + ' Added Successfully');
+                } else if (this.tempDataY.length == 0) {
+                  this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists ');
+                } else {
+                  this.openSnackBar('Physical Location ' + this.tempDataN + ' Already Exists And Physical Location ' + this.tempDataY + ' Added Successfully');
+                }
+                this.addshow = false;
+              }
+            })
+          }
+        })
       }
     }
     else {
@@ -463,7 +543,7 @@ export class PhysicalLocationMasterMenuComponent implements OnInit {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.width = '350px'
     dialogConfig.disableClose = true
-    dialogConfig.autoFocus = true
+    dialogConfig.autoFocus = true 
     dialogConfig.data = {
       gpl_loc: row.gpl_loc,
       godown_code: this.godown_code
