@@ -37,42 +37,82 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
   
     constructor(private httpService: HttpService, private commonsService: CommonsService, private http:HttpClient) { }
   
+    // getQtrData(as_on_date: any): Observable<any> {
+    //   this.commonsService.show()
+    //   this.completeUrl = environment.baseUrl + '/' + QTR_DATA
+    //   this.payload = {
+    //     userInformationDto: {
+    //       usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+    //       usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+    //       fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+    //       fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+    //       fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+    //       usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+    //       usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+    //       usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+    //       usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    //     },
+    //     asOnDate: as_on_date
+    //   }
+    //   return this.httpService.post(this.completeUrl, {
+    //     userInformationDto: {
+    //           usr_userid: "0010",
+    //           usr_name: "SHRIYA",
+    //           fin_year_beg: "2020-01-01",
+    //           fin_year_end: "2020-12-31",
+    //           fin_year_format: "00082",
+    //           usr_company_code: "01",
+    //           usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+    //           usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+    //           usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    //         },
+    //   }).pipe(
+    //     map((res: HttpServiceResponseModel) => {
+    //     this.commonsService.hide()
+    //     res['payload'] = res
+    //     return res['payload']
+    //   }))   
+    // }
+
     getQtrData(as_on_date: any): Observable<any> {
-      this.commonsService.show()
-      this.completeUrl = environment.baseUrl + '/' + QTR_DATA
-      // this.payload = {
-      //   userInformationDto: {
-      //     usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
-      //     usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
-      //     fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
-      //     fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
-      //     fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
-      //     usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
-      //     usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
-      //     usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
-      //     usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
-      //   },
-      //   asOnDate: as_on_date
-      // }
-      return this.httpService.post(this.completeUrl, {
-        userInformationDto: {
-              usr_userid: "0010",
-              usr_name: "SHRIYA",
-              fin_year_beg: "2020-01-01",
-              fin_year_end: "2020-12-31",
-              fin_year_format: "00082",
-              usr_company_code: "01",
-              // usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
-              // usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
-              // usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
-            },
-      }).pipe(
-        map((res: HttpServiceResponseModel) => {
-        this.commonsService.hide()
-        res['payload'] = res
-        return res['payload']
-      }))   
-    }
+
+      const token = atob(sessionStorage.getItem(btoa('token')) || '');
+      console.log('token', token);
+
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': token    // or `Bearer ${token}`
+        });
+
+
+        this.commonsService.show()
+        this.completeUrl = environment.baseUrl + '/' + QTR_DATA
+        this.payload = {
+          userInformationDto: {
+            usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+            usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+            fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+            fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+            fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+            usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+            usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+            usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+            usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+          },
+          asOnDate: as_on_date
+        }
+        
+        console.log("3--");
+        // return this.http.post<any>(this.completeUrl, this.payload, {headers});
+        return this.httpService.post(this.completeUrl, this.payload).pipe(
+              map((res: HttpServiceResponseModel) => {
+                // this.commonsService.hide()
+                res['payload'] = res
+                return res['payload']
+          })
+        )
+        
+      }
 
     refreshDashboard(): Observable<any> {
 
@@ -115,6 +155,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
     
       getSalesData(as_on_date: any): Observable<any> {
         this.commonsService.show()
+        console.log('as_on_date in getSalesData service.ts', as_on_date)
         this.completeUrl = environment.baseUrl + '/' + SALES_DATA
         this.payload = {
           userInformationDto: {
@@ -128,19 +169,21 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
             usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
             usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
           },
-          asOnDate: as_on_date
+          asOnDate: as_on_date,
         }
         return this.httpService.post(this.completeUrl, this.payload).pipe(
           map((res: HttpServiceResponseModel) => {
             this.commonsService.hide()
             res['payload'] = res
             return res['payload']
+
           })
         )
       }
 
       getProductData(as_on_date: any): Observable<any> {
         this.commonsService.show()
+        console.log('as_on_date in getProductData service.ts', as_on_date)
         this.completeUrl = environment.baseUrl + '/' + PRODUCT_DATA
         this.payload = {
           userInformationDto: {
@@ -168,6 +211,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
 
       getStockData(as_on_date: any ): Observable<any> {
         this.commonsService.show()
+        console.log('as_on_date in getStockData service.ts', as_on_date)
         this.completeUrl = environment.baseUrl + '/' + STOCK_DATA
         this.payload = {
           userInformationDto: {
@@ -196,6 +240,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
 
       getBranchData(as_on_date: any): Observable<any> {
         this.commonsService.show()
+        console.log('as_on_date in getBranchData service.ts', as_on_date)
         this.completeUrl = environment.baseUrl + '/' + BRANCH_DATA
         this.payload = {
           userInformationDto: {
@@ -224,6 +269,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
 
       loadAllBranchSalesData(as_on_date: any): Observable<any> {
         this.commonsService.show()
+        console.log('as_on_date in loadAllBranchSalesData service.ts', as_on_date)
         this.completeUrl = environment.baseUrl + '/' + GET_ALL_BRANCH_SALES
         this.payload = {
           userInformationDto: {
@@ -250,6 +296,7 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
 
       loadGodownData(): Observable<any> {
           this.commonsService.show()
+          console.log('loadGodownData service.ts')
           this.completeUrl = environment.baseUrl + '/' + GET_GODOWN_DATA
           this.payload = {
            userInformationDto: {
@@ -523,6 +570,33 @@ const GET_GODOWN_DATA = 'getdashdata-godown'
       map((res: HttpServiceResponseModel) => {
         this.commonsService.hide()
         res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+  updateUserDefaultPage(selectedMenu: any): Observable<any> {
+
+    this.completeUrl = environment.baseUrl + '/' + UPDATE_USER_DEFAULT_PAGE
+    console.log('selectedMenu in updateUserDefaultPage')
+    this.payload = {
+      common_row: { ucm_default_menu: selectedMenu },
+      userInformationDto: {
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+      },
+    }
+    return this.httpService.post_wo_spinner(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log("updateuserdefaultpage")
         return res['payload']
       })
     )

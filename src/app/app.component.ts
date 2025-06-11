@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Settings, SettingsService } from './services/settings.service';
-import { NgClass } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoginComponent } from "./feature/non-session/login/login.component";
 // import { DailogBoxComponent } from './feature/session/master/miscellaneouse-master/make-master/components/dailog-box/dailog-box.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DailogBoxComponent } from './feature/session/master/miscellaneouse-master/make-master/components/dailog-box/dailog-box.component';
+import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-root',

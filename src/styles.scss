@@ -23,22 +23,22 @@
 @import "app/theme/styles/rtl"; 
 
 
-.scroll-container {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 10px;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-  }
+// .scroll-container {
+//     display: flex;
+//     overflow-x: auto;
+//     white-space: nowrap;
+//     padding: 10px;
+//     gap: 16px;
+//     scroll-snap-type: x mandatory;
+//   }
   
-  .scroll-item {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-  }
+//   .scroll-item {
+//     flex: 0 0 auto;
+//     scroll-snap-align: start;
+//   }
   
-  .info-card {
-    width: 320px;
-    min-width: 320px;
-  }
+//   .info-card {
+//     width: 320px;
+//     min-width: 320px;
+//   }
   

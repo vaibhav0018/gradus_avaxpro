@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router'; 
 import { MatMenuTrigger } from '@angular/material/menu';
-import { MenuService } from '../../../../services/menu.service';
+import { MenuService } from '../menu.service';
 import { Settings, SettingsService } from '../../../../services/settings.service';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
     selector: 'app-horizontal-menu',

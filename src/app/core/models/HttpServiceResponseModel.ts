@@ -1,4 +1,4 @@
-export class HttpServiceResponseModel {
+export class  HttpServiceResponseModel {
     private _responseData: any
     private _responseHeader: ResponseHeader
     private payload: any;

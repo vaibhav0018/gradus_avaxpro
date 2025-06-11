@@ -15,12 +15,9 @@ import { LoginComponent } from "../../feature/non-session/login/login.component"
     FlexLayoutModule,
     MatCardModule,
     MatIconModule,
-    AnalyticsComponent,
-    DiskSpaceComponent,
-    TodoComponent,
     DragulaModule,
     InfoCardsComponent,
-    LoginComponent
+
 ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'

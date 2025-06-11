@@ -30,6 +30,8 @@ import { MatDrawerMode } from '@angular/material/sidenav';
 import { MatOptionModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { InfoCardsService } from './dashboard/info-cards/info-cards.service';
+import { MatSelect } from '@angular/material/select';
  
  
 export interface Quick_Menu {
@@ -52,6 +54,7 @@ export interface Quick_Menu {
     NgScrollbarModule,
     SidenavComponent,
     FullScreenComponent,
+    MatSelect,
     // FlagsMenuComponent,
     // ApplicationsComponent,
     // MessagesComponent,
@@ -106,7 +109,7 @@ export class PagesComponent implements OnInit {
     private menuService: MenuService,
     private formBuilder: FormBuilder,
     private routerService: RouterService,
-    // private infoService: InfoCardsService,
+    private infoService: InfoCardsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
@@ -290,13 +293,13 @@ export class PagesComponent implements OnInit {
     }
   }
  
-  // updateUserDefaultPage() {
-  //   this.infoService.updateUserDefaultPage(this.selectedMenu).
-  //     subscribe((data : any) => {
-  //       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-  //       }
-  //     })
-  // }
+  updateUserDefaultPage() {
+    this.infoService.updateUserDefaultPage(this.selectedMenu).
+      subscribe((data : any) => {
+        if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
+        }
+      })
+  }
  
   openPage() {
    // console.log(' CAlling 22222 ', this.selectedMenu)
@@ -377,7 +380,7 @@ export class PagesComponent implements OnInit {
   }
  
   openPage1() {
-   // console.log(' CAlling 1111111 ', this.selectedMenu)
+   console.log(' CAlling 1111111 ', this.selectedMenu)
     // console.log( ' txtitemCode ',this.form.get('cmbMenu').value)
  
     if (this.selectedMenu == '4') {

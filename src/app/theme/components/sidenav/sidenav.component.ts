@@ -9,6 +9,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-sidenav',
@@ -18,7 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
-        VerticalMenuComponent
+        VerticalMenuComponent,
+        CommonModule,
     ],
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss'],

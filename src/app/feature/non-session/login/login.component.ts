@@ -309,6 +309,3 @@ export class LoginComponent {
     return true; // Ensure a return value at the end of the method
   }
 }
-function next(value: any): void {
-  throw new Error('Function not implemented.');
-}

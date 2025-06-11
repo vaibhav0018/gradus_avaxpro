@@ -1,12 +1,36 @@
-<div id="app" class="app" [dir]="settings.rtl ? 'rtl' : 'ltr'"
-            [ngClass]="settings.theme"
-            [class.fixed-header]="settings.fixedHeader"
-            [class.horizontal-menu]="settings.menu == 'horizontal'"
-            [class.compact]="settings.menuType == 'compact'"
-            [class.mini]="settings.menuType == 'mini'">
 
+
+<!-- <app-login></app-login> -->
+
+
+<!-- <h1>Dialog-box</h1> -->
+
+<div id="app" class="app" [dir]="settings.rtl ? 'rtl' : 'ltr'"
+            [ngClass]="settings.theme" 
+            [class.fixed-header]="settings.fixedHeader"
+            [class.horizontal-menu]="settings.menu == 'horizontal'" 
+            [class.compact]="settings.menuType == 'compact'" 
+            [class.mini]="settings.menuType == 'mini'">
 <router-outlet></router-outlet>
 
 
-<!-- <h1>Welcome to My Angular App</h1>
-<button mat-raised-button color="warn" (click)="openDialog()">Open Dialog</button> -->
+
+<!-- <div >
+    <mat-spinner color="primary"></mat-spinner>  
+    <h4>loading...</h4>
+</div> -->
+
+</div>
+    <!-- <router-outlet /> -->
+    
+    <!-- <div id="app-spinner" [class.hide]="!settings.loadingSpinner"> 
+        <mat-spinner color="primary"></mat-spinner>  
+        <h4>loading...</h4>
+    </div> -->
+<!-- </div> -->
+
+<!-- <router-outlet></router-outlet> -->
+
+<!-- [class.hide]="!settings.loadingSpinner"> 
+    <mat-spinner color="primary"></mat-spinner>  
+    <h4>loading...</h4> -->
