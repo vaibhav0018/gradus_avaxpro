@@ -411,7 +411,7 @@ export class VerticalMenuComponent implements OnInit {
     // }).subscribe(data => {
     //   if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
     //     //this.getFavouriteMenu()
-    //     //this.openSnackBar('Menu Added to Favourite.')
+    //     //this.openSnackBar('Menu Added to Favourite.')sfnek,
     //   }
     // })
     sessionStorage.setItem("current_page", JSON.stringify({ 'id': menu.id, 'routerLink': menu.routerLink, 'title': menu.title }));
