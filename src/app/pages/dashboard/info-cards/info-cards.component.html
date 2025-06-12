@@ -19,11 +19,9 @@
                 </div>
             </mat-expansion-panel>
         </div>
-        <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="20px grid" fxLayoutAlign="start start" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
-
-        <div class="grid-container" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
+        <div fxLayout="row wrap" fxLayout.xs="column" [dragula]="lblDraggable" [(dragulaModel)]="lblTitle">
             <ng-container *ngFor="let objTitle of lblTitle; let i=index">
-                <div fxFlex="33.33" class="flex-p draggable custom-width"
+                <div fxFlex="1 1 calc(33.33% - 16px)" class="flex-p draggable"
                     *ngIf="aryTxtDataSource[i]!=undefined && aryTxtDataSource[i].length>0">
                     <mat-card>
                         <div>
@@ -79,9 +77,9 @@
                                             [view]="viewReceivablePieChart"
                                             (select)="onSelect($event)">
                                         </ngx-charts-pie-chart>   
-                                    </div> 
+                                    </div>
 
-                                     <div fxFlex="50">
+                                    <div fxFlex="50">
                                         <h5 style="text-align:center;">PARTIES</h5>
                                         <ngx-charts-pie-chart
                                             [scheme]="colorScheme.domain[i]"
@@ -93,9 +91,9 @@
                                             [view]="viewReceivablePieChart"
                                             (select)="onSelect($event)">
                                         </ngx-charts-pie-chart>   
-                                    </div> 
+                                    </div>
                                    
-                                 </div>
+                                </div>
                                 
                                 <div class="w-100 y-overflow" *ngIf="aryObjDashBoardOrder[i].name =='SALES' ">
                                    
@@ -132,9 +130,8 @@
                                   
                     
                                 </div>
-
-
-                            </div>
+                                 
+                            </div> 
                             <div class="w-100 h-200p div-overflow" *ngIf="aryFlgViewChart[i]==false" [@slideInOut]>
                                 <mat-table class='w-99' [dataSource]="aryTxtDataSource[i]">
                                     <ng-container *ngFor="let column_name of aryLstColumn[i]"
@@ -170,5 +167,4 @@
             </ng-container>
         </div>
     </div>
-</div>
 </form>

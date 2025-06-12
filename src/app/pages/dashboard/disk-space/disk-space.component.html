@@ -2,7 +2,8 @@
     <mat-card-header fxLayoutAlign="center">                
         <mat-card-subtitle><h2>Disk Space</h2></mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content dragula="'bag-1'" >
+    <mat-card-content >
+        <!-- dragula="'bag-1'"  -->
         <div fxLayout="row" fxLayoutAlign="space-around">
             <mat-checkbox color="primary" class="example-margin" [checked]="explodeSlices" (change)="explodeSlices = !explodeSlices">Explode Slices</mat-checkbox>
             <mat-checkbox color="primary" class="example-margin" [checked]="showLabels" (change)="showLabels = !showLabels">Show Labels</mat-checkbox>

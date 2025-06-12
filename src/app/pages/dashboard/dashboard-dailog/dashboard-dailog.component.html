@@ -26,18 +26,18 @@
         (select)="onSelect($event)">
     </ngx-charts-bar-vertical-2d> -->
 
-    <!-- <div *ngIf="title=='QUARTERLY SALES / TARGET DETAIL'">
-        <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [results]="dataSourceChart" [gradient]="gradient"
+    <div *ngIf="title=='QUARTERLY SALES / TARGET DETAIL'">
+        <ngx-charts-bar-vertical-2d [scheme]="colorScheme.domain[0]" [results]="dataSourceChart" [gradient]="gradient"
             [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
             [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [view]="view"
             (select)="onSelect($event)">
         </ngx-charts-bar-vertical-2d>
-    </div>
+    </div> 
 
     <div *ngIf="title=='STOCK'">
         <ngx-charts-pie-chart
-                [scheme]="colorScheme"
-                [results]="dataSourceChart"
+                [scheme]="colorScheme.domain[0]"
+                [results]="dataSourceChart[0]"
                 [explodeSlices]="explodeSlices"
                 [labels]="showLabels"
                 [doughnut]="doughnut"
@@ -51,7 +51,7 @@
         <div fxFlex="50">
             <h4 style="text-align: center;">AMOUNT</h4>
             <ngx-charts-pie-chart
-                [scheme]="colorScheme"
+                [scheme]="colorScheme.domain[0]"
                 [results]="dataSourceChart[0]"
                 [explodeSlices]="explodeSlices"
                 [labels]="showLabels"
@@ -64,7 +64,7 @@
         <div fxFlex="50">
             <h4 style="text-align: center;">PARTIES</h4>
             <ngx-charts-pie-chart
-                [scheme]="colorScheme"
+                [scheme]="colorScheme.domain[0]"
                 [results]="dataSourceChart[1]"
                 [explodeSlices]="explodeSlices"
                 [labels]="showLabels"
@@ -79,7 +79,7 @@
     <div class="w-100 div-overflow" *ngIf="title=='SALES DETAIL'">
         <div fxFlex="30">
             <h4 style="text-align: center;">SALES V/S TARGET</h4>
-            <ngx-charts-bar-vertical  [scheme]="colorScheme" [results]="dataSourceChart[0]"
+            <ngx-charts-bar-vertical  [scheme]="colorScheme.domain[0]" [results]="dataSourceChart[0]"
             [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
             (select)="onSelect($event)">
         </ngx-charts-bar-vertical>
@@ -88,7 +88,7 @@
         <div fxFlex="35">
             <h4 style="text-align: center;">MATERIALS</h4>
             <ngx-charts-pie-chart
-                [scheme]="colorScheme"
+                [scheme]="colorScheme.domain[0]"
                 [results]="dataSourceChart[1]"
                 [explodeSlices]="explodeSlices"
                 [labels]="showLabels"
@@ -101,7 +101,7 @@
        
         <div fxFlex="30">
             <h4 style="text-align: center;">SALES DETAILS</h4>
-            <ngx-charts-bar-vertical  [scheme]="colorScheme" [results]="dataSourceChart[2]"
+            <ngx-charts-bar-vertical  [scheme]="colorScheme.domain[0]" [results]="dataSourceChart[2]"
                 [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [view]="viewSalesBarChart"
                 (select)="onSelect($event)">
             </ngx-charts-bar-vertical>

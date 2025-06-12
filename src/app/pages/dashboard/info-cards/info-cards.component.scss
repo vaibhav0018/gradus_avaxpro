@@ -41,6 +41,15 @@ mat-cell, mat-footer-cell, mat-header-cell {
   font-size: 10px;
 }
 
+.page-container {
+  width: 100%;
+  max-width: 1280px; // or match breadcrumb container
+  margin: 0 auto;
+  padding: 0 24px; // optional: aligns with the rest
+  box-sizing: border-box;
+}
+
+
 mat-footer-row, mat-header-row, mat-row {
   display: table-row;
   border-width: 0px; //0.5
@@ -77,7 +86,14 @@ mat-cell, mat-footer-cell, mat-header-cell {
 
 mat-footer-row, mat-header-row, mat-row {
   display: table-row;
-  border-width: 0px;
+  border-width: 0 px;
+}
+
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #fdfdfd;
 }
 
 mat-table {
@@ -163,10 +179,14 @@ opacity: 0.8;
 filter: alpha(opacity=80);
 pointer-events: none;
 }
+
+
 /* high-performance display:none; helper */
 .gu-hide {
 left: -9999px !important;
 }
+
+
 /* added to mirrorContainer (default = body) while dragging */
 .gu-unselectable {
 -webkit-user-select: none !important;
@@ -174,6 +194,8 @@ left: -9999px !important;
 -ms-user-select: none !important;
 user-select: none !important;
 }
+
+
 /* added to the source element while its mirror is dragged */
 .gu-transit {
 opacity: 0.2;
@@ -188,6 +210,10 @@ width: 350px !important;
 max-height: 200px;
 overflow-x: auto;
 }
+
+
+
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -212,5 +238,11 @@ overflow-x: auto;
   gap: 20px;
   align-items: center;
   padding: 10px 0 0 10px;
+}
+
+// Match the parent wrapper if needed
+.page-container {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
