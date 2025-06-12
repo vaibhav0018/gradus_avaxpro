@@ -21,6 +21,10 @@ export const routes: Routes = [
         path: ConstantsServiceAvaxPro.ROUTE_PHYSICAL_LOCATION_MASTER,
         loadChildren: () => import('./physical-location-master/physical-location-master.module').then(m => m.PhysicalLocationMasterModule),
       },
+      {
+        path: ConstantsServiceAvaxPro.ROUTE_INDUSTRY_MASTER,
+        loadChildren: () => import('./industry-master/industry-master.module').then(m => m.IndustryMasterModule),
+      }
       // {
       //   path: ConstantsServiceAvaxPro.ROUTE_CUSTOMER_BANK_MASTER,
       //   loadChildren: './customer-bank-master/customer-bank-master.module#CustomerBankMasterModule',

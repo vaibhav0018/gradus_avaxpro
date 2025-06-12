@@ -1,0 +1,234 @@
+<form [formGroup]="form">
+  <mat-accordion>
+    <!--     <mat-card> -->
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <label> INDUSTRY MASTER</label>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container class="mat-elevation-z8">
+        <div class="wrapper">
+          <mat-form-field class="grid w-75">
+            <mat-select (selectionChange)="onIndustryChange($event)" placeholder="Industry"
+              matTooltip="Please select Industry" formControlName="cmbIndustry">
+              <mat-option value="NEW">
+                ADD NEW
+              </mat-option>
+              <mat-option *ngFor="let ind of indLists" [value]="ind">
+                {{ind.ind_industry}}
+              </mat-option> -
+            </mat-select>
+          </mat-form-field>
+          <ng-container *ngIf="subindflag">
+            <mat-form-field class="grid w-75">
+              <mat-select (selectionChange)="onSubIndustryChange($event)" placeholder="Sub Industry"
+                matTooltip="Please select Sub Industry" formControlName="cmbSubIndustry">
+                <mat-option value="NEW">
+                  ADD NEW
+                </mat-option>
+                <mat-option *ngFor="let subind of subindLists" [value]="subind">
+                  {{subind.sind_subindustry_code}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngIf="subsubindflag">
+            <mat-form-field class="grid w-75">
+              <mat-select (selectionChange)="onSubSubIndustryChange($event)" placeholder="Sub Sub Industry"
+                matTooltip="Please select Sub Sub Industry" formControlName="cmbSubSubIndustry">
+                <mat-option value="NEW">
+                  ADD NEW
+                </mat-option>
+                <mat-option *ngFor="let subsubind of subsubindLists" [value]="subsubind">
+                  {{subsubind.ssind_industry_code}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </ng-container>
+
+
+      <ng-container *ngIf="show">
+        <mat-card style="margin-top: 1%">
+          <ng-container class="mat-elevation-z8">
+            <div class="wrapper">
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Industry Code" matInput formControlName="txtIndCode" maxlength="5" />
+              </mat-form-field>
+
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Industry Name" matInput formControlName="txtIndName" />
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </mat-card>
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="margin-top: 1%">
+          <div fxLayout="row" fxLayoutAlign="center">
+            <button button mat-raised-button color="primary" (click)="AddIndustry()">ADD</button>&nbsp;&nbsp;&nbsp;
+            <!-- <button button mat-raised-button color="primary" (click)="reset(form.value)">RESET</button> -->
+            <button button mat-raised-button color="primary" (click)="reset()">RESET</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="subshow">
+        <mat-card style="margin-top: 1%">
+          <ng-container class="mat-elevation-z8">
+            <div class="wrapper">
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Sub Industry Code" matInput formControlName="txtSubIndCode"
+                  maxlength="5" />
+              </mat-form-field>
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Sub Industry Name" matInput formControlName="txtSubIndName" />
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </mat-card>
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="margin-top: 1%">
+          <div fxLayout="row" fxLayoutAlign="center">
+            <button button mat-raised-button color="primary" (click)="AddIndustry()">ADD</button>&nbsp;&nbsp;&nbsp;
+            <!-- <button button mat-raised-button color="primary" (click)="reset(form.value)">RESET</button> -->
+            <button button mat-raised-button color="primary" (click)="reset()">RESET</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="subsubshow">
+        <mat-card style="margin-top: 1%">
+          <ng-container class="mat-elevation-z8">
+            <div class="wrapper">
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Sub Sub Industry Code" matInput formControlName="txtSubSubIndCode"
+                  maxlength="5" />
+              </mat-form-field>
+              <mat-form-field class="grid w-75">
+                <input type="text" placeholder="Sub Sub Industry Name" matInput formControlName="txtSubSubIndName" />
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </mat-card>
+        <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="margin-top: 1%">
+          <div fxLayout="row" fxLayoutAlign="center">
+            <button button mat-raised-button color="primary" (click)="AddIndustry()">ADD</button>&nbsp;&nbsp;&nbsp;
+            <!-- <button button mat-raised-button color="primary" (click)="reset(form.value)">RESET</button> -->
+              <button button mat-raised-button color="primary" (click)="reset()">RESET</button>
+          </div>
+        </div>
+      </ng-container>
+
+
+    </mat-expansion-panel>
+    <!--     </mat-card> -->
+  </mat-accordion>
+
+  <mat-card style="margin-top: 1%">
+    <ng-container class="mat-elevation-z8">
+      <main class="scroll">
+        <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="ind_code">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> INDUSTRY CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              {{element.ind_industry_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="ind_name">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> INDUSTRY NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              <ng-container *ngIf="!element.show">{{element.ind_industry}}</ng-container>
+              <ng-container *ngIf="element.show">
+                <mat-form-field class="grid w-75">
+                  <input type="text" placeholder=" Industry Name" aria-label="Number" matInput
+                    formControlName="txtIndNameUpdate{{element.row_number}}" value="{{element.ind_industry}}">
+                </mat-form-field>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="sub_ind_code">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> SUB INDUSTRY CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              {{element.sind_subindustry_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="sub_ind_desc">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> SUB INDUSTRY NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              <ng-container *ngIf="!element.show">{{element.sind_industry_desc}}</ng-container>
+              <ng-container *ngIf="element.show">
+                <ng-container *ngIf="element.sind_subindustry_code != '-'">
+                  <mat-form-field class="grid w-75">
+                    <input type="text" placeholder="Sub Industry Name" aria-label="Number" matInput
+                      formControlName="txtSubIndNameUpdate{{element.row_number}}"
+                      value="{{element.sind_industry_desc}}">
+                  </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="element.sind_subindustry_code == '-'">
+                  {{element.sind_industry_desc}}
+                </ng-container>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="sub_sub_ind_code">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> SUB SUB INDUSTRY CODE</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              {{element.ssind_sub_subindustry_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="sub_sub_ind_name">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> SUB SUB INDUSTRY NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              <ng-container *ngIf="!element.show">{{element.ssind_industry_desc}}</ng-container>
+              <ng-container *ngIf="element.show">
+                <ng-container *ngIf="element.ssind_sub_subindustry_code != '-'">
+                  <mat-form-field class="grid w-75">
+                    <input type="text" placeholder=" Sub Sub Industry Name" aria-label="Number" matInput
+                      formControlName="txtSubSubIndNameUpdate{{element.row_number}}"
+                      value="{{element.ssind_industry_desc}}">
+                  </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="element.ssind_sub_subindustry_code == '-'">
+                  {{element.ssind_industry_desc}}
+                </ng-container>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell class="header-cell" *matHeaderCellDef> </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;">
+              <div *ngIf="!element.show">
+                <button mat-button matTooltip="click on edit" (click)="industryModify(element)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div *ngIf="element.show">
+                <button mat-button matTooltip="click on update" (click)="industryUpdate(element)">
+                  <mat-icon>save</mat-icon>
+                </button>
+                <button mat-button matTooltip="click to Cancel" (click)="industryModify(element)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+      <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="PAGE_SIZE_ARRAY" [showFirstLastButtons]="true"
+        [length]="totalCount" (page)=" pagination($event)"></mat-paginator>
+      <!-- <mat-paginator #paginator [length]="totalCount" [pageSizeOptions]="PAGE_SIZE_ARRAY"
+        (page)="pageEvent = pagination($event)"></mat-paginator> -->
+    </ng-container>
+  </mat-card>
+
+</form>

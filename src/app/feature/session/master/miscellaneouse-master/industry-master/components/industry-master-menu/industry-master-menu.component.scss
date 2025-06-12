@@ -1,0 +1,29 @@
+.mat-table {
+    overflow: auto;
+    max-height: 300px;
+  }
+  
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  
+  .grid:nth-last-child(-n + 3) {
+    grid-row-start: 3;
+  }
+  .scroll {
+    overflow: scroll;
+    max-height: 65vh;
+  }
+  .header-row,
+    .header-cell {
+      margin: 0 auto;
+      min-height: 36px !important;
+      text-align: center;
+      vertical-align: middle;
+      align-self: center;
+      background-color: #4072b4 !important;
+      color: white;
+      position: sticky !important;
+      top: 0px !important;
+    }

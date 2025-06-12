@@ -247,6 +247,13 @@ export class UtilityServiceAvaxPro {
 
   getUomMasterList = (item_code: any): Observable<any> => this.uomService.getUomMasterList(item_code)
 
+  getIndustryDropdown = (): Observable<any> => this.masterservice.getIndustryDropdown()
+
+  getSubIndustryDropdown = (indCode: any): Observable<any> => this.masterservice.getSubIndustryDropdown(indCode)
+
+  getSubSubIndustryDropdown = (indCode: any): Observable<any> => this.masterservice.getSubSubIndustryDropdown(indCode)
+
+
 
   convertDate(date: any, seprator: any) {
     let ary = date.split(seprator)
