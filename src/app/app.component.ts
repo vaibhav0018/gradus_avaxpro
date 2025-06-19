@@ -15,7 +15,7 @@ import { NgClass } from '@angular/common';
     RouterOutlet,
     NgClass,
     MatProgressSpinnerModule,
-    LoginComponent,
+    // LoginComponent,
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
