@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Location } from '@angular/common'
 import { Menu } from '../../../common/models/menu.model'
-import { verticalMenuItems } from '@data/menu'
+// import { verticalMenuItems } from '@data/menu'
 import { horizontalMenuItems } from '@data/menu'
 import { HttpService } from '../../../core/services/http.service'
 

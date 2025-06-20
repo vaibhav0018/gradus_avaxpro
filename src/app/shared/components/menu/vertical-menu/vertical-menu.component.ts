@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppSettings } from '../../../../app.settings';
 import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-vertical-menu',
@@ -18,7 +19,8 @@ import { Observable } from 'rxjs';
         FlexLayoutModule,
         MatButtonModule,
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        CommonModule
     ],
     standalone: true,
     templateUrl: './vertical-menu.component.html',
