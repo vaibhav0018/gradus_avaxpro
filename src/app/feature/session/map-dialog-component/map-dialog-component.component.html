@@ -1,0 +1,36 @@
+<!-- <ngx-spinner bdOpacity=0.9 bdColor="rgba(198,226,212,0.23)" size="medium" color="#283593" type="ball-clip-rotate"
+  [fullScreen]="true" class="ngx-spinner">
+  <p style="color: #283593"> Loading... </p>
+</ngx-spinner> -->
+
+<div class="container">
+  <h1 mat-dialog-title>
+    {{ modalTitle }}
+    <button mat-button class='float-left' color="primary" type="button" [mat-dialog-close]="true">
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+  </h1>
+
+  <div class="form-group">
+    <label>ADDRESS : </label>
+    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+      placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+    <button mat-raised-button color="primary" type="button" (click)="saveLocation()">SAVE LOCATION</button>
+  </div>
+
+  <div class="margin-top5p">
+
+    <p *ngIf="loading">Loading...</p>
+    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="15" [fullscreenControl]="true">
+      <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+        (dragEnd)="markerDragEnd($event)"></agm-marker>
+    </agm-map>
+
+  </div>
+
+  <div class="w-100">
+    <div class="w-50" style="float: left;">Latitude: {{latitude}}</div>
+    <div class="w-50" style="float: left;">Longitude: {{longitude}}</div>
+  </div>
+
+</div>

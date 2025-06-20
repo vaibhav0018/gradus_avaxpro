@@ -84,7 +84,7 @@ export const routes: Routes = [
 
     {
         path: ConstantsService.ROUTE_SESSION,
-        loadChildren: () => import('./feature/session/session.routing').then(p => p.SessionRoutes)
+        loadChildren: () => import('./feature/session/session.routing').then(p => p.SessionRoutingModule)
     },
 
     {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common'; 
-import { verticalMenuItems, horizontalMenuItems } from '../common/data/menu';
+// import { verticalMenuItems, horizontalMenuItems } from '../common/data/menu';
 import { Menu } from '../common/models/menu.model';
 
 @Injectable({
@@ -12,13 +12,13 @@ export class MenuService {
   constructor(private location:Location,
               private router:Router){ } 
     
-  public getVerticalMenuItems():Array<Menu> {
-    return verticalMenuItems;
-  }
+  // public getVerticalMenuItems():Array<Menu> {
+  //   return verticalMenuItems;
+  // }
 
-  public getHorizontalMenuItems():Array<Menu> {
-    return horizontalMenuItems;
-  }
+  // public getHorizontalMenuItems():Array<Menu> {
+  //   return horizontalMenuItems;
+  // }
 
   public expandActiveSubMenu(menu:Array<Menu>){
       let url = this.location.path();

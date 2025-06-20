@@ -1,0 +1,463 @@
+<app-custom-spinner></app-custom-spinner>
+
+<span mat-dialog-title align='center'>
+  <span> RESERVATION </span>
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>&nbsp;&nbsp;
+    <!-- <span *ngIf="data.payload_view.rpt_type === 'cf_amt'">
+      <mat-icon (click)="excelClickHandler()">cloud_download</mat-icon>
+    </span> -->
+  </button>
+</span>
+
+<form [formGroup]="form">
+  <!-- <mat-card style="margin-top: 1%;margin-bottom: 1%;" class="scroll"> -->
+    <mat-card style="margin-top: 1%;margin-bottom: 1%;" >
+    <mat-grid-list cols="6" rowHeight="1.5em">
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ITEM CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{item_code}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{godown_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> PRODUCT CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{it_prod_code}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> CARD NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{card_no}}
+        </div>
+      </mat-grid-tile>
+
+      <!--  <mat-grid-tile>
+        <div class="text-inside-grid">TECH CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{it_tech_desc}}
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> MAKE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_make}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> CATREF NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{itm_catalog_ref_no}}
+        </div>
+      </mat-grid-tile>
+
+      <!--       <mat-grid-tile>
+        <div class="text-inside-grid"> OLD ITEM CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{old_item_code}}
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> UOM : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{um_short_desc}}
+        </div>
+      </mat-grid-tile>
+
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> OPENING QTY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_opening_qty}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DISCREPANCY QTY: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_discrepancy_qty}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ISSUED QTY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_issued_qty}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> BALANCE QTY: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{ballace_qty}}
+        </div>
+      </mat-grid-tile>
+
+
+      <!-- <mat-grid-tile>
+        <div class="text-inside-grid"> DAMAGED QTY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_damage_qty}}
+        </div>
+      </mat-grid-tile> -->
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> RESERVED QTY: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{stm_rsv_qty}}
+        </div>
+      </mat-grid-tile>
+
+
+      <!-- <mat-grid-tile>
+        <div class="text-inside-grid"> TOTAL FREE FOR RESERVED QTY: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{bal_free_for_rsv}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GOOD FREE FOR RESERVED QTY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{bal_good_free_for_rsv}}
+        </div>
+      </mat-grid-tile> -->
+
+    </mat-grid-list>
+  </mat-card>
+
+  <mat-card style="margin-top: 2%">
+    <!-- <main class="scroll"> -->
+
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="resv_qty">
+        <mat-header-cell *matHeaderCellDef> RESERVED QTY </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-right">
+          {{element.rsv_qty_rsv}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="doc_no">
+        <mat-header-cell *matHeaderCellDef> DOC NO </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-left"> {{element.rsv_doc_no}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="resv_by">
+        <mat-header-cell *matHeaderCellDef> RESERVED BY </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-left"> {{element.rsv_rsv_by}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="resv_for">
+        <mat-header-cell *matHeaderCellDef>RESERVED FOR </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-left"> {{element.rsv_rsv_for_code}} :: {{element.rsv_rsv_for}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="hand_by">
+        <mat-header-cell *matHeaderCellDef>HANDLED BY </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-left"> {{element.hnd_by}} </mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="resv_from_date">
+        <mat-header-cell *matHeaderCellDef>RESERVED FROM DATE & TIME </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+          {{element.rsv_ts_rsv_on}}
+        </mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="resv_upto_date">
+        <mat-header-cell *matHeaderCellDef>RESERVED UPTO DATE & TIME </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+          {{element.rsv_ts_rsv_upto}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;">
+          <mat-icon (click)="modifyResc(element,'edit');">edit</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+  <!-- </main> -->
+
+  </mat-card>
+
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-evenly"  style="margin-top: 1%">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button button mat-raised-button color="primary" style="margin-left: 3%" (click)="getDataView();">ADD</button>
+      <button mat-raised-button color="primary" type="button" [mat-dialog-close]="true">CANCEL</button>
+      <!-- addResv() -->
+      <!--       <button button mat-raised-button color="primary" (click)="modifyResc();">MODIFY</button> -->
+    </div>
+  </div>
+
+  <ng-container *ngIf="viewflg">
+    <mat-card>
+      <mat-grid-list cols="7" rowHeight="2em">
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> SEARCH FOR : </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-radio-group formControlName="rdbUserType"
+              matTooltip="{{ 'session.query.stock_query.user_type.STRP001001' | translate }}"
+              [matTooltipPosition]="positionOptions[1]" (change)="onRadioButonChange($event)">
+              <mat-radio-button value="U">USER</mat-radio-button>&nbsp;
+              <mat-radio-button value="B">BROKER</mat-radio-button>&nbsp;
+              <mat-radio-button value="C" [checked]=true>CUSTOMER</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">RESERVED FOR : </div> <!-- {{filterLable}} : -->
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='3'>
+          <div class="text-inside-grid">
+            <mat-form-field class="width-350">
+              <input type="text" matInput formControlName="cmbUserList" [matAutocomplete]="autoUserList"
+                matTooltip="{{ 'session.query.stock_query.user_type_input.STRP001001' | translate }}"
+                [matTooltipPosition]="positionOptions[1]" [errorStateMatcher]="confirmValidParentMatcher"
+                [readonly]="showList" required>
+              <mat-autocomplete #autoUserList="matAutocomplete" [displayWith]="displayUser">
+                <mat-option *ngFor="let userName of filteredUserLists" [value]="userName">
+                  {{ userName.user_userId }} -- {{ userName.user_userName }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> RESERVED QTY : </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">
+            <mat-form-field class="width-25">
+              <input type="text" matInput formControlName="txtresvqty">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> RESERVED UPTO : </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">
+            <mat-form-field style="width: 100px !important;">
+              <input matInput #ref1 [matDatepicker]="pickerDate" formControlName="txtResvDate">
+              <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> TIME : </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field style="width: 50px;">
+              <mat-select formControlName="dthours" class="mat-select-hm">
+                <mat-option *ngFor="let hr of hrs" [value]="hr.value">
+                  {{hr.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> HRS
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field style="width: 50px;">
+              <mat-select formControlName="dtmin" class="mat-select-hm">
+                <mat-option *ngFor="let min of mins" [value]="min.value">
+                  {{min.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> MIN
+          </div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-card>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-evenly"  style="margin-top: 1%">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <button button mat-raised-button color="primary" (click)="saveData();">COMPLETE</button>
+        <!-- <button mat-raised-button color="primary" type="button" [mat-dialog-close]="true">CANCEL</button> -->
+      </div>
+    </div>
+    <!-- </ng-container> -->
+  </ng-container>
+
+  <ng-container *ngIf="updateflg">
+    <mat-card>
+      <mat-grid-list cols="7" rowHeight="2em">
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> SEARCH FOR : </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-radio-group formControlName="rdbUserTypeupdate"
+              matTooltip="{{ 'session.query.stock_query.user_type.STRP001001' | translate }}"
+              [matTooltipPosition]="positionOptions[1]" (change)="onRadioButonChangeupdate($event)">
+              <mat-radio-button value="U">USER</mat-radio-button>&nbsp;
+              <mat-radio-button value="B">BROKER</mat-radio-button>&nbsp;
+              <mat-radio-button value="C">CUSTOMER</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">{{filterLable}} : </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='3'>
+          <div class="text-inside-grid">
+            <mat-form-field class="width-350">
+              <input type="text" matInput formControlName="cmbUserListUpdate" [matAutocomplete]="autoUserList"
+                matTooltip="{{ 'session.query.stock_query.user_type_input.STRP001001' | translate }}"
+                [matTooltipPosition]="positionOptions[1]" [errorStateMatcher]="confirmValidParentMatcher"
+                [readonly]="showList" required>
+              <mat-autocomplete #autoUserList="matAutocomplete" [displayWith]="displayUserupdate">
+                <mat-option *ngFor="let userName of filteredUserListsUpdate" [value]="userName">
+                  {{ userName.user_userId }} -- {{ userName.user_userName }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> RESERVED QTY : </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">
+            <mat-form-field class="width-25">
+              <input type="text" matInput formControlName="txtresvqtyupdate">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> RESERVED UPTO : </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">
+            <mat-form-field style="width: 100px !important;">
+              <input matInput #ref2 [matDatepicker]="updatepickerDate" formControlName="txtResvDateupdate"
+                [(ngModel)]="reqDate">
+              <mat-datepicker-toggle matSuffix [for]="updatepickerDate"></mat-datepicker-toggle>
+              <mat-datepicker #updatepickerDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> TIME : </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">            
+              <mat-form-field style="width: 50px;">
+              <mat-select formControlName="dthoursupdate" [(ngModel)]="hours" class="mat-select-hm">
+                <mat-option *ngFor="let hr of hrs" [value]="hr.value">
+                  {{hr.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> HRS
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="width-25">
+          <div class="text-inside-grid">
+            <mat-form-field style="width: 50px;">
+              <mat-select formControlName="dtminupdate" [(ngModel)]="minutes" class="mat-select-hm">
+                <mat-option *ngFor="let min of mins" [value]="min.value">
+                  {{min.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> MIN
+          </div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-card>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="margin-top: 1%">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <button button mat-raised-button color="primary" (click)="updateRsv();">MODIFY</button>
+        <button button mat-raised-button color="primary" (click)="deleteRsv();">DELETE</button>
+        <!-- <button mat-raised-button color="primary" type="button" [mat-dialog-close]="true">CANCEL</button> -->
+      </div>
+    </div>
+    <!-- </ng-container> -->
+  </ng-container>
+
+</form>

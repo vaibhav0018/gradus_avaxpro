@@ -1,0 +1,1637 @@
+<app-custom-spinner></app-custom-spinner>
+<div class="overflow-auto">
+  <div class="min-width">
+<div *ngIf="moduleCallFrom == 'quotation'">
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="form">
+
+  <!--add party -->
+  <div *ngIf="flgModify=='N'">
+    <mat-accordion *ngIf="!flgSave">
+      <mat-expansion-panel [expanded]="menuview">
+        <mat-expansion-panel-header>
+          <mat-panel-title>ADD MISC PARTY DETAILS</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-grid-list cols="4" rowHeight="1.5rem">
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> DRAFT NO : </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"><span class="font-bold">{{cust_supplr_code}}</span></div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">MP PARTY NAME :</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-50">
+                <input type="text" matInput formControlName="txtMiscPartyName"
+                placeholder="MP PARTY NAME" [matAutocomplete]="autoMiscParty" maxlength="50" required>
+                <mat-autocomplete #autoMiscParty="matAutocomplete">
+                  <mat-option *ngFor="let party of filterMsParty" [value]="party.cs_name">
+                    {{ party.cs_code }} :: {{ party.cs_name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">INDUSTRY HEAD CODE: </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <mat-select formControlName="cmbIndustry" required>
+                  <mat-option *ngFor="let indus of industryTypeList" [value]="indus.element_code">
+                    {{indus.element_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAN NO:
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtPanNo" maxlength="15">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAYMENT TERMS(DAYS):
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field>
+                <input type="text" matInput formControlName="txtpaytermdays" (ngModelChange)="getPaymentTerm()"
+                  required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAYMENT TYPE:
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field>
+                <mat-select formControlName="cmbPayterms" required>
+                  <mat-option *ngFor="let row of lstPayterm" [value]="row">
+                    {{row.pt_desc}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> HANDLED BY:
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-75">
+                <input type="text" matInput formControlName="txtHandledBy" [matAutocomplete]="autoHandledBy" required>
+                <mat-autocomplete #autoHandledBy="matAutocomplete" [displayWith]="displayHandledBy">
+                  <mat-option *ngFor="let handledBy of filteredHandledByLists | async" [value]="handledBy">
+                    {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ALLOW SPECIAL TAX : </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-radio-group formControlName="rdbspecailtax" class="rdBtnMarginTop">
+                <mat-radio-button value='Y'>YES</mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button checked=true value='N'>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div *ngIf="flgModify=='Y'">
+
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>MODIFY MISC PARTY DETAILS</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="color-red" [ngStyle]="{ 'text-align': 'center'}" *ngIf="extended_company">
+          {{extended_company}}
+        </div>
+        <mat-grid-list cols="4" rowHeight="1.5rem">
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> MISC PARTY CODE :</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"><span class="font-bold">{{cust_supplr_code}}</span></div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">MP PARTY NAME :</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field>
+                <input type="text" placeholder="MP PARTY NAME" formControlName="txtEMiscPartyName" required matInput maxlength="50" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> INDUSTRY HEAD CODE : </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <mat-select formControlName="cmbEIndustry" required [(ngModel)]="cs_industry_head_code">
+                  <mat-option *ngFor="let indus of industryTypeList" [value]="indus.element_code">
+                    {{indus.element_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAN NO : </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value={{lstSupDetail.cs_pan_no}} formControlName="txtEPanNo" maxlength="15">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAYMENT TERM (DAYS) :</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field>
+                <input type="text" matInput formControlName="txtEPaytermDays" (ngModelChange)="getModifyPaymentTerm()"
+                  value={{lstSupDetail.cs_pay_terms_day}}>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAY CODE :</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-50">
+                <mat-select formControlName="cmbEPayCode">
+                  <!-- [(ngModel)]="cs_pay_code" -->
+                  <mat-option *ngFor="let row of lstPayterm" [value]="row">
+                    {{row.pt_desc}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> HANDLED BY :</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-75">
+                <input type="text" matInput formControlName="txtEHandledBy" [matAutocomplete]="autoHandledBy" required>
+                <mat-autocomplete #autoHandledBy="matAutocomplete" [displayWith]="displayHandledBy">
+                  <mat-option *ngFor="let handledBy of filteredHandledByLists | async" [value]="handledBy">
+                    {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ALLOW SPECIAL TAX :</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-radio-group formControlName="rdbEAllowTax" class="rdBtnMarginTop">
+                <mat-radio-button [checked]="cs_allow_special_tax=='Y'" value='Y'>YES</mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button [checked]="cs_allow_special_tax=='N'" value='N'>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <mat-tab-group #tabGroup>
+
+    <mat-tab label="ADDRESS DETAILS">
+
+      <div class="example-container">
+
+        <mat-grid-list cols="4" rowHeight="1.5rem">
+          <!--added address-->
+          <div *ngFor="let rowDraft of lstAddedAdress; let i=index" formArrayName="arrayEditAdress">
+
+            <mat-grid-tile colspan='4' [formGroupName]="i">
+              <div class="text-center"><b>ADDRESS - {{rowDraft.csad_addr_code}}</b>
+                <!-- <mat-form-field class="width-25"> -->
+                <input matInput [hidden]="true" type="text" formControlName="txtEAddCode" readonly
+                  value={{rowDraft.csad_addr_code}}>
+                <!-- </mat-form-field> -->
+                <span *ngIf="flgModifyRights  && isForViewFlg == 'M'  ">
+                <span *ngIf="i == selectedEditAddrIndex">
+                  <mat-icon *ngIf="showIconFLg" (click)="initNewAddressRow(selectedEditAddrIndex);"
+                    matTooltip="Add new row">add</mat-icon>
+                </span>
+              </span>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">VENDOR CODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" formControlName="txtEVendorCode" value={{rowDraft.csad_vendor_code}}>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">DOMAIN NAME : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" formControlName="txtEDomainName" value={{rowDraft.csad_domain_name}}>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_address1}} formControlName="txtEAddrOne"
+                    maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_address2}} formControlName="txtEAddrSecond"
+                    maxlength="50">
+                </mat-form-field>
+
+                <mat-icon (click)="showEMap(i);" matTooltip="Click on Map"> map</mat-icon>
+
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 3 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_address3}} formControlName="txtEAddrThird"
+                    maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 4 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_address4}} formControlName="txtEAddrFourth"
+                    maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">COUNTRY : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <mat-select placeholder="COUNTRY" matTooltip="List" formControlName="cmbECountry"
+                    (selectionChange)="onCountryEChange($event,i)">
+                    <mat-option *ngFor="let country of countryELists[i]" [value]="country.ctr_code">
+                      {{country.ctr_desc}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">STATE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <mat-select placeholder="STATE" matTooltip="Please select state" formControlName="cmbEState"
+                    [(ngModel)]="stateArray[i]">
+                    <mat-option *ngFor="let state of stateELists[i]" [value]="state.st_code">
+                      {{state.st_state}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">CITY : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_city}} formControlName="txtECity" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">PINCODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_pincode}} formControlName="txtEPinCode"
+                    maxlength="6">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">LATITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_latitude}} formControlName="txtELattitude" readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <div class="text-inside-grid">LONGITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_longitude}} formControlName="txtELongitude"
+                    readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">TELEPHONE 1 :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_tel_no1}} formControlName="txtETelNoOne"
+                    maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">TELEPHONE 2 :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_tel_no2}} formControlName="txtETelNoSecond"
+                    maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">STD CODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_std_code}} formControlName="txtEStdCode"
+                    maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ISD CODE :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_isd_code}} formControlName="txtEIsdCode"
+                    maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">FAX NO 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_fax_1}} formControlName="txtEFaxNoOne"
+                    maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">FAX NO 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_fax_2}} formControlName="txtEFaxNoSecond"
+                    maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">EMAIL ID 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_email_1}} formControlName="txtEEmailIdOne"
+                   [readonly]="csad_email_flg[i]=='Y'" maxlength="50">
+                </mat-form-field>
+                <span *ngIf="email_verification_flg =='Y'">
+                <mat-icon *ngIf="csad_email_flg[i]=='N'" class='red-icon' title='Email id is not verified.'>cancel</mat-icon>
+                  <mat-icon *ngIf="csad_email_flg[i]=='Y'" class='green-icon' title='Email id is verified.'>verified_user</mat-icon>
+                  <mat-icon *ngIf="csad_email_flg[i]=='N' && flgModifyRights  && isForViewFlg == 'M' " title='Click to verify email id.'>verified_user</mat-icon>  
+                </span>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">EMAIL ID 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_email_2}} formControlName="txtEEmailIdSecond"
+                    maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">HOTLINE NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_hotline_no}} formControlName="txtEHotLineNo"
+                    maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">MOBILE NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_mobile_no}} formControlName="txtEMobileNo"
+                    maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">GST NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{rowDraft.csad_gst_no}} [readonly]="gstValid || rowDraft.csad_gst_flg=='Y'" formControlName="txtEGstNo" maxlength="25">
+                </mat-form-field>
+                <span *ngIf="form.controls['arrayEditAdress'].controls[i].controls.txtEGstNo.value.length == 15 && gst_verification_flg=='Y'">
+                  <mat-icon class='red-icon' title='Cancel.' (click)="reVerify(rowDraft)">cancel</mat-icon>
+                  <mat-icon class='green-icon' title='GST No is verified.' *ngIf="gstValid || rowDraft.csad_gst_flg=='Y'">verified_user</mat-icon>
+                  <mat-icon title='Click to verify GST No.' *ngIf="!gstValid && rowDraft.csad_gst_flg=='N'" (click)="validateGst(rowDraft.csad_addr_code,form.controls['arrayEditAdress'].controls[i].controls.txtEGstNo.value,'C')">verified_user</mat-icon>
+                </span>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile></mat-grid-tile>
+            <mat-grid-tile></mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">TAX TYPE :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-50">
+                  <mat-select formControlName="cmbETaxType">
+                    <mat-option *ngFor="let row of lstETax[i]" [value]="row.txs_tax_code">
+                      {{row.txs_desc_sh}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">PREFERRED TRANSPORTER :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-50">
+                  <mat-select formControlName="cmbETransporter">
+                    <mat-option *ngFor="let row of lstETransporter[i]" [value]="row">
+                      {{row.tr_name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+          </div>
+
+          <!--add new address-->
+          <div *ngFor="let comp of form.get('arrayAddAdress')['controls']; let i=index" formArrayName="arrayAddAdress">
+
+            <mat-grid-tile colspan='4' [formGroupName]="i">
+              <div *ngIf="cust_supplr_code == 'NEW'">
+                <div class="text-center"><b>ADD ADDRESS - {{addressCodeArray[i]}}</b>&nbsp;
+                  <span *ngIf="i == selectedAddressIndex">
+                    <mat-icon (click)="AddNewAddress(i);" matTooltip="Add new row"> add</mat-icon>
+                    <!-- <mat-form-field class="width-25"> -->
+                    <input matInput type="text" [hidden]="true" formControlName="txtAddCode" readonly
+                      value={{addressCodeArray[i]}}>
+                    <!-- </mat-form-field> -->
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="cust_supplr_code != 'NEW'">
+                <div class="text-center"><b>ADD ADDRESS - {{addressCodeArray[i]}}</b>&nbsp;
+                  <mat-icon (click)="AddNewAddress(i);" matTooltip="Add new row">add</mat-icon>
+                  <!-- <mat-form-field class="width-25"> -->
+                  <input matInput type="text" [hidden]="true" formControlName="txtAddCode" readonly
+                    value={{addressCodeArray[i]}}>
+                  <!-- </mat-form-field> -->
+                </div>
+              </div>
+            </mat-grid-tile>
+
+            <span *ngIf="flgModify=='Y'">
+              <mat-grid-tile>
+                <div class="text-inside-grid">VENDOR CODE : </div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-25"><input matInput type="text" formControlName="txtVendorCode" value="">
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <div class="text-inside-grid">DOMAIN NAME : </div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-25"><input matInput type="text" formControlName="txtDomainName" value="">
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+            </span>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtAddrOne" maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtAddrSecond" maxlength="50">
+                </mat-form-field>
+                <mat-icon (click)="showMap(i);" matTooltip="Click on Map"> map</mat-icon>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 3 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtAddrThird" maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">ADDRESS 4 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtAddrFourth" maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">COUNTRY : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <mat-select placeholder="COUNTRY" matTooltip="List" formControlName="cmbCountry"
+                    (selectionChange)="onCountryChange($event,i)">
+                    <mat-option *ngFor="let country of countryLists[i]" [value]="country.ctr_code">
+                      {{country.ctr_desc}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">STATE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <mat-select placeholder="STATE" matTooltip="Please select state" formControlName="cmbState">
+                    <mat-option *ngFor="let state of stateLists[i]" [value]="state">
+                      {{state.st_state}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">CITY : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtCity" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">PINCODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtPinCode" maxlength="6">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">LATITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtLattitude" readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">LONGITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtLongitude" readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">TELEPHONE 1 :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtTelNoOne" maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">TELEPHONE 2 :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtTelNoSecond" maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <span *ngIf="flgModify=='Y'">
+              <mat-grid-tile>
+                <div class="text-inside-grid">STD CODE : </div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-25">
+                    <input matInput type="text" value="" formControlName="txtStdCode" maxlength="10">
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <div class="text-inside-grid">ISD CODE :</div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-25">
+                    <input matInput type="text" value="" formControlName="txtIsdCode" maxlength="10">
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+            </span>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">FAX NO 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtFaxNoOne" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">FAX NO 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtFaxNoSecond" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">EMAIL ID 1 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtEmailIdOne" maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">EMAIL ID 2 : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtEmailIdSecond" maxlength="50">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">HOTLINE NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtHotLineNo" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">MOBILE NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtMobileNo" maxlength="10">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">GST NO :</div>
+            </mat-grid-tile>
+            <mat-grid-tile [formGroupName]="i">
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value={{defaultGst}} formControlName="txtGstNo" maxlength="25">
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile></mat-grid-tile>
+            <mat-grid-tile></mat-grid-tile>
+
+            <span *ngIf="flgModify=='Y'">
+              <mat-grid-tile>
+                <div class="text-inside-grid">TAX TYPE :</div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-50">
+                    <mat-select formControlName="cmbTaxType">
+                      <mat-option *ngFor="let row of lstTax[i]" [value]="row.txs_tax_code">
+                        {{row.txs_desc_sh}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+
+              <mat-grid-tile>
+                <div class="text-inside-grid">PREFERRED TRANSPORTER :</div>
+              </mat-grid-tile>
+              <mat-grid-tile [formGroupName]="i">
+                <div class="text-inside-grid">
+                  <mat-form-field class="width-50">
+                    <mat-select formControlName="cmbTransporter">
+                      <mat-option *ngFor="let row of lstTransporter[i]" [value]="row.tr_code">
+                        {{row.tr_name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-grid-tile>
+            </span>
+
+          </div>
+
+        </mat-grid-list>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab label="CONTACT DETAILS">
+
+      <div class="example-container">
+        <mat-grid-list cols="8" rowHeight="1.5rem">
+
+          <mat-grid-tile colspan='8'>
+            <div class="text-inside-grid"><b> CONTACT PERSONS</b></div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> SR NO. </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> NAME </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EMAIL </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> STD CODE </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> TELEPHONE NO. </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> FAX NO.</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> MOBILE NO.</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> AADHAAR NO. </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl1" value=false (change)="enableContact($event,'1')">
+              </mat-checkbox>
+              PURCHASE 1
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP1AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl2" value=false (change)="enableContact($event,'2')">
+              </mat-checkbox> PURCHASE 2
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP2AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl3" value=false (change)="enableContact($event,'3')">
+              </mat-checkbox> PURCHASE 3
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP3AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl4" value=false (change)="enableContact($event,'4')">
+              </mat-checkbox>
+              ACCOUNTS
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP4AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl5" value=false (change)="enableContact($event,'5')">
+              </mat-checkbox> OWNER
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP5AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl6" value=false (change)="enableContact($event,'6')">
+              </mat-checkbox>PROPRIETOR
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP6AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl7" value=false (change)="enableContact($event,'7')">
+              </mat-checkbox>PARTNER 1
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP7AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl8" value=false (change)="enableContact($event,'8')">
+              </mat-checkbox> PARTNER 2
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP8AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl9" value=false (change)="enableContact($event,'9')">
+              </mat-checkbox>PARTNER 3
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP9AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl10" value=false (change)="enableContact($event,'10')">
+              </mat-checkbox>PARTNER 4
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP10AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-checkbox formControlName="chkContactDtl11" value=false (change)="enableContact($event,'11')">
+              </mat-checkbox>PARTNER 5
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11Name" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11Email" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11StdCode" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11Teleno" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11FaxNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11MobileNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input matInput type="text" value="" formControlName="txtP11AadharNo" maxlength="25">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-evenly" class="margin-top10p" *ngIf="!hideBtnDiv">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <span *ngIf="flgAddRights  && isForViewFlg == 'A' ">
+        <div *ngIf="flgModify=='N'">
+          <button mat-raised-button color="primary" type="button" (click)=completeMiscParty();>SAVE</button>
+        </div>
+      </span>
+      <span *ngIf="flgModifyRights  && isForViewFlg == 'M' ">
+        <div *ngIf="flgModify=='Y'">
+          <button mat-raised-button color="primary" type="button" (click)=modifyMiscParty();>MODIFY</button>
+        </div>
+      </span>
+    </div>
+  </div>
+
+</form>
+  </div>
+</div>

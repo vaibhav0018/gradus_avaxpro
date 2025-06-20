@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { Location } from '@angular/common'
 import { Menu } from '../../../common/models/menu.model'
-import { verticalMenuItems } from '@data/menu'
-import { horizontalMenuItems } from '@data/menu'
+// import { verticalMenuItems } from '@data/menu'
+// import { horizontalMenuItems } from '@data/menu'
 import { HttpService } from '../../../core/services/http.service'
 
 import { environment } from '../../../environments/environment'
@@ -38,9 +38,9 @@ export class MenuService {
 
 
 
-  public getHorizontalMenuItems(): Array<Menu> {
-    return horizontalMenuItems
-  }
+  // public getHorizontalMenuItems(): Array<Menu> {
+  //   return horizontalMenuItems
+  // }
 
   getUserSortedMenuList(): Array<Menu> {
     let company_code = atob(sessionStorage.getItem(btoa('usr_company_code')) || '')

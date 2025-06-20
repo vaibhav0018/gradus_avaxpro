@@ -1,0 +1,566 @@
+<app-custom-spinner></app-custom-spinner>
+
+<form [formGroup]="form">
+  <mat-expansion-panel [expanded]=true *ngIf="flgModifyRights">
+    <mat-grid-list cols="7" rowHeight="2em">
+
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">SEARCH PARTY CODE : </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" formControlName="txtPartyCode" value="">
+          </mat-form-field>
+          <button mat-button type="button">
+            <mat-icon (click)="searchParty()">search</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-50">
+            <mat-select formControlName="cmbParty">
+              <mat-option *ngFor="let row of partyList" [value]="row">
+                {{row.cs_code}} :: {{row.cs_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <button mat-raised-button type="button" color="primary" (click)="viewPartyDetails();">SHOW</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+  </mat-expansion-panel>
+
+  <mat-tab-group #tabGroup (selectedTabChange)="navigate($event)">
+
+    <mat-tab label="CUSTOMER">
+
+      <!-- <div class="example-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyCommonFilter($event.target.value,false)" placeholder="Filter">
+        </mat-form-field>
+      </div> -->
+
+      <main class="scroll">
+        <mat-table [dataSource]="MenudataSource">
+          <ng-container matColumnDef="rn">
+            <mat-header-cell *matHeaderCellDef> SR NO </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.rn}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_code">
+            <mat-header-cell *matHeaderCellDef> CUSTOMER CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_cust_draft_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_name">
+            <mat-header-cell *matHeaderCellDef> CUSTOMER NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_date">
+            <mat-header-cell *matHeaderCellDef> DATE OF OPENING </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_ts_created}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="hand_by">
+            <mat-header-cell *matHeaderCellDef> HANDLED BY </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.usr_name}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef> SELECT </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+              <button mat-button>
+                <mat-icon *ngIf="flgModifyRights" matTooltip="click on edit" (click)="customerModify(element,'M')">edit
+                </mat-icon>
+                <mat-icon *ngIf="flgViewCustRights" matTooltip="click to view details"
+                  (click)="customerModify(element,'V')">pageview</mat-icon>
+                  <mat-icon *ngIf="element.emailflg=='Y'" class='green-icon' title='Email Verified.'>verified_user</mat-icon>
+                <mat-icon *ngIf="element.emailflg=='N'" class='red-icon' title='Email Not Verified.'>cancel</mat-icon>
+                <mat-icon *ngIf="element.gstflg=='Y'" class='green-icon' title='GST Verified.'>verified_user</mat-icon>
+                <mat-icon *ngIf="element.gstflg=='N'" class='red-icon' title='GST Not Verified.'>cancel</mat-icon>
+                <!-- *ngIf="!pendingDraft" -->
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="MenudisplayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: MenudisplayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+    </mat-tab>
+
+    <mat-tab label="NEW CUSTOMER DRAFT">
+
+      <div class="example-header" style="margin-bottom: 1%; margin-top: 1%;">
+        <!-- <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value,false)" formControlName="txtFilter"
+            placeholder="Filter">
+        </mat-form-field> -->
+        <span *ngIf="flgAddRights">
+          <button mat-raised-button type="button" color="primary" (click)="newCustDraftMaster()">NEW DRAFT</button>
+          <button mat-raised-button type="button" color="primary" (click)="downloadDraftTemplate()"
+            matTooltip="Download Customer Opening Template">TEMPLATE</button>
+          <button mat-raised-button type="button" color="primary">
+            <mat-icon (click)="showUploadExcelDiv();" matTooltip="Upload Excel & Generate Draft">cloud_upload
+            </mat-icon>
+          </button>
+        </span>
+      </div>
+
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="showCustListFlag">
+          <mat-expansion-panel-header>
+            <mat-panel-title></mat-panel-title>
+          </mat-expansion-panel-header>
+          <main class="scroll">
+            <mat-table [dataSource]="dataSource">
+              <ng-container *ngFor="let column_name of lstColumn" matColumnDef="{{column_name.db_col}}">
+                <mat-header-cell *matHeaderCellDef>{{column_name['col_name']}}</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngStyle]="{ 'text-align': column_name.col_type === 'NUM'
+             ? 'end':column_name.col_type === 'DATE' || column_name.col_type === 'LINK'
+             || column_name.col_type === 'SELECT' ? 'center': 'left' }">
+                  <ng-container *ngIf="column_name.flgLink; else label">
+                    <!-- <span *ngIf="flgModifyRights || flgViewCustRights"> -->
+                      <span *ngIf="flgModifyRights">
+                      <mat-icon (click)="editCustDraft(element,'M');" matTooltip="Edit Draft">edit</mat-icon>&nbsp;&nbsp;
+                    </span>
+                    <span *ngIf="flgModifyRights">
+                      <mat-icon (click)="deleteCustDraft(element,'M');" matTooltip="Delete Draft">delete</mat-icon>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span *ngIf="flgAuthCustRights">
+                      <mat-icon (click)="authoriseCustDraft(element,'A');" matTooltip="Authorise Draft">spellcheck
+                      </mat-icon>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span *ngIf="flgViewCustRights">
+                      <mat-icon (click)="editCustDraft(element,'V');" matTooltip="View Draft">pageview
+                      </mat-icon>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span>
+                      <mat-icon *ngIf="element.emailflg=='Y'" class='green-icon' title='Email Verified.'>verified_user</mat-icon>
+                      <mat-icon *ngIf="element.emailflg=='N'" class='red-icon' title='Email Not Verified.'>cancel</mat-icon>
+                    </span>   
+                    &nbsp;&nbsp;
+                    <span>
+                      <mat-icon *ngIf="element.gstflg=='Y'" class='green-icon' title='GST Verified.'>verified_user</mat-icon>
+                      <mat-icon *ngIf="element.gstflg=='N'" class='red-icon' title='GST Not Verified.'>cancel</mat-icon>
+                    </span>
+                    &nbsp;&nbsp;
+                    <span *ngIf="flgAllowWoEmail">
+                      <mat-icon *ngIf="element.emailflg=='N' && element.cd_allow_without_email_verify=='N' && !allowEmailWoVerifyFlg[element.rn]" title='Click to skip Email Verification.' (click)="skipEmailVerify(element)">check_circle</mat-icon>
+                      <mat-icon *ngIf="element.cd_allow_without_email_verify=='Y' || allowEmailWoVerifyFlg[element.rn]" class="green-icon" title='Skip Email Verification.'>check_circle</mat-icon>
+                    </span>
+                  </ng-container>
+                  <ng-template #label>
+                    <ng-container>
+                      {{element[column_name.db_col]}}
+                    </ng-container>
+                  </ng-template>
+                </mat-cell>
+
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </main>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <div class="no-records margin-top5p">
+        <mat-grid-list cols="6" rowHeight="2rem" *ngIf="showUploadExcelFlg">
+          <mat-grid-tile>
+            <div class="text-inside-grid ">SELECT FILE : </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <input type="file" name="fileUpload" (change)="onFileChange($event)" #fileInput />
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan='2'>
+            <div fxLayout="row" fxLayoutAlign="center">
+              <button mat-raised-button color="primary" type="button" (click)="uploadFile();">
+                UPLOAD
+              </button>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'></mat-grid-tile>
+        </mat-grid-list>
+
+
+        <mat-grid-list cols="1" rowHeight="1.5rem" *ngIf="invalidFields?.length > 0">
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <b>Values for Following fields are Invalid.</b>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngFor="let obj of invalidFields">
+            <div class="text-inside-grid">
+              {{obj}}
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="1" rowHeight="1.5rem" *ngIf="mandatoryFields?.length > 0">
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <b>Please Enter Value for Following Fields.</b>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngFor="let obj of mandatoryFields">
+            <div class="text-inside-grid">
+              {{obj}}
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab label="MISC.PARTY">
+      <div class="example-header" style="margin-bottom: 1%; margin-top: 1%;">
+        <!-- <mat-form-field>
+          <input matInput (keyup)="applyCommonFilter($event.target.value,false)" formControlName="txtCommFilter"
+            placeholder="Filter">
+        </mat-form-field> -->
+        <span *ngIf="flgAddRights">
+          <button mat-raised-button type="button" color="primary" (click)="newMiscPartyMaster()">NEW MISC PARTY</button>
+        </span>
+      </div>
+
+      <main class="scroll">
+        <mat-table [dataSource]="MenudataSource">
+          <ng-container matColumnDef="rn">
+            <mat-header-cell *matHeaderCellDef> SR NO </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.rn}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_code">
+            <mat-header-cell *matHeaderCellDef> PARTY CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_cust_draft_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_name">
+            <mat-header-cell *matHeaderCellDef> PARTY NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_date">
+            <mat-header-cell *matHeaderCellDef> DATE OF OPENING </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_ts_created}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="hand_by">
+            <mat-header-cell *matHeaderCellDef> HANDLED BY </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.usr_name}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef> SELECT </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+              <button mat-button>
+                <mat-icon *ngIf="flgModifyRights" matTooltip="click on edit" (click)="miscPartyModify(element,'M')">edit
+                </mat-icon>
+                <mat-icon *ngIf="flgViewCustRights" matTooltip="click to view details"
+                  (click)="miscPartyModify(element,'V')">pageview</mat-icon>
+                  <mat-icon *ngIf="element.gstflg=='Y'" class='green-icon' title='GST Verified.'>verified_user</mat-icon>
+                  <mat-icon *ngIf="element.gstflg=='N'" class='red-icon' title='GST Not Verified.'>cancel</mat-icon>
+              </button>
+
+              <!-- <span *ngIf="flgModifyRights">
+                <button mat-button matTooltip="click on edit" (click)="miscPartyModify(element,'M')">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </span>
+              <span *ngIf="flgViewCustRights">
+                <button mat-button matTooltip="click on View" (click)="miscPartyModify(element,'V')">
+                  <mat-icon>pageview</mat-icon>
+                </button>
+              </span> -->
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="MenudisplayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: MenudisplayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+
+    </mat-tab>
+
+    <mat-tab label="SUPPLIER">
+      <div class="example-header" style="margin-bottom: 1%; margin-top: 1%;">
+        <!-- <mat-form-field>
+          <input matInput (keyup)="applyCommonFilter($event.target.value,false)" formControlName="txtCommFilter"
+            placeholder="Filter">
+        </mat-form-field> -->
+        <span *ngIf="flgAddRights">
+          <button mat-raised-button type="button" color="primary" (click)="newSupplierDraftMaster()">NEW
+            SUPPLIER</button>
+        </span>
+      </div>
+
+      <main class="scroll">
+        <mat-table [dataSource]="MenudataSource">
+          <ng-container matColumnDef="rn">
+            <mat-header-cell *matHeaderCellDef> SR NO </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.rn}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_code">
+            <mat-header-cell *matHeaderCellDef> SUPPLIER CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_cust_draft_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_name">
+            <mat-header-cell *matHeaderCellDef> SUPPLIER NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_date">
+            <mat-header-cell *matHeaderCellDef> DATE OF OPENING </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_ts_created}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="hand_by">
+            <mat-header-cell *matHeaderCellDef> HANDLED BY </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.usr_name}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef> SELECT </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+
+              <button mat-button>
+                <mat-icon *ngIf="flgModifyRights" matTooltip="click on edit" (click)="supplierModify(element,'M')">edit
+                </mat-icon>
+                <mat-icon *ngIf="flgViewCustRights" matTooltip="click to view details"
+                  (click)="supplierModify(element,'V')">pageview</mat-icon>
+                  <mat-icon *ngIf="element.gstflg=='Y'" class='green-icon' title='GST Verified.'>verified_user</mat-icon>
+                  <mat-icon *ngIf="element.gstflg=='N'" class='red-icon' title='GST Not Verified.'>cancel</mat-icon>
+              </button>
+
+              <!-- <span *ngIf="flgModifyRights">
+                <button mat-button matTooltip="click on edit" (click)="supplierModify(element,'M')">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </span>
+              <span *ngIf="flgViewCustRights">
+              <button mat-button matTooltip="click on View" (click)="supplierModify(element,'V')">
+                <mat-icon>pageview</mat-icon>
+              </button>
+              </span> -->
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="MenudisplayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: MenudisplayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+    </mat-tab>
+
+    <mat-tab label="VENDOR">
+      <div class="example-header" style="margin-bottom: 1%; margin-top: 1%;">
+        <!-- <mat-form-field>
+          <input matInput (keyup)="applyCommonFilter($event.target.value,false)" formControlName="txtCommFilter"
+            placeholder="Filter">
+        </mat-form-field> -->
+        <span *ngIf="flgAddRights">
+          <button mat-raised-button type="button" color="primary" (click)="newVendorDraftMaster()">NEW VENDOR</button>
+        </span>
+      </div>
+
+      <main class="scroll">
+        <mat-table [dataSource]="MenudataSource">
+          <ng-container matColumnDef="rn">
+            <mat-header-cell *matHeaderCellDef> SR NO </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.rn}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_code">
+            <mat-header-cell *matHeaderCellDef> VENDOR CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_cust_draft_code}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_name">
+            <mat-header-cell *matHeaderCellDef> VENDOR NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_name}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cust_date">
+            <mat-header-cell *matHeaderCellDef> DATE OF OPENING</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+              {{element.cd_ts_created}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="hand_by">
+            <mat-header-cell *matHeaderCellDef> HANDLED BY </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.usr_name}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef> SELECT </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index;" class="text-center">
+              <button mat-button>
+                <mat-icon *ngIf="flgModifyRights" matTooltip="click on edit" (click)="vendorModify(element,'M')">edit
+                </mat-icon>
+                <mat-icon *ngIf="flgViewCustRights" matTooltip="click to view details"
+                  (click)="vendorModify(element,'V')">pageview</mat-icon>
+              </button>
+
+              <!-- <span *ngIf="flgModifyRights">
+              <button mat-button matTooltip="click on edit" (click)="vendorModify(element,'M')">
+                <mat-icon>edit</mat-icon>
+              </button>
+              </span>
+              <span *ngIf="flgViewCustRights">
+              <button mat-button matTooltip="click on edit" (click)="vendorModify(element,'V')">
+                <mat-icon>pageview</mat-icon>
+              </button>
+              </span> -->
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="MenudisplayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: MenudisplayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+
+    </mat-tab>
+
+    <mat-tab label="BULK GROUP UPDATE">
+        <mat-grid-list rowHeight="2rem" cols='4'>
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PAN NO :</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-50">
+                <input matInput type="text" formControlName="txtPanNo" placeholder="Please Enter PAN No" maxlength="10" required>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> CUSTOMER TYPE :</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid-rad">
+              <mat-radio-group formControlName="radCustType" placeholder="Please Select Customer Type" required>
+                  <mat-radio-button value="C">CUSTOMER</mat-radio-button>&nbsp;
+                  <mat-radio-button value="S">SUPPLIER</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngIf="showAccountsDataTable">
+            <div class="text-inside-grid"> CUSTOMER CODE :</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan="3" *ngIf="showAccountsDataTable">
+            <div class="text-inside-grid">
+                    <mat-form-field class="width-25">
+                      <mat-label>Select the Customer Code</mat-label>
+                      <mat-select formControlName="selectedValue" required> 
+                        <mat-option *ngFor="let element of custCodeAry" [value]="element.code">
+                          {{element.code}} - {{element.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+            </div>                      
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly" class="margin-top10p">
+        <div fxLayout="row" fxLayoutAlign="center">
+            <div>
+              <button mat-raised-button color="primary" (click)="showAccounts()" type="button">SUBMIT</button>
+            </div>
+        </div>
+      </div>
+
+      <main class="scroll" *ngIf="showAccountsDataTable">
+      
+        <mat-table [dataSource]="accountsData">
+          <ng-container matColumnDef="cs_cust_supplr_code">
+            <mat-header-cell *matHeaderCellDef>CUSTOMER / SUPPLIER CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.cs_cust_supplr_code}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="cs_name">
+            <mat-header-cell *matHeaderCellDef>CUSTOMER / SUPPLIER NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.cs_name}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="grp_code">
+            <mat-header-cell *matHeaderCellDef>GROUP CODE </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.grp_code}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="grp_name">
+            <mat-header-cell *matHeaderCellDef>GROUP NAME </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.grp_name}} </mat-cell>
+          </ng-container>
+      
+          <mat-header-row *matHeaderRowDef="accountsDisplayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: accountsDisplayedColumns;"></mat-row>
+        </mat-table>
+      </main>
+
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly" class="margin-top10p" *ngIf="showAccountsDataTable">
+        <div fxLayout="row" fxLayoutAlign="center">
+            <div>
+              <button mat-raised-button color="primary" (click)="updateAccounts()" type="button">UPDATE</button>
+            </div>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</form>

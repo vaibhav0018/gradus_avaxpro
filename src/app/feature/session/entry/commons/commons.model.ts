@@ -319,6 +319,7 @@ export class ItemModel {
   item_name: string
   catrefno: string
   item_make: string
+  itm_make_code: any
   constructor(item_code: string, item_name: string, catrefno: string, item_make: string) {
     this.item_code = item_code
     this.item_name = item_name

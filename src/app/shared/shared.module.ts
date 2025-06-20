@@ -41,7 +41,7 @@ import { NgxSpinnerModule } from 'ngx-spinner'
 // import { SharedBasicMatTableRowDynamicComponent } from './components/shared-basic-mat-table-row-dynamic/shared-basic-mat-table-row-dynamic.component'
 // import { SharedMatTableComponent } from './components/shared-mat-table/shared-mat-table.component'
 // import { SharedBasicMatTableComponent } from './components/shared-basic-mat-table/shared-basic-mat-table.component'
-// import { SettingsComponent } from 'src/app/shared/components/shared-settings/shared-settings.component'
+import { SettingsComponent } from './components/shared-settings/shared-settings.component'
 // import { SharedMatTableComponentCheckBox } from './components/shared-mat-table-check-box/shared-mat-table-check-box.component'
 // import { SharedMatTableDynamicComponent } from './components/shared-mat-table-dynamic/shared-mat-table-dynamic.component'
 import { CustomSpinnerComponent } from '../feature/session/custom-spinner/custom-spinner.component'
@@ -82,21 +82,21 @@ const SHARED_SERVICES = [ RouterService]
 //   suppressScrollX: true,
 // }
 
-const SHARED_COMPONENTS = [
-  // FullScreenComponent,
-  // SidenavComponent,
-  VerticalMenuComponent,
-  HorizontalMenuComponent,
-  // BreadcrumbComponent,
-  // FlagsMenuComponent,
-  // ApplicationsComponent,
-  // MessagesComponent,
-  // UserMenuComponent,
-  // UserInfoDetailsComponent,
-  // ViewUserInfoComponent,
-  // SharedCommanDialogBoxComponent
+// const SHARED_COMPONENTS = [
+//   // FullScreenComponent,
+//   // SidenavComponent,
+//   // VerticalMenuComponent,
+//   // HorizontalMenuComponent,
+//   // BreadcrumbComponent,
+//   // FlagsMenuComponent,
+//   // ApplicationsComponent,
+//   // MessagesComponent,
+//   // UserMenuComponent,
+//   // UserInfoDetailsComponent,
+//   // ViewUserInfoComponent,
+//   // SharedCommanDialogBoxComponent
 
-]
+// ]
 
 const SHARED_COMPONENTS_AVAXPRO = [
   // SharedMatSelectSearchComponent,
@@ -108,11 +108,11 @@ const SHARED_COMPONENTS_AVAXPRO = [
   // SharedBasicMatTableRowDynamicComponent,
   // SharedMatTableComponent,
   // SharedBasicMatTableComponent,
-  // SettingsComponent,
+  SettingsComponent,
   // SharedMatTableComponentCheckBox,
   // SharedMatTableDynamicComponent,
   // SharedMatSelectSearchComponent,
-  CustomSpinnerComponent,
+  // CustomSpinnerComponent,
   /*  PartySecurityChequeDtlComponent, */
   // UtilityMatTableViewComponent,
   // DocCalcViewComponent,
@@ -137,12 +137,13 @@ const SHARED_COMPONENTS_AVAXPRO = [
 
 @NgModule({
   imports: [
-    // CommonModule,
+    CommonModule,
     // SharedFormsModule,
     SharedMaterialModule,
-    SHARED_COMPONENTS,
-    SHARED_COMPONENTS_AVAXPRO,
-    ReactiveFormsModule
+    
+    // SHARED_COMPONENTS,
+    // SHARED_COMPONENTS_AVAXPRO,
+    ReactiveFormsModule,
     // SharedTranslateModule,
     // PerfectScrollbarModule,
     // RouterModule,
@@ -150,11 +151,15 @@ const SHARED_COMPONENTS_AVAXPRO = [
     // NgxSpinnerModule,
     // DirectivesModule,
     // ScrollingModule
+    VerticalMenuComponent,
+    CustomSpinnerComponent
+
   ],
   
   exports: [
     SharedMaterialModule,
-    SHARED_COMPONENTS,
+    VerticalMenuComponent,
+    // SHARED_COMPONENTS,
     SHARED_COMPONENTS_AVAXPRO,
   ],
 
@@ -180,9 +185,8 @@ const SHARED_COMPONENTS_AVAXPRO = [
     // { provide: OverlayContainer, useClass: CustomOverlayContainer },
     SHARED_SERVICES,
   ],
-  declarations: [
-    MakeMasterCompanyListComponent
-  ],
+  declarations: [ SHARED_COMPONENTS_AVAXPRO],
+
   // entryComponents: [SettingsComponent, CommonSnackbarComponent, CommonConfirmationDialogComponent, UserInfoDetailsComponent, GroupOsPageComponent,
     // FollActEntryPageComponent, MiscPartyMaintenanceMenuComponent,ViewUserInfoComponent,SharedCommanDialogBoxComponent],
 })

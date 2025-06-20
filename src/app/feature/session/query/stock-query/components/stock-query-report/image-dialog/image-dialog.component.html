@@ -1,0 +1,28 @@
+<span mat-dialog-title align='center'>
+  <span> {{item_details}} </span>
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</span>
+<div fxLayout="row">
+<div fxFlex="75">
+  <img [src]="imgUrl"  width="65%" height="65%"  alt="Item Image"> 
+</div>
+<div fxFlex="25">
+  <table class='html-table' border="0" >
+    <thead>
+      <tr >
+        <th >LABEL</th>
+        <th >VALUE</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let row of dataSource; let i=index">
+      <td>{{row.ipd_label}}</td>
+      <td>{{row.ipd_value}}</td>
+    </tr>
+    <tr  *ngIf="message">
+      <div  class="color-red center-text">{{message}}</div>
+    </tr>
+  </table>
+</div>
+</div>

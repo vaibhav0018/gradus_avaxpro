@@ -1,0 +1,222 @@
+<h5 mat-dialog-title> USER INFORMATIONS
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</h5>
+
+<form [formGroup]="form">
+  <mat-grid-list cols="6" rowHeight="2.5rem" >
+
+    <mat-grid-tile>
+      <div class="text-inside-grid">USER SHORT NAME:</div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="text-inside-grid">
+        <mat-form-field class="wp-350">
+          <input type="text" class="wp-350" matInput aria-label="Number" formControlName="txtusrshname"
+            maxlength="100"  (blur)="disableFeilds($any($event.target).value,'usersn')" [readonly]=viewsn/>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="text-inside-grid"> USER CODE/NAME : </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="text-inside-grid">
+        <mat-form-field class="width-50">
+          <input type="text" matInput formControlName="cmbUsr" [matAutocomplete]="autousrlist"  [readonly]=viewcode>
+          <mat-autocomplete #autousrlist="matAutocomplete" [displayWith]?="displayUserlist">
+            <mat-option *ngFor="let usr of filteredUsrLists" [value]="usr"
+            (onSelectionChange)="disableFeilds($event,'usercode')">
+              {{usr.usr_userid}} :: {{usr.usr_name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="text-inside-grid">USER ID:</div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="text-inside-grid">
+        <mat-form-field class="wp-350">
+          <input type="text" class="wp-350" matInput aria-label="Number" formControlName="txtusrid"
+            maxlength="100"  (blur)="disableFeilds($any($event.target).value, 'userid')" [readonly]="viewid"/>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <!-- <mat-dialog-actions>
+    <div align="center" style="width:99%">
+      <button mat-raised-button color="primary" type="button" (click)="search()">
+        SEARCH
+      </button>&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button color="primary" type="button" (click)="reset()">
+        RESET
+      </button>
+    </div>
+  </mat-dialog-actions> -->
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-evenly" style="margin-top: 3%">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button mat-raised-button color="primary" style="margin-left: 3%"  (click)="search()">
+        SEARCH</button>&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button color="primary"  (click)="reset()"> RESET</button>
+    </div>
+  </div>
+
+  <div *ngIf="message" class={{message[0]}} fxLayoutAlign="space-evenly">{{message[1]}}</div>
+
+  <ng-container *ngIf="viewflg" style="margin-top: 5%">
+    <mat-grid-list cols="6" rowHeight="2em">
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ID : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2' class="width-25">
+        <div class="text-inside-grid">
+          {{id}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_name}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> SHORT NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_short_name}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EMAIL : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_email}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> MOBILE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_mobile1}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> BRANCH : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_branchnm}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DATE OF JOINING : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_doj}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GROUP HEAD : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_ghname}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> REGIONAL HEAD : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usr_rhname}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid">BLOCKED:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usrblockedflg}}
+        </div>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <div class="text-inside-grid">STOPPAGE CLEARANCE AMOUNT:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usrcreditlimit}}
+        </div>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <div class="text-inside-grid">COST CENTER:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{cost_center}}
+        </div>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <div class="text-inside-grid">GODOWN:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gdgodownname}}
+        </div>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <div class="text-inside-grid">MAX RESERVATION DAYS AND HRS:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{mhr_max_days}} - {{mhr_max_hours}}
+        </div>
+      </mat-grid-tile>
+  
+      <mat-grid-tile>
+        <div class="text-inside-grid">DESIGNATION:</div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{usrdesignation}}
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </ng-container>
+</form>

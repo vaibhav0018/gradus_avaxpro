@@ -1,0 +1,421 @@
+<app-custom-spinner></app-custom-spinner>
+
+<form [formGroup]="form">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="showMenuFlag" (opened)="showMenuFlag = true" (closed)="showMenuFlag = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <b>STOCK REPORT MENU</b>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-stock-query-filter (childFilterFormOutput)="childFilterFormValues($event)"></app-stock-query-filter>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+
+    <mat-accordion *ngIf="groupWiseReportFlg">
+        <mat-expansion-panel [expanded]="groupWiseReportViewFlg" (opened)="groupWiseReportViewFlg = true"
+            (closed)="groupWiseReportViewFlg = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <b>STOCK GROUPWISE REPORT</b>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <table class='html-table' border="0">
+                    <thead>
+                        <tr>
+                            <th>MAINGROUP NAME</th>
+                            <th>SUBGROUP NAME</th>
+                            <th>ITEM CODE</th>
+                            <th>CAT REF NO </th>
+                            <th>MAKE</th>
+                            <th>ITEM NAME</th>
+                            <th>PRODUCT CODE</th>
+                            <th *ngFor="let cols of dynamicHeader">{{cols | uppercase}}</th>
+                            <th>LP in Branch</th>
+                            <th>BAL QTY</th>
+                        </tr>
+                    </thead>
+                    <tr *ngFor="let row of tableData; let i=index">
+                        <td>{{row.maingroup}}</td>
+                        <td>{{row.subgroup}}</td>
+                        <td>
+                            <a href="javascript:void(0);" (click)="searchItemCode(row);">
+                                {{row.it_item_code}}
+                            </a>
+                            <mat-icon (click)="onClickInfo(row.it_item_code)" matTooltip="item product detail">info
+                            </mat-icon>
+                            <mat-icon *ngIf="!(row.it_image_name=='-')" matTooltip="view item image"
+                                (click)="searchItemFilter(row.it_item_code,row.it_prod_code)">image</mat-icon>
+                        </td>
+                        <td>{{row.itm_catalog_ref_no}}</td>
+                        <td>{{row.itm_make_code}}</td>
+                        <td>{{row.it_item_name}}</td>
+                        <td>{{row.it_prod_code}}</td>
+                        <td *ngFor="let cols of dynamicHeader">
+                            {{row[cols]}}
+                        </td>
+                        <td align="right">{{row.mmx_lp}}</td>
+                        <td align="right">{{row.balance_qty}}</td>
+                    </tr>
+                </table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion *ngIf="!closereportflg&&stockQueryReportFlag">
+        <mat-expansion-panel [expanded]="stockQueryReportFlag" (opened)="stockQueryReportFlag = true"
+            (closed)="stockQueryReportFlag = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <b>STOCK QUERY REPORT</b>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="stockQueryReportFlag" class="margin-top5p">
+
+                <table class='html-table' border="0">
+                    <tr>
+                        <td style="display:flex;align-items: center;"> ITEM CODE :
+                            <mat-icon *ngFor="let prevElement of previousItemDataSource"
+                                (click)="navigateToViewPrevoiusItem(prevElement.it_item_code)"
+                                matTooltip="click to view prevoius item">
+                                navigate_before</mat-icon>
+                            <a mat-list-item href="javascript: void(0);"
+                                (click)="getItemLedgerReport(currentItemCode)">{{currentItemCode}}
+                            </a>
+                            <mat-icon *ngFor="let nextElement of nextItemDataSource"
+                                (click)="navigateToViewNextItem(nextElement.it_item_code)"
+                                matTooltip="click to view next item">
+                                navigate_next</mat-icon>
+                            <mat-icon *ngIf="currentItemCode" (click)="onClickInfo(currentItemCode)"
+                                matTooltip="item product detail">info
+                            </mat-icon>
+                        </td>
+                        <td colspan="2"> 
+                            <!-- ITEM NAME : {{it_item_name}}<br> -->
+                            ITEM NAME : {{it_tech_desc}}
+                        </td>
+                        <td colspan="2"> PROD CODE : <span
+                                [ngStyle]="{'color':color_code != '-' ? color_code : ''}">{{prod_code}}</span>
+                        </td>
+
+                        <td colspan="catRefNoLength"> CAT REF NO :
+                            <span *ngFor="let element of catRefNoDataSource">
+                                <span
+                                    [ngStyle]="{'color':color_code != '-' ? color_code : ''}">{{element.mk_short_name}}
+                                    | {{element.itm_catalog_ref_no}}</span>&nbsp;&nbsp;
+                            </span>
+                        </td>
+                        <td> HSN : {{it_tariff_code}}
+                        </td>
+                        <td colspan="2"> LAST SALEABLE LENGTH : {{min_saleable_length}}
+                        </td>
+                        <td colspan="2"> <span *ngIf="imgUrl!='-'"
+                                [ngStyle]="{'color':color_code != '-' ? color_code : ''}">
+                                <!-- <ng-img-magnifier
+                                [thumbImage]='imgUrl' [fullImage]='imgUrl'>
+                            </ng-img-magnifier>  -->
+                                <!-- <ng-img-magnifier
+                            thumbImage="imgUrl"
+                            fullImage="imgUrl"
+                            top="30"
+                            right="1"
+                            lensWidth="10"
+                            lensHeight="10"
+                            resultWidth="35"
+                            resultHeight="55"
+                            imgWidth="500"
+                            imgHeight="250"
+                            >
+                            </ng-img-magnifier> -->
+                                <img [src]="imgUrl" width="90" alt="Item Image"
+                                    (click)="openImageDialog(imgUrl,currentItemCode,prod_code)">
+                                <!-- <lib-ngx-image-zoom
+                                [thumbImage]=myThumbnail
+                                [fullImage]=myFullresImage
+                                [magnification]="1"
+                                [enableScrollZoom]="true"
+                                [enableLens]="true"
+                                [lensWidth]="200"
+                            ></lib-ngx-image-zoom> -->
+
+                                <!-- <ngx-img-zoom
+                                [zoomImageSrc]="imgUrl"
+                                [previewImageSrc]="imgUrl"
+                                [imgStyle]="'width:515px; height:515px; bottom:0;  left:0;  right:0;  top:0;  margin:0 auto; border:1px solid #dcdcdc;'"
+                                [resultStyle]="'width:824px; height:824px; background-repeat: no-repeat; z-index: 2; position:absolute;-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;'"
+                                [lensStyle]="'width:55px; height:55px'"
+                                [enableZoom]="enableZoom"
+                                [containerStyle]=""
+                            ></ngx-img-zoom> -->
+                            </span>
+                            <span *ngIf="imgUrl=='-'" [ngStyle]="{'color':color_code != '-' ? color_code : ''}">
+                                No Image
+                            </span>
+
+                        </td>
+                        <td>
+                            <mat-icon (click)="closestockreport()" matTooltip="click to close">
+                                close
+                            </mat-icon>
+                        </td>
+                    </tr>
+                </table>
+
+                <!--
+                <table class='html-table' border="0">
+                    <tr>
+                        <td colspan="priceListLength"> LIST PRICE:
+                            <span *ngFor="let element of priceListDataSource">
+                                &nbsp;&nbsp;{{element.mk_short_name}} / {{element.itm_list_price}} / {{element.um_short_desc}} :
+                                {{element.itmsale}} &nbsp;
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                
+                <mat-grid-list cols="{{priceListLength}}" rowHeight="2em">
+                    <mat-grid-tile>
+                        <div class="text-inside-grid">LIST PRICE : </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile *ngFor="let element of priceListDataSource">
+                        <div class="text-inside-grid">
+                            {{element.mk_short_name}} : {{element.itmsale}} : {{element.itm_list_price}}
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list> 
+            -->
+            </div>
+
+            <!-- <div class="margin-top5p" border="0" *ngIf="productDataSource && showProductData">
+                <table class="html-table">
+                    <tr *ngFor="let element of productDataSource">
+                        <td>
+                            {{element.ipd_label}}
+                        </td>
+                        <td>
+                            {{element.ipd_value}}
+                        </td>
+                    </tr>
+                </table>
+            </div> -->
+
+            <div *ngIf="showButtonFlag">
+                <mat-grid-list cols="2" rowHeight="1.5rem">
+                    <mat-grid-tile>
+                        LIST PRICE:
+                        <span *ngFor="let element of priceListDataSource">
+                            <span>&nbsp;&nbsp;{{element.cmk_code}} | {{element.itm_list_price}} /
+                                {{element.um_short_desc}} :
+                                {{element.itmsale}} &nbsp;&nbsp;</span>
+                        </span>
+                        <mat-icon (click)="onItemCategoryClickHandler()" matTooltip="click for item category details">
+                            menu</mat-icon>
+                    </mat-grid-tile>
+                    <mat-grid-tile style="width: 100%;">
+                        <div class="divButtonClass">
+                            <mat-icon (click)="onExpectedStockClickHandler($event)"
+                                matTooltip="click for expected stock">
+                                developer_board
+                            </mat-icon>
+                        </div>
+                        <div class="divButtonClass">
+                            <!-- <main class="scroll"> -->
+                            <mat-icon (click)="onStockLevelClickHandler($event)" matTooltip="click for stock level">
+                                format_line_spacing
+                            </mat-icon>
+                            <!-- </main> -->
+                        </div>
+                        <div class="divButtonClass">
+                            <mat-icon *ngIf="displayDealerStockFlag" (click)="onDealerStockClickHandler($event)"
+                                matTooltip="click for dealer stock">person</mat-icon>
+                        </div>
+                        <!-- <div class="divButtonClass">
+                            <mat-icon (click)="onListPriceClickHandler($event)" matTooltip="click for List Price">list
+                            </mat-icon>
+                        </div> -->
+                        <div class="divButtonClass">
+                            <mat-icon (click)="downloadExcel()" matTooltip="click to download">move_to_inbox</mat-icon>
+                        </div>
+                        <div class="divButtonClass">
+                            <b>
+                                <div class="color-red" style="font-size: 10px !important;">{{starIcon}}GOODS IN TRANSIT
+                                </div>
+                            </b>
+                        </div>
+                        <div class="divButtonClass">
+                            <mat-icon (click)="openSelectColumnsModal()" matTooltip="click for settings">settings_appl
+                            </mat-icon>
+                        </div>
+                        <div class="divButtonClass">
+                            <div class="font-size"
+                                (click)="navigateToViewPreviousShadowItem(shadowIndex,similarShadowItemTableData)"
+                                matTooltip="click for prevoius similar item">{{prevIcon}}</div>
+                        </div>
+                        <div class="divButtonClass">
+                            <div class="font-size"
+                                (click)="navigateToViewNextShadowItem(shadowIndex,similarShadowItemTableData)"
+                                matTooltip="click for next similar item">{{nextIcon}}</div>
+                        </div>
+                        <div class="divButtonClass">
+                            <mat-icon (click)="navigateToViewParentItem(parentItemCode)"
+                                matTooltip="click for for parent item">
+                                home
+                            </mat-icon>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+
+            <div *ngIf="expectedStockFlag">
+                <div class="mat-elevation-z8">
+                    <mat-table [dataSource]="expectedStockDataSource">
+                        <ng-container matColumnDef="serial_no">
+                            <mat-header-cell *matHeaderCellDef> SR NO</mat-header-cell>
+                            <mat-cell *matCellDef="let element let i = index;">
+                                {{i+1}}.
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="stm_item_code">
+                            <mat-header-cell *matHeaderCellDef> ITEM CODE</mat-header-cell>
+                            <mat-cell *matCellDef="let element ">{{element.stm_item_code}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="stm_make">
+                            <mat-header-cell *matHeaderCellDef> MAKE</mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.stm_make}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="ho_po_stock_branch">
+                            <mat-header-cell *matHeaderCellDef> EXPECTED STOCK AT {{loggedInBranch | uppercase}} BRANCH
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="text-right">
+                                {{element.ho_po_stock_branch}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="ho_po_stock_date">
+                            <mat-header-cell *matHeaderCellDef> EXPECTED DATE </mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.ho_po_stock_date}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="oth_po_stock_branch">
+                            <mat-header-cell *matHeaderCellDef> EXPECTED STOCK OTHER THAN {{loggedInBranch | uppercase}}
+                                BRANCH
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="text-right">
+                                {{element.oth_po_stock_branch}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="oth_po_stock_date">
+                            <mat-header-cell *matHeaderCellDef> EXPECTED DATE </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.oth_po_stock_date}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedExpectedStockDataColumns;sticky:true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedExpectedStockDataColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+
+            <mat-card *ngIf="stockLevelFlag">
+                <main class="scroll">
+                    <mat-card-content>
+                        <!-- <mat-grid-list cols="{{stockLevelLength}}" rowHeight="3em">
+                            <mat-grid-tile *ngFor="let element of stockLevelDataSource" [rowspan]="1">
+                                <div class="text-inside-grid" matTooltip="{{element.gd_godown_name}}">{{element.gd_short_name}}</div>
+                            </mat-grid-tile>
+                            <mat-grid-tile *ngFor="let element of stockLevelDataSource" [rowspan]="1">
+                                <div class="text-inside-grid">{{element.make_code}} : {{element.stlvl}}</div>
+                            </mat-grid-tile>
+                        </mat-grid-list> -->
+                        <table class="html-table">
+                            <tr>
+                                <td *ngFor="let element of stockLevelDataSource"
+                                    matTooltip="{{element.gd_godown_name}}">
+                                    {{element.gd_short_name}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td *ngFor="let element of stockLevelDataSource"
+                                    matTooltip="{{element.gd_godown_name}}">
+                                    {{element.make_code}} : {{element.stlvl}}
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-card-content>
+                </main>
+            </mat-card>
+
+            <!-- <div class="example-container-stock-view margin-top5p" > -->
+            <div class="pagination-container" *ngIf="stockQueryReportFlag">
+                <div class="component data component-card">
+                    <main class="scroll">
+                        <mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8 table">
+                            <ng-container class="container" *ngFor="let column of dynamicColumns"
+                                matColumnDef={{column.column_code}}>
+                                <mat-header-cell class="header-cell" *matHeaderCellDef>
+                                    {{column['column_name']}}
+                                </mat-header-cell>
+                                <mat-cell class="cell" *matCellDef="let element;let row" [ngStyle]="{ 'text-align': column.type === 'NUM' ? 'end':column.type === 'DATE' || 
+                            column.type === 'LINK' ? 'center': 'left' }">
+
+                                    <span *ngIf="logged_in_company_code==element.stm_company_code">
+                                        <span *ngIf="column.column_name ==='CARD NO'">
+                                            <a mat-list-item href="javascript: void(0);"
+                                                (click)="getCardLedgerReport(row)">{{element[column.column_code]}}</a>
+                                        </span>
+
+                                        <span *ngIf="column.column_name ==='RSV QTY'">
+                                            <a mat-list-item href="javascript: void(0);"
+                                                (click)="getReserveQtyReport(row)">{{element[column.column_code]}} </a>
+                                        </span>
+                                    </span>
+
+                                    <span
+                                        *ngIf="(column.column_name =='CARD NO' || column.column_name =='RSV QTY') && logged_in_company_code!=element.stm_company_code">
+                                        {{element[column.column_code]}}
+                                    </span>
+                                    <!--  <span *ngIf="column.column_name ==='ITEM CODE'">
+                                <span *ngIf="element.simflag ==='Y'" class="pinkclass">
+                                    {{element[column.column_code]}}
+                                </span>
+                                <span *ngIf="element.simflag ==='N'">
+                                    {{element[column.column_code]}}
+                                </span>
+                            </span> -->
+
+                                    <span *ngIf="column.column_name !=='CARD NO' && column.column_name !=='RSV QTY'">
+                                        <!-- <span *ngIf="column.column_name !=='ITEM CODE'"> -->
+                                        {{element[column.column_code]}}
+                                        <!-- </span> -->
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row class="header-row" *matHeaderRowDef="displayedColumns;sticky: true">
+                            </mat-header-row>
+                            <mat-row class="row" *matRowDef="let row; columns: displayedColumns;"
+                                [class.color-pink]="row.simflag ==='Y'">
+                            </mat-row>
+                        </mat-table>
+
+                    </main>
+                </div>
+            </div>
+
+            <input [hidden]="true" matInput id="hiddenParentItem" formControlName="hiddenParentItem" value="" />
+
+        </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion *ngIf="showFromPriceListFlag">
+        <mat-expansion-panel [expanded]="showFromPriceListFlag" (opened)="showFromPriceListFlag = true"
+            (closed)="showFromPriceListFlag = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <b>ITEM PRICE DETAILS</b>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="showFromPriceListFlag">
+                <app-from-pricelist [data]="fromPriceListData"></app-from-pricelist>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+</form>

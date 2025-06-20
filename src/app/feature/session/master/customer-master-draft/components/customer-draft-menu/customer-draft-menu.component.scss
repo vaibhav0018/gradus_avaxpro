@@ -1,0 +1,36 @@
+@import "../../../../entry/entry.scss";
+
+
+.scroll {
+    overflow: scroll;
+    max-height: 65vh;
+}
+
+.width-50 {
+    width: 350px !important;
+}
+.mat-grid-tile {
+    border: 1px solid #d1d1d1;
+    flex: 1;
+    display: grid;
+    align-items: center;
+    word-wrap: anywhere !important;
+}
+
+.text-inside-grid {
+    position: absolute;
+    left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.text-inside-grid-rad {
+    position: absolute;
+    left: 5px;
+    font-size: 10px;
+    font-weight: 400;
+}
+
+mat-radio-group {
+    transform: scale(0.75);
+}

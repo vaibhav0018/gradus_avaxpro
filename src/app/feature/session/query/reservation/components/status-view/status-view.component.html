@@ -1,0 +1,147 @@
+<!-- <form [formGroup]="form"> -->
+<app-custom-spinner></app-custom-spinner>
+<form>
+
+  <ng-container *ngIf="addflg">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <label style="font-style: inherit;">RESERVATION SUCCESS</label>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card style="margin-top: 1%">
+          <mat-grid-list cols="6" rowHeight="2em">
+            <mat-grid-tile>
+              <div class="text-inside-grid"> ITEM CODE: </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{item_code}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> GOODOWN NAME : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{godown_name}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> PRODUCT CODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{it_prod_code}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> CARD NO: </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{card_no}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> TECH CODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{it_tech_desc}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> MAKE: </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{stm_make}}
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> CATREF NO : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{itm_catalog_ref_no}}
+              </div>
+            </mat-grid-tile>
+
+            <!-- <mat-grid-tile>
+              <div class="text-inside-grid"> OLD ITEM CODE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{old_item_code}}
+              </div>
+            </mat-grid-tile> -->
+
+            <mat-grid-tile>
+              <div class="text-inside-grid"> UOM : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2' class="width-25">
+              <div class="text-inside-grid">
+                {{um_short_desc}}
+              </div>
+            </mat-grid-tile>
+
+          </mat-grid-list>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+
+    <mat-card style="margin-top: 1%">
+      <mat-table [dataSource]="viewdataSource">
+        <ng-container matColumnDef="resv_no">
+          <mat-header-cell *matHeaderCellDef>RESERVATION NO</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" class="text-right">
+            {{element.rsv_rsv_no}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="resv_qty">
+          <mat-header-cell *matHeaderCellDef> RESERVATION QUANTITY</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" class="text-left">
+            {{element.rsv_qty_rsv}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="resev_for">
+          <mat-header-cell *matHeaderCellDef> RESERVED FOR</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" class="text-right">
+            {{element.rsv_rsvfor}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="resv_date">
+          <mat-header-cell *matHeaderCellDef> RESERVED FOR DATE AND TIME </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;"  class="text-center">
+            {{element.rsv_ts_rsv_on}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="resv_upto">
+          <mat-header-cell *matHeaderCellDef> RESERVED UPTO DATE AND TIME </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;"  class="text-center">
+            {{element.rsv_ts_rsv_upto}}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayediewColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayediewColumns;"></mat-row>
+      </mat-table>
+    </mat-card>
+  </ng-container>
+
+
+</form>

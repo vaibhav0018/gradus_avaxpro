@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MakeMasterMenuComponent } from './make-master-menu/make-master-menu.component';
+import { SharedMaterialModule } from '../../../../../../shared/share-material';
 
 
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [SharedMaterialModule,RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class MakeMasterRoutingModule { }

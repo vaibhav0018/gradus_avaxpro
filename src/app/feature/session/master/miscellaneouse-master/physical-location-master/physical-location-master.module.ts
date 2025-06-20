@@ -10,6 +10,7 @@ import { PhysicalLocationCardListComponent } from './components/physical-locatio
 import { SpecialcharvalidationDirective } from './components/common/specialcharvalidation.directive';
 import { ConfirmDialogComponentComponent } from './components/ConfirmDialog/confirm-dialog-component/confirm-dialog-component.component';
 import { ConfirmationDailogComponent } from './confirmation-dailog/confirmation-dailog.component';
+import { CustomSpinnerComponent } from "../../../custom-spinner/custom-spinner.component";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ConfirmationDailogComponent } from './confirmation-dailog/confirmation-
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-  ]
+    CustomSpinnerComponent
+]
 })
 export class PhysicalLocationMasterModule { }

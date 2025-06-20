@@ -133,6 +133,9 @@ const GET_USER_LIST = 'getusercodelist'
   })
 
 export class UtilityServiceAvaxPro {
+  getUserList(user: any): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
     payload: any = {}
     completeUrl: string
     req_params: object = {}
@@ -271,6 +274,11 @@ export class UtilityServiceAvaxPro {
 }
 
 
+
+
+function showErrMessage(snackBar: any, msg: any) {
+  throw new Error('Function not implemented.');
+}
   // getModuleDropDown = (): Observable<any> => this.followupactionservice.getModuleDropDown()
 
  

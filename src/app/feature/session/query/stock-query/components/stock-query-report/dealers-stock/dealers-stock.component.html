@@ -1,0 +1,58 @@
+<h1 mat-dialog-title>{{ modalTitle }}
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</h1>
+
+<div *ngIf="message" class={{message[0]}} fxLayoutAlign="space-evenly">{{message[1]}}</div>
+
+<div *ngIf="!message">
+  <main class="scroll">
+    <mat-table [dataSource]="dealersStockDataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="serial_no">
+        <mat-header-cell *matHeaderCellDef> SR NO</mat-header-cell>
+        <mat-cell *matCellDef="let element let i = index;">
+          {{i+1}}.
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_code">
+        <mat-header-cell *matHeaderCellDef> DEALER CODE</mat-header-cell>
+        <mat-cell *matCellDef="let element ">{{element.ds_code}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_name">
+        <mat-header-cell *matHeaderCellDef> DEALER NAME</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_tel_no">
+        <mat-header-cell *matHeaderCellDef> TEL NO. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_tel_no}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_catalog_ref_no">
+        <mat-header-cell *matHeaderCellDef> CATLOG REF NO. </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.ds_catalog_ref_no}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_stock_as_on_date">
+        <mat-header-cell *matHeaderCellDef> STOCK AS ON DATE </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_stock_as_on_date}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="br_city">
+        <mat-header-cell *matHeaderCellDef> BRANCH </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.br_city}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_drum_no">
+        <mat-header-cell *matHeaderCellDef> DRUM NO. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_drum_no}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_qty">
+        <mat-header-cell *matHeaderCellDef> QTY</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_qty}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="ds_uom">
+        <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ds_uom}} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedDealersStockDataColumns;sticky:true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedDealersStockDataColumns;"></mat-row>
+    </mat-table>
+  </main>
+</div>

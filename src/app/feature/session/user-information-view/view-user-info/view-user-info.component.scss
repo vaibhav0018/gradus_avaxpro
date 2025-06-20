@@ -1,0 +1,42 @@
+.mat-grid-tile {
+    border: 1px solid #d1d1d1;
+    flex: 1;
+    display: grid;
+    align-items: left;
+    word-wrap: anywhere !important;
+    overflow: visible !important;
+    line-height: normal !important;
+    }
+    mat-cell, mat-footer-cell, mat-header-cell {
+        flex: 1;
+        display: grid;
+        align-items: center;
+        word-wrap: anywhere;
+        min-height: inherit;
+        border-right: solid #e0e0e0 1px;
+        padding-left: 9px !important;  
+    }
+    .grid-header-row {
+      min-height: 30px !important;
+      background-color: #4072b4 !important;
+    }
+    .text-inside-grid {
+      position: absolute !important;
+      left: 5px !important;
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .container {
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    :host ::ng-deep .mat-icon {
+      cursor: pointer;
+      align-self: right;
+    }
+    .mat-icon {
+      width: 20px !important;
+      font-size: 20px !important;
+      align-self: right;
+    }
+   

@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>{{ modalTitle }}
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</h1>
+
+<div *ngIf="message" class={{message[0]}} fxLayoutAlign="space-evenly">{{message[1]}}</div>
+<div *ngIf="!message">
+  <!-- <mat-card>
+    <mat-card-content>
+      <mat-grid-list cols="{{priceListLength}}" rowHeight="2em">
+        <mat-grid-tile>
+          <div class="text-inside-grid">LIST PRICE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile *ngFor="let element of priceListDataSource">
+          <div class="text-inside-grid">
+            {{element.mk_short_name}} : {{element.itmsale}} : {{element.itm_list_price}}
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card> -->
+
+  <table class='html-table' border="0">
+    <tr>
+      <td colspan="priceListLength">
+        <span *ngFor="let element of priceListDataSource">
+          &nbsp;&nbsp;{{element.mk_short_name}} / {{element.itm_list_price}} / {{element.um_short_desc}} :
+          {{element.itmsale}} &nbsp;&nbsp;
+        </span>
+      </td>
+    </tr>
+  </table>  
+</div>

@@ -1,0 +1,196 @@
+<!-- <app-custom-spinner></app-custom-spinner> -->
+<form [formGroup]="form">
+
+  <span mat-dialog-title align='center'>
+    <span> ITEM QUERY </span>
+    <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+  </span>
+
+  <mat-card>
+    <div fxLayout="row wrap" fxLayoutAlign="space-evenly" class="example-container3">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field>
+          <input type="text" class="wp-300" placeholder="Item Code" matInput formControlName="txtitemCode"
+            [matAutocomplete]="autoItemList">
+          <mat-icon class='float-right icon-h-15' class='float-right icon-h-15' (click)="searchItem1();">search
+          </mat-icon>
+          <mat-autocomplete #autoItemList="matAutocomplete" [displayWith]="displayItem">
+            <mat-option class='dropdown-panel' *ngFor="let item of itemList" [value]="item">
+              {{ item.item_code }} -- {{item.item_name}} -- {{item.catrefno}} -- {{ item.itm_make_code}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div style="margin-left: 4%">
+          <button button mat-raised-button color="primary" type="submit" (click)="viewItemDetails11()">SUBMIT</button>
+        </div>
+        <div style="margin-left: 1%">
+          <button button mat-raised-button color="primary" type="submit" (click)="rest()">RESET</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <div *ngIf="message" class={{message[0]}} fxLayoutAlign="space-evenly">{{message[1]}}</div>
+
+  <mat-card *ngIf="flag" class="margin-top10p">
+    <ng-container>
+      <mat-grid-list cols="6" rowHeight="2em">
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> ITEM CODE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2' class="width-25">
+          <div class="text-inside-grid">
+            {{it_item_code}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> ITEM NAME : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{it_item_name}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> MAIN GROUP CODE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{it_main_grp_code}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> MAIN GROUP NAME : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{main_group}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> SUB GROUP CODE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{it_main_subgrp_code}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> SUB GROUP NAME : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{sub_group_name}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> PRODUCT CODE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{it_prod_code}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> HSN CODE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{it_tariff_code}}
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> LIST PRICE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{mmx_lp}} / {{um_desc}}
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> GST PERCENTAGE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{gst_perc}} 
+          </div>
+        </mat-grid-tile>
+
+        <!-- <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> IGST PERCENTAGE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{hts_igst_perc}}
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid" class="head"> </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+
+          </div>
+        </mat-grid-tile> -->
+
+        <ng-container *ngIf="catflg">
+          <mat-grid-tile>
+            <div class="text-inside-grid" class="head"> CAT.REF NO. : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              {{catrefno}}
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>
+            <div class="text-inside-grid" class="head"> </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+  
+            </div>
+          </mat-grid-tile>
+        </ng-container>
+
+        <mat-grid-tile rowspan="2">
+          <div class="text-inside-grid" class="head"> IMAGE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='5' rowspan="2">
+          <div class="text-inside-grid" *ngIf=" imgUrlLngth == 1 ">
+            <b>NO IMAGE</b>
+          </div>
+          <div class="text-inside-grid" *ngIf=" imgUrlLngth > 1 ">
+            <img [src]="imgUrl" alt="Item Image" width="100" (click)="openImageDialog(imgUrl,it_item_code,it_prod_code)"> 
+          </div>
+        </mat-grid-tile>
+
+
+      </mat-grid-list>
+    </ng-container>
+  </mat-card>
+
+
+
+</form>

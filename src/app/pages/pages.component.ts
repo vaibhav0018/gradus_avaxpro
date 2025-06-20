@@ -123,6 +123,7 @@ export class PagesComponent implements OnInit {
   }
  
   ngOnInit() {
+    console.log('pages component init')
     let token = localStorage.getItem('loggedIn');
     console.log("token "+token);
     if(token == undefined) {
@@ -145,6 +146,7 @@ export class PagesComponent implements OnInit {
   }
  
   ngAfterViewInit() {
+    console.log('pages component after view init')
     setTimeout(() => {
       this.settings.loadingSpinner = false
     }, 300)
