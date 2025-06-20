@@ -58,8 +58,8 @@
         padding-top: 0px;
         padding-bottom: 0px; 
         width: 100%;
-        font-weight: 400;
-        font-size: 12px;
+        // font-weight: 400;
+        // font-size: 12px;
         &.expanded{
             .menu-expand-icon{
                 -webkit-transform: rotate(180deg);
@@ -93,4 +93,8 @@
 
 .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
     line-height: 25px !important;
+}
+.menu-title{
+    font-size: 14px !important;
+    font-weight: normal;
 }

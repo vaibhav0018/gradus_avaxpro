@@ -40,8 +40,8 @@
         [routerLink]="[menu.routerLink]" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"
         [matTooltip]="menu.title" matTooltipPosition="after" [matTooltipDisabled]="(settings.menuType=='mini') ? 'false' : 'true'"
         (click)="onClick(menu)" [id]="'menu-item-'+menu.id">
-        <mat-icon class="menu-icon">{{menu.icon}}</mat-icon>
         <span class="menu-title">{{menu.title}}</span>
+        <mat-icon class="menu-icon">{{menu.icon}}</mat-icon>
     </a>
     <a *ngIf="menu.href && !menu.subMenu" mat-button 
         fxLayout="row" [fxLayoutAlign]="(settings.menuType=='default') ? 'start center' : 'center center'"
