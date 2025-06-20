@@ -41,6 +41,9 @@
 } 
 
 .sidenav-menu-outer{
+    width: 240px; // or any width you want
+    min-width: 240px;
+    
     .ps{
         // height: calc(100% - #{$toolbar-height}); 
         height: 100%
