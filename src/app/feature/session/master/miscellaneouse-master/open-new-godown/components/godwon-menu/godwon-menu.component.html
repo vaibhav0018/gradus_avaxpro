@@ -1,0 +1,66 @@
+<app-custom-spinner> </app-custom-spinner>
+<form [formGroup]="form">
+
+  <!--   <mat-card style="margin-top: 1%"> -->
+
+  <div class="example-container mat-elevation-z8">
+    <main class="scroll">
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="make_code">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> GODOWN CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.gd_godown_code}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_short_name">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> GODOWN NAME </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container>
+              {{element.gd_godown_name}}
+            </ng-container>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_description">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> GD SHORT NAME </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <ng-container>
+              {{element.gd_short_name}}
+            </ng-container>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make_principle">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> PTS FLG </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.gd_pts_flg}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> ADDRESS </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.gd_address}} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="select">
+          <mat-header-cell class="header-cell" *matHeaderCellDef> </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-icon (click)="editPage(element);">edit</mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"> </mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </main>
+  </div>
+  <!--   </mat-card> -->
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-evenly" class="margin-top5p" style="margin-top: 1%">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <button mat-raised-button color="primary" (click)="addNewGodown();">ADD NEW</button>
+    </div>
+  </div>
+
+
+</form>

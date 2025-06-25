@@ -1,0 +1,440 @@
+<app-custom-spinner></app-custom-spinner>
+<form [formGroup]="form">
+  <mat-card>
+
+    <mat-grid-list cols="2" rowHeight="2em">
+      <mat-grid-tile>
+        <div class="text-inside-grid"> {{viewmsg}}</div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="text-inside-grid">
+          <div>
+            <button mat-raised-button type="submit" color="primary" (click)="addGodown()"> NEW </button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="9" rowHeight="2em">
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GD CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_godown_code}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> PTS FLAG : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='5'>
+        <div class="text-inside-grid">
+          {{gd_pts_flg}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_godown_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN SHORT NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_short_name}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN KEEPER 1 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_godown_keeper1}}
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN KEEPER 2 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_godown_keeper2}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN KEEPER 3 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_godown_keeper3}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN ADDRESS LINE 1 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{address1}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ADDRESS LINE 2: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{address2}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ADDRESS LINE 3: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{address3}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ADDRESS LINE 4: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{address4}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN CITY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_city}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN STATE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{st_state}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN COUNTRY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{br_country_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GODOWN PIN CODE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_pincode}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> LATITUDE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_latitude}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> LONGITUDE :  </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_longitude}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> TELEPHONE NO 1 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_tel_no1}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> TELEPHONE NO 2 : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_tel_no2}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> STD CODE: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_std_code}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> MOBILE NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_mobile_no}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EMAIL ID : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_email_id}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> FAX NO 1: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_fax_no1}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> FAX NO 2: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_fax_no2}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DELIVERY FROM: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{delivery_from}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DELIVERY TO: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{delivery_to}}
+        </div>
+      </mat-grid-tile>
+
+      <!-- <mat-grid-tile>
+        <div class="text-inside-grid"> OCTROI FLAG: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_octroi_flg}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> OCTROI PERC: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_octroi_perc}}
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> AUTH FLAG : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_auth_flg}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid">CONTACT NAME : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_contact_name}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> CONTACT NO: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_contact_no}}
+        </div>
+      </mat-grid-tile>
+
+      <!-- <mat-grid-tile>
+        <div class="text-inside-grid"> ST NO: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_st_no}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> CST NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_cst_no}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ECC CODE: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_ecc_code}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EXCISE DETAILS: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_excise_details}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EXCISE REG NO: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_excise_reg_no}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EXCISE RANGE: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_excise_range}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EXCISE RANGE ADDRESS: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_excise_range}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EDGP ADDRESS : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_excise_range_addr}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EDGP TELEPHONE NO 1: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_edgp_telno1}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EDGP TELEPHONE NO 2: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_edgp_telno2}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EDGP FAX NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_edgp_faxno}}
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> EDGP EMAIL: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_edgp_email}}
+        </div>
+      </mat-grid-tile> -->
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ALLOWED PURCHASE BILL ENTRY: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          {{gd_pb_allow}}
+        </div>
+      </mat-grid-tile> 
+
+      <mat-grid-tile>
+        <div class="text-inside-grid">  </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='5'>
+        <div class="text-inside-grid">
+  
+        </div>
+      </mat-grid-tile> 
+<!-- 
+      <mat-grid-tile>
+        <div class="text-inside-grid">  </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+
+        </div>
+      </mat-grid-tile>  -->
+
+    </mat-grid-list>
+
+  </mat-card>
+
+</form>

@@ -18,7 +18,10 @@ import { BranchTransferClosingDatesService } from '../utilities/branch-transfer-
 import { ChallanDeliveryTermsMasterService } from '../utilities/challan-delivery-terms-master.service';
 import { MasterService } from '../utilities/master.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
+import { environment } from '../../../environments/environment';
+import { HttpServiceResponseModel } from '../../models/HttpServiceResponseModel';
 
 
 
@@ -135,7 +138,7 @@ const GET_USER_LIST = 'getusercodelist'
 export class UtilityServiceAvaxPro {
     payload: any = {}
     completeUrl: string
-    req_params: object = {}
+    req_params: { [key: string]: string } = {}
     constructor(
       private commonService: CommonsService,
       private itemService: ItemServiceAvaxPro,
@@ -265,6 +268,33 @@ export class UtilityServiceAvaxPro {
     const locale = 'en-US';
     const formattedDate = formatDate(res, format, locale);
     return formattedDate
+  }
+
+  checkUserRights(): Observable<any> {
+    this.req_params = {
+      gm_page_id: 'toModVchDt',
+      userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+    }
+    this.completeUrl =
+      environment.baseUrl +
+      '/' +
+      CHECK_ACCOUNTS_USER_DELETE_RIGHTS +
+      '?' +
+      'companyCode' +
+      '=' +
+      this.req_params['company_code'] +
+      '&' +
+      'UserId' +
+      '=' +
+      this.req_params['userid']
+    console.log(this.completeUrl, ' completeUrl')
+    return this.httpService.get(this.completeUrl).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
   }
 
 

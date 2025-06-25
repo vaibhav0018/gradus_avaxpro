@@ -1,0 +1,39 @@
+
+  
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  
+  .grid:nth-last-child(-n + 3) {
+    grid-row-start: 3;
+  }
+
+  .mat-grid-tile{
+    border : 1px solid #d1d1d1;
+    flex: 1;
+    display: grid;
+    align-items: center;
+    word-wrap: anywhere !important; 
+}  
+
+.text-inside-grid {
+  position: absolute;
+  left: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  }
+
+  .text-size {
+    font-style: inherit;
+    display: block;
+    text-align: center;
+    line-height: 10%;
+    font-size: 20px;
+    }
+
+    .mat-footer-row {
+      font-weight: bold;
+    }
+
+    
