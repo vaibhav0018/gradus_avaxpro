@@ -24,23 +24,23 @@
     }   
 }
 
-// .sub-menu{
-//     @include menu-level-padding('ltr');
-//     max-height: 0;
-//     overflow: hidden;
-//     -webkit-transition: max-height 0.25s ease-out;  
-//     -moz-transition: max-height 0.25s ease-out;  
-//     transition: max-height 0.25s ease-out;    
-//     .mat-mdc-button {
-//         padding-left: 40px;      
-//     } 
-//     &.show{
-//         max-height: 500px;
-//         -webkit-transition: max-height 0.25s ease-in;
-//         -moz-transition: max-height 0.25s ease-in;
-//         transition: max-height 0.25s ease-in;
-//     }    
-// }
+.sub-menu{
+    @include menu-level-padding('ltr');
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: max-height 0.25s ease-out;  
+    -moz-transition: max-height 0.25s ease-out;  
+    transition: max-height 0.25s ease-out;    
+    .mat-mdc-button {
+        padding-left: 40px;      
+    } 
+    &.show{
+        max-height: 500px;
+        -webkit-transition: max-height 0.25s ease-in;
+        -moz-transition: max-height 0.25s ease-in;
+        transition: max-height 0.25s ease-in;
+    }    
+}
 
 
 .menu-icon{
@@ -73,23 +73,23 @@
 //     }    
 // }
 
-.sub-menu{
-    @include menu-level-padding('ltr');
-    max-height: 0;
-    overflow: hidden;
-    -webkit-transition: max-height 0.25s ease-out;  
-    -moz-transition: max-height 0.25s ease-out;  
-    transition: max-height 0.25s ease-out;    
-    .mat-button{
-        padding-left: 20px;      
-    } 
-    &.show{
-        max-height: fit-content;
-        -webkit-transition: max-height 0.25s ease-in;
-        -moz-transition: max-height 0.25s ease-in;
-        transition: max-height 0.25s ease-in;
-    } 
-}
+// .sub-menu{
+//     @include menu-level-padding('ltr');
+//     max-height: 0;
+//     overflow: hidden;
+//     -webkit-transition: max-height 0.25s ease-out;  
+//     -moz-transition: max-height 0.25s ease-out;  
+//     transition: max-height 0.25s ease-out;    
+//     .mat-button{
+//         padding-left: 20px;      
+//     } 
+//     &.show{
+//         max-height: fit-content;
+//         -webkit-transition: max-height 0.25s ease-in;
+//         -moz-transition: max-height 0.25s ease-in;
+//         transition: max-height 0.25s ease-in;
+//     } 
+// }
 
 .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
     line-height: 25px !important;
