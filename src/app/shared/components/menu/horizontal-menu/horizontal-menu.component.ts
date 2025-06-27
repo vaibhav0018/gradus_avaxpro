@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -16,7 +17,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         FlexLayoutModule,
         MatButtonModule,
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        CommonModule
     ],
     templateUrl: './horizontal-menu.component.html',
     styleUrls: ['./horizontal-menu.component.scss'],

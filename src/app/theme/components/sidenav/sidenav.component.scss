@@ -4,7 +4,7 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    fill: currentColor;
+    // fill: currentColor;
 }
 
 .sidenav-header{
@@ -41,6 +41,9 @@
 } 
 
 .sidenav-menu-outer{
+    width: 350px; // or any width you want
+    min-width: 240px;
+
     .ps{
         // height: calc(100% - #{$toolbar-height}); 
         height: 100%
@@ -53,6 +56,6 @@
     }
     .vertical-menu {
         padding-right: 20px;
-        padding-bottom: 80px;
+        padding-bottom: 100px;
     }
 }
