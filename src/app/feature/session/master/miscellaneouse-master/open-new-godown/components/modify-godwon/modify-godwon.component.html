@@ -1,0 +1,496 @@
+<app-custom-spinner></app-custom-spinner>
+<form [formGroup]="form">
+  <mat-accordion>
+
+    <mat-card>
+
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <label style="font-style: inherit;"> MODIFY GODOWN ENTRY </label>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+
+        <mat-grid-list cols="9" rowHeight="3em">
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN NAME : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgodwonname" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN SHORT NAME : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgodwonshortname" readonly />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN KEEPER 1 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdkee1" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN KEEPER 2 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdkee2" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN KEEPER 3 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdkee3" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ADDRESS LINE 1 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdaddline1" />
+              </mat-form-field>
+              <mat-icon (click)="showMap();" matTooltip="Click on Map"> map</mat-icon>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ADDRESS LINE 2: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdaddline2" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ADDRESS LINE 3: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdaddline3" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ADDRESS LINE 4: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdaddline4" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN CITY : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-select placeholder="City" formControlName="cmbcity" required>
+                <mat-option *ngFor="let city of cityLists" [value]="city.br_city">
+                  {{city.br_city}}
+                </mat-option>
+              </mat-select>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN STATE : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtstate" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN COUNTRY : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtcountry" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> GODOWN PIN CODE : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-20">
+                <input type="text" aria-label="Number" matInput formControlName="txtgdpincode" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+              <div class="text-inside-grid">LATITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2'>
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtgdLattitude" readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <div class="text-inside-grid">LONGITUDE : </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan='2'>
+              <div class="text-inside-grid">
+                <mat-form-field class="width-25">
+                  <input matInput type="text" value="" formControlName="txtgdLongitude" readonly>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> TELEPHONE NO 1 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txttelNo1" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> TELEPHONE NO 2 : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txttelNo2" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> STD CODE: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtstdcode" readonly/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> MOBILE NO : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtmobileNo" maxlength="10"/>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EMAIL ID : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtEmailID" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> FAX NO 1: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtFaxNo1" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> FAX NO 2: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtFaxNo2" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> DELIVERY FROM: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtDeliveryFrom" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> DELIVERY TO: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtDeliveryTo" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <!-- <mat-grid-tile>
+            <div class="text-inside-grid"> OCTROI FLAG: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-radio-group formControlName="rdboctFlg" (change)="onRadioButonChange($event)">
+                <mat-radio-button value='Y'>YES</mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button checked=true value='N'>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> OCTROI PERC: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" [readonly]="perflg" matInput formControlName="txtocyper" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile> -->
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> AUTH FLAG : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-radio-group [formControlName]="'rdbauthFlg'" [disabled]="true">
+                <mat-radio-button value='Y'>YES</mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button checked=true value='N'>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">CONTACT NAME : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtcontactName" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> CONTACT NO: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtcontactNo" maxlength="10" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <!-- <mat-grid-tile>
+            <div class="text-inside-grid"> ST NO: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtstNo" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> CST NO : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtcstNo" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile> -->
+
+<!--           <mat-grid-tile>
+            <div class="text-inside-grid"> ECC CODE: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtecccode" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EXCISE DETAILS: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtexcideDtl" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EXCISE REG NO: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtexcideRegNo" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EXCISE RANGE: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtexcideRange" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EXCISE RANGE ADDRESS: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtexcideRangeAdd" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EDGP ADDRESS : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtedgpAdd" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EDGP TELEPHONE NO 1: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtedgpTelNo1" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EDGP TELEPHONE NO 2: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtedgpTelNo2" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EDGP FAX NO : </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtedgpFaxNo" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid"> EDGP EMAIL: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='2'>
+            <div class="text-inside-grid">
+              <mat-form-field class="width-25">
+                <input type="text" aria-label="Number" matInput formControlName="txtedgpEmail" />
+              </mat-form-field>
+            </div>
+          </mat-grid-tile> -->
+          <mat-grid-tile>
+            <div class="text-inside-grid"> ALLOWED PURCHASE BILL ENTRY: </div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='8'>
+            <div class="text-inside-grid">
+              <mat-radio-group formControlName="rdbpurchasebillentry" [disabled]="true">
+                <mat-radio-button value='Y'>YES</mat-radio-button>&nbsp;&nbsp;
+                <mat-radio-button checked=true value='N'>NO</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan='9'>
+            <div> <button mat-raised-button type="submit" color="primary" (click)="updateGodown()"> SUBMIT
+              </button> </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-expansion-panel>
+    </mat-card>
+
+  </mat-accordion>
+</form>

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router'
 import { SessionComponent } from './session.component'
 import { ConstantsService } from '../../core/services/constants.service'
 import { ConstantsServiceAvaxPro } from '../../core/services/constants_avaxpro.service'
+import { routes } from '../../app.routes'
 
 export const SessionRoutes: Routes = [
   {
@@ -35,3 +36,9 @@ export const SessionRoutes: Routes = [
 
 
 ]
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+
+})
+export class SessionRoutingModule { }
