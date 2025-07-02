@@ -29,7 +29,7 @@ import { CommonConfirmationDialogComponent } from '../../../../../../shared/comp
 
 export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
-  @ViewChild('tabGroup') tabGroup;
+  @ViewChild('tabGroup') tabGroup : any;
 
   rows: FormArray = this.formBuilder.array([]);
   getrows: FormArray = this.formBuilder.array([]);
@@ -181,7 +181,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     if (localStorage.getItem('moduleCallFrom') == 'undefined') {
       console.log(" ***** in if ")
     } else {
-      this.localData = JSON.parse(localStorage.getItem('moduleCallFrom'));
+      this.localData = JSON.parse(localStorage.getItem('moduleCallFrom')||"");
       this.moduleCallFrom = this.localData.callFrom
     }
     this.getEmailVerificationFlag();
@@ -195,9 +195,9 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
   loadPageData() {
 
     if (sessionStorage.refData)
-      this.stateDataStr = sessionStorage.getItem("refData");
+      this.stateDataStr = sessionStorage.getItem("refData") ||"";
     else {
-      this.stateDataStr = sessionStorage.getItem("stateData");
+      this.stateDataStr = sessionStorage.getItem("stateData") ||"";
       sessionStorage.removeItem("stateData");
       sessionStorage.setItem("refData", this.stateDataStr);
     }
@@ -228,7 +228,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
       this.getHandledByDropdown()
 
-      this.filteredHandledByLists = this.form.get('txtHandledBy').valueChanges.pipe(
+      this.filteredHandledByLists = this.form.get('txtHandledBy')?.valueChanges.pipe(
         startWith(''),
         map(value => {
           value =
@@ -243,7 +243,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
       this.addNewAddressRow(0); //initilize address row
     }
 
-    this.form.get('txtMiscPartyName').valueChanges.pipe(debounceTime(100), tap(() => {
+    this.form.get('txtMiscPartyName')?.valueChanges.pipe(debounceTime(100), tap(() => {
       this.filterMsParty = new Array<PartyModel>()
     }),
       switchMap(value => {
@@ -252,7 +252,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
       })
     ).subscribe(data => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-        this.filterMsParty = data.responseData.map(item => {
+        this.filterMsParty = data.responseData.map((item : any) => {
           return new PartyModel(item.cs_cust_supplr_code, item.cs_name)
         })
       }
@@ -265,18 +265,19 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
   }
 
   getIndustryTypeList() {
-    this.utilityServiceAvaxPro.getIndustryList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getIndustryList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.industryTypeList = data.responseData[0].map(item => {
+          this.industryTypeList = data.responseData[0].map((item : any) => {
             return new ElementModel(item.ind_industry_code, item.ind_industry)
           })
         }
         return this.industryTypeList
       },
-      error => {
+      error :(error) => {
         console.log(error)
       }
+    }
     )
   }
 
@@ -289,7 +290,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     this.utilityServiceAvaxPro.getPaymentTerm(this.pay_day).
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.paytermLists = data.responseData[0].map(item => {
+          this.paytermLists = data.responseData[0].map((item : any) => {
             return new PayMentModel(item.pt_code, item.pt_desc)
           })
           this.lstPayterm = data.responseData[0];
@@ -300,14 +301,14 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
   getHandledByDropdown() {
 
-    this.utilityServiceAvaxPro.getHandledByList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getHandledByList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstHandledBy = data.responseData[0].map(item => {
+          this.lstHandledBy = data.responseData[0].map((item : any) => {
             // console.log( item.usr_userid ,' item.usr_userid ' )
             // console.log( atob(sessionStorage.getItem(btoa('userId'))) ,' userId ' )
-            if (item.usr_userid == atob(sessionStorage.getItem(btoa('userId')))) {
-              this.form.get('txtHandledBy').setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
+            if (item.usr_userid == atob(sessionStorage.getItem(btoa('userId'))||"")) {
+              this.form.get('txtHandledBy')?.setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
             }
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
@@ -315,37 +316,39 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         //  console.log( this.lstHandledBy + " this.lstHandledBy ")
         return this.lstHandledBy
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
   getModifyHandledByDropdown() {
-    this.utilityServiceAvaxPro.getHandledByList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getHandledByList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstHandledBy = data.responseData[0].map(item => {
+          this.lstHandledBy = data.responseData[0].map((item : any) => {
             if (item.usr_userid == this.handled_by_code) {
-              this.form.get('txtEHandledBy').setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
+              this.form.get('txtEHandledBy')?.setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
             }
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
         }
         return this.lstHandledBy
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
   filterHandledBy(val: string) {
-    return this.lstHandledBy.filter(option => {
+    return this.lstHandledBy.filter((option : any) => {
       return option.usr_name.toLowerCase().includes(val.toLowerCase())
     })
   }
-  displayHandledBy(value): string | undefined {
+  displayHandledBy(value :any): string | undefined {
     // return value ? value.usr_name : undefined
     return value ? value.usr_userid + ' -- ' + value.usr_name : undefined
   }
@@ -355,12 +358,12 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     if (this.pay_day == '') {
       this.pay_day = 0;
     }
-    let selectedObj;
+    let selectedObj : any;
     this.utilityServiceAvaxPro.getPaymentTerm(this.pay_day).
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           //this.lstPayterm = data.responseData[0];
-          this.lstPayterm = data.responseData[0].map(item => {
+          this.lstPayterm = data.responseData[0].map((item : any) => {
             if (item.pt_code == this.cs_pay_code) {
               selectedObj = new PayMentModel(item.pt_code, item.pt_desc);
               return selectedObj;
@@ -369,14 +372,14 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
           })
 
           //console.log('selectedObj payterm days', selectedObj);
-          this.form.get('cmbEPayCode').setValue(selectedObj);
+          this.form.get('cmbEPayCode')?.setValue(selectedObj);
         }
       })
   }
 
   get items(): FormArray { return this.form.get('arrayAddAdress') as FormArray; }
 
-  addNewAddressRow(index) {
+  addNewAddressRow(index : any) {
     this.selectedAddressIndex = index
     let control = <FormArray>this.form.controls.arrayAddAdress;
     control.push(
@@ -421,7 +424,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     this.formGroup.controls.txtGstNo.setValue(this.defaultGst)
   }
 
-  initAddedAddressRow(index, current_row) {
+  initAddedAddressRow(index: any, current_row : any) {
     this.selectedEditAddrIndex = index
     let control = <FormArray>this.form.controls.arrayEditAdress;
     control.push(
@@ -519,7 +522,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
     if (current_row.csad_transporter_code == null || current_row.csad_transporter_code == "" || current_row.csad_transporter_code == undefined) {
     } else {
-      const toSelectedTransp = this.lstETransporter[index].find(c => c.tr_code == current_row.csad_transporter_code)
+      const toSelectedTransp = this.lstETransporter[index].find((c : any) => c.tr_code == current_row.csad_transporter_code)
       this.formGroup.controls.cmbETransporter.setValue(toSelectedTransp)
     }
 
@@ -529,32 +532,32 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
     console.log(" checkDraftValidation **********", this.form.value)
 
-    if (this.form.get('txtMiscPartyName').value == '' || this.form.get('txtMiscPartyName').value == null) {
+    if (this.form.get('txtMiscPartyName')?.value == '' || this.form.get('txtMiscPartyName')?.value == null) {
       this.openSnackBar('Please Enter Party Name');
       return false;
     }
 
-    if (this.form.get('cmbIndustry').value == '' || this.form.get('cmbIndustry').value == null) {
+    if (this.form.get('cmbIndustry')?.value == '' || this.form.get('cmbIndustry')?.value == null) {
       this.openSnackBar('Please Select Industry Head Code');
       return false;
     }
 
-    if (this.form.get("txtpaytermdays").value != "") {
-      if ((this.form.get("txtpaytermdays").value).length == 0) {
+    if (this.form.get("txtpaytermdays")?.value != "") {
+      if ((this.form.get("txtpaytermdays")?.value).length == 0) {
         this.openSnackBar("Enter a numeric value for Pay Term Days");
         return false;
       }
     }
 
-    if (this.form.get("txtpaytermdays").value != "") {
-      if (isNaN(this.form.get("txtpaytermdays").value)) {
+    if (this.form.get("txtpaytermdays")?.value != "") {
+      if (isNaN(this.form.get("txtpaytermdays")?.value)) {
         this.openSnackBar("Enter a numeric value for Pay Term Days");
         return false;
       }
     }
 
-    if (this.form.get("txtpaytermdays").value != "") {
-      let dot = this.form.get("txtpaytermdays").value.toString().indexOf(".");
+    if (this.form.get("txtpaytermdays")?.value != "") {
+      let dot = this.form.get("txtpaytermdays")?.value.toString().indexOf(".");
       if (dot != -1) {
         this.openSnackBar("Pay Term Days cant be decimal");
         return false;
@@ -568,7 +571,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
       // }
     
 
-    if (this.form.get('txtHandledBy').value == '' || this.form.get('txtHandledBy').value == null) {
+    if (this.form.get('txtHandledBy')?.value == '' || this.form.get('txtHandledBy')?.value == null) {
       this.openSnackBar('Handled By Can Not Be Blank');
       return false;
     }
@@ -581,35 +584,35 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
     this.payload = {
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))  || ""),
       },
-      cd_name: this.form.get('txtMiscPartyName').value,
+      cd_name: this.form.get('txtMiscPartyName')?.value,
       cs_cust_supplr_flg: 'M',
-      cd_industry_head_code: this.form.get('cmbIndustry').value != undefined ? this.form.get('cmbIndustry').value : '',
-      cd_allow_special_tax: this.form.get('rdbspecailtax').value,
+      cd_industry_head_code: this.form.get('cmbIndustry')?.value != undefined ? this.form.get('cmbIndustry')?.value : '',
+      cd_allow_special_tax: this.form.get('rdbspecailtax')?.value,
       // cd_pay_terms_day: this.form.get('txtpaytermdays').value,
-      cd_pay_terms_day: this.form.get('txtpaytermdays').value != '' ? this.form.get('txtpaytermdays').value :'0',
-      cd_pay_code: this.form.get('cmbPayterms').value.pt_code != undefined ? this.form.get('cmbPayterms').value.pt_code : '',
-      cd_handled_by: this.form.get('txtHandledBy').value.usr_userid,
-      cd_foll_by: this.form.get('txtHandledBy').value.usr_userid,
-      cd_pan_no: this.form.get('txtPanNo').value,
+      cd_pay_terms_day: this.form.get('txtpaytermdays')?.value != '' ? this.form.get('txtpaytermdays')?.value :'0',
+      cd_pay_code: this.form.get('cmbPayterms')?.value.pt_code != undefined ? this.form.get('cmbPayterms')?.value.pt_code : '',
+      cd_handled_by: this.form.get('txtHandledBy')?.value.usr_userid,
+      cd_foll_by: this.form.get('txtHandledBy')?.value.usr_userid,
+      cd_pan_no: this.form.get('txtPanNo')?.value,
       cd_deleted_flg: 'N',
-      cd_created_by: atob(sessionStorage.getItem(btoa('userId'))),
+      cd_created_by: atob(sessionStorage.getItem(btoa('userId'))  || ""),
       contactDto: this.contactArray,
       custAddrDto: this.custAddressArray,
     }
 
-    console.log('cd_pay_terms_day : ', this.form.get('txtpaytermdays').value);
-    console.log('ch_pay_code', this.form.get('cmbPayterms').value);
+    console.log('cd_pay_terms_day : ', this.form.get('txtpaytermdays')?.value);
+    console.log('ch_pay_code', this.form.get('cmbPayterms')?.value);
 
     //alert('py');
     this.customerMasterService.completeSupplierVendor(this.payload).subscribe(data => {
@@ -629,17 +632,17 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
               cust_supplr_name: this.cust_supplr_name,
               flgModify: "Y",
               userInformationDto: {
-                usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-                usr_name: atob(sessionStorage.getItem(btoa('username'))),
-                fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-                fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-                fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-                usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-                usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-                usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-                usr_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-                usr_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-                usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+                usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+                usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+                fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+                fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+                fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+                usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+                usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+                usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+                usr_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+                usr_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+                usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
               },
             }
             sessionStorage.setItem("stateData", JSON.stringify(datastr));
@@ -652,17 +655,17 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
               cust_supplr_name: '',
               flgModify: "Y",
               userInformationDto: {
-                usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-                usr_name: atob(sessionStorage.getItem(btoa('username'))),
-                fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-                fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-                fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-                usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-                usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-                usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-                usr_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-                usr_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-                usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+                usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+                usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+                fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+                fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+                fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))  || ""),
+                usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+                usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+                usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+                usr_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+                usr_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+                usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
               },
             }
             sessionStorage.setItem("stateData", JSON.stringify(datastr));
@@ -677,6 +680,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         this.openSnackBar("Error While updating misc party details");
         return false;
       }
+      return true;
     })
 
   }
@@ -688,11 +692,11 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     return formattedDate
   }
 
-  getCountryList(index) {
+  getCountryList(index : any) {
     this.utilityServiceAvaxPro.getCountryList().subscribe(
       data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.countryLists[index] = data.responseData[0].map(item => {
+          this.countryLists[index] = data.responseData[0].map((item : any ) => {
 
             if (item.ctr_home_country_flg == 'Y') {
               this.getrows = this.form.get('arrayAddAdress') as FormArray;
@@ -710,11 +714,11 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     )
   }
 
-  getCountryEList(index) {
+  getCountryEList(index : any) {
     this.utilityServiceAvaxPro.getCountryList().subscribe(
       data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.countryELists[index] = data.responseData[0].map(item => {
+          this.countryELists[index] = data.responseData[0].map((item : any) => {
             return new CountryListModel(item.ctr_code, item.ctr_desc, item.ctr_home_country_flg)
           })
         }
@@ -723,7 +727,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     )
   }
 
-  onCountryEChange(event, index) {
+  onCountryEChange(event: any, index: any) {
     console.log('onCountryEChange', event.value);
 
     this.getrows = this.form.get('arrayEditAdress') as FormArray;
@@ -733,7 +737,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     this.getStateEDropdown(this.st_ctr_code, index);
   }
 
-  getStateEDropdown(st_ctr_code, index) {
+  getStateEDropdown(st_ctr_code: any, index: any) {
     this.utilityServiceAvaxPro.getStateListData(st_ctr_code).subscribe(data => {
       if (data.responseData[0].length == 0) {
         this.stateELists[index] = null;
@@ -741,7 +745,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         return false;
       } else {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.stateELists[index] = data.responseData[0].map(item => {
+          this.stateELists[index] = data.responseData[0].map((item : any ) => {
             return new StateMasterListModel(item.st_code, item.st_state)
           })
         }
@@ -750,7 +754,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     })
   }
 
-  onCountryChange(event, index) {
+  onCountryChange(event : any, index : any) {
     console.log('event', event.value);
 
     this.getrows = this.form.get('arrayAddAdress') as FormArray;
@@ -760,7 +764,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     this.getStateDropdown(this.st_ctr_code, index);
   }
 
-  getStateDropdown(st_ctr_code, index) {
+  getStateDropdown(st_ctr_code : any, index : any) {
     this.utilityServiceAvaxPro.getStateListData(st_ctr_code).subscribe(data => {
       if (data.responseData[0].length == 0) {
         this.stateLists[index] = null;
@@ -777,14 +781,14 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     })
   }
 
-  openSnackBar(message) {
+  openSnackBar(message : any) {
     this.snackBar.openFromComponent(CommonSnackbarComponent, {
       data: message,
       duration: 10000
     });
   }
 
-  savePartyAddress(index) {
+  savePartyAddress(index : any) {
 
     console.log(" index ", index)
 
@@ -796,20 +800,20 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
     this.payload = {
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       },
       cd_cust_supplr_code: this.cust_supplr_code,
       cs_cust_supplr_flg: 'M',
-      cd_edited_by: atob(sessionStorage.getItem(btoa('userId'))),
+      cd_edited_by: atob(sessionStorage.getItem(btoa('userId')) || ""),
       cd_pan_no: this.form.controls.txtEPanNo.value != undefined ? this.form.controls.txtEPanNo.value : '-',
       custAddrDto: this.custAddressArray,
     }
@@ -852,7 +856,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
   }
 
-  resetAddressEntryRow(index) {
+  resetAddressEntryRow(index: any) {
     console.log(" resetAddressEntryRow index ", index)
     if (index != -1) {
       this.formGroup.controls.txtVendorCode.setValue('')
@@ -888,24 +892,24 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     sessionStorage.removeItem("refData");
   }
 
-  getPartyDetail(cust_supplier_code) {
+  getPartyDetail(cust_supplier_code: any) {
 
     this.payload = {
       cd_cust_supplr_code: cust_supplier_code,
       cs_cust_supplr_flg: 'M',
-      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-      cd_ts_created: atob(sessionStorage.getItem(btoa('userId'))),
+      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+      cd_ts_created: atob(sessionStorage.getItem(btoa('userId'))  || ""),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))  || ""),
+        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       },
     }
 
@@ -941,9 +945,9 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         }
 
 
-        this.form.get("txtEMiscPartyName").setValue(this.lstSupDetail.cs_name)
-        this.form.get("txtEPanNo").setValue(this.lstSupDetail.cs_pan_no)
-        this.form.get("txtEPaytermDays").setValue(this.lstSupDetail.cs_pay_terms_day)
+        this.form.get("txtEMiscPartyName")?.setValue(this.lstSupDetail.cs_name)
+        this.form.get("txtEPanNo")?.setValue(this.lstSupDetail.cs_pan_no)
+        this.form.get("txtEPaytermDays")?.setValue(this.lstSupDetail.cs_pay_terms_day)
         this.cs_industry_head_code = this.lstSupDetail['cs_industry_head_code']
         this.handled_by_code=this.lstSupDetail.cs_handled_by
         this.getModifyHandledByDropdown()
@@ -954,7 +958,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
 
 
-        this.filteredHandledByLists = this.form.get('txtEHandledBy').valueChanges.pipe(
+        this.filteredHandledByLists = this.form.get('txtEHandledBy')?.valueChanges.pipe(
           startWith(''),
           map(value => {
             value =
@@ -981,24 +985,24 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     })
   }
 
-  getUpdatedPartyDetail(cust_supplier_code) {
+  getUpdatedPartyDetail(cust_supplier_code: any) {
 
     this.payload = {
       cd_cust_supplr_code: cust_supplier_code,
       cs_cust_supplr_flg: 'M',
-      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-      cd_ts_created: atob(sessionStorage.getItem(btoa('userId'))),
+      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ""),
+      cd_ts_created: atob(sessionStorage.getItem(btoa('userId'))  || ""),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code') ) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       },
     }
 
@@ -1033,9 +1037,9 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         // this.lstDummyTax = data.responseData[6] //tax_list
         // this.lstDummyTransporter = data.responseData[7] //transporter_list
 
-        this.form.get("txtEMiscPartyName").setValue(this.lstSupDetail.cs_name)
-        this.form.get("txtEPanNo").setValue(this.lstSupDetail.cs_pan_no)
-        this.form.get("txtEPaytermDays").setValue(this.lstSupDetail.cs_pay_terms_day)
+        this.form.get("txtEMiscPartyName")?.setValue(this.lstSupDetail.cs_name)
+        this.form.get("txtEPanNo")?.setValue(this.lstSupDetail.cs_pan_no)
+        this.form.get("txtEPaytermDays")?.setValue(this.lstSupDetail.cs_pay_terms_day)
 
         this.cs_industry_head_code = this.lstSupDetail['cs_industry_head_code']
 
@@ -1048,7 +1052,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
 
 
-        this.filteredHandledByLists = this.form.get('txtEHandledBy').valueChanges.pipe(
+        this.filteredHandledByLists = this.form.get('txtEHandledBy')?.valueChanges.pipe(
           startWith(''),
           map(value => {
             value =
@@ -1074,31 +1078,31 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
     console.log(" checkModifyValidation **********", this.form.value)
 
-    if (this.form.get('txtEMiscPartyName').value == '' || this.form.get('txtEMiscPartyName').value == null) {
+    if (this.form.get('txtEMiscPartyName')?.value == '' || this.form.get('txtEMiscPartyName')?.value == null) {
       this.openSnackBar('Please Enter Party Name');
       return false;
     }
 
-    if (this.form.get('cmbEIndustry').value == '' || this.form.get('cmbEIndustry').value == null) {
+    if (this.form.get('cmbEIndustry')?.value == '' || this.form.get('cmbEIndustry')?.value == null) {
       this.openSnackBar('Please Select Industry Head Code');
       return false;
     }
 
-    if (this.form.get("txtEPaytermDays").value != "") {
-      if ((this.form.get("txtEPaytermDays").value).length == 0) {
+    if (this.form.get("txtEPaytermDays")?.value != "") {
+      if ((this.form.get("txtEPaytermDays")?.value).length == 0) {
         this.openSnackBar("Enter a numeric value for Pay Term Days");
         return false;
       }
     }
 
-    if (this.form.get("txtEPaytermDays").value != "") {
-    if (isNaN(this.form.get("txtEPaytermDays").value)) {
+    if (this.form.get("txtEPaytermDays")?.value != "") {
+    if (isNaN(this.form.get("txtEPaytermDays")?.value)) {
       this.openSnackBar("Enter a numeric value for Pay Term Days");
       return false;
     }
   }
-  if (this.form.get("txtEPaytermDays").value != "") {
-    let dot = this.form.get("txtEPaytermDays").value.toString().indexOf(".");
+  if (this.form.get("txtEPaytermDays")?.value != "") {
+    let dot = this.form.get("txtEPaytermDays")?.value.toString().indexOf(".");
     if (dot != -1) {
       this.openSnackBar("Pay Term Days cant be decimal");
       return false;
@@ -1110,7 +1114,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     //   return false;
     // }
 
-    if (this.form.get('txtEHandledBy').value == '' || this.form.get('txtEHandledBy').value == null) {
+    if (this.form.get('txtEHandledBy')?.value == '' || this.form.get('txtEHandledBy')?.value == null) {
       this.openSnackBar('Handled By Can Not Be Blank');
       return false;
     }
@@ -1124,30 +1128,30 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 // console.log( this.form.get('cmbEPayCode').value ,' cmbEPayCode ')
     this.payload = {
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))  || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch') )  || ""),
+        usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       },
-      cd_name: this.form.get('txtEMiscPartyName').value,
+      cd_name: this.form.get('txtEMiscPartyName')?.value,
       cs_cust_supplr_flg: 'M',
       cd_cust_supplr_code: this.cust_supplr_code,
-      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-      cd_edited_by: atob(sessionStorage.getItem(btoa('userId'))),
-      cd_industry_head_code: this.form.get('cmbEIndustry').value != undefined ? this.form.get('cmbEIndustry').value : '',
+      cd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ""),
+      cd_edited_by: atob(sessionStorage.getItem(btoa('userId')) || ""),
+      cd_industry_head_code: this.form.get('cmbEIndustry')?.value != undefined ? this.form.get('cmbEIndustry')?.value : '',
 //      cd_pay_terms_day: this.form.get('txtEPaytermDays').value,
-      cd_pay_terms_day: this.form.get('txtEPaytermDays').value != '' ? this.form.get('txtEPaytermDays').value :'0',
-      cd_pay_code: this.form.get('cmbEPayCode').value != undefined ? this.form.get('cmbEPayCode').value.pt_code : '',
-      cd_handled_by: this.form.get('txtEHandledBy').value.usr_userid,
-      cd_foll_by: this.form.get('txtEHandledBy').value.usr_userid,
-      cd_pan_no: this.form.get('txtEPanNo').value != undefined ? this.form.get("txtEPanNo").value : '',
-      cd_allow_special_tax: this.form.get('rdbEAllowTax').value,
+      cd_pay_terms_day: this.form.get('txtEPaytermDays')?.value != '' ? this.form.get('txtEPaytermDays')?.value :'0',
+      cd_pay_code: this.form.get('cmbEPayCode')?.value != undefined ? this.form.get('cmbEPayCode')?.value.pt_code : '',
+      cd_handled_by: this.form.get('txtEHandledBy')?.value.usr_userid,
+      cd_foll_by: this.form.get('txtEHandledBy')?.value.usr_userid,
+      cd_pan_no: this.form.get('txtEPanNo')?.value != undefined ? this.form.get("txtEPanNo")?.value : '',
+      cd_allow_special_tax: this.form.get('rdbEAllowTax')?.value,
       cd_deleted_flg: 'N',
       cd_aadhar_no: '',
       cs_tds_section: '',
@@ -1173,7 +1177,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
     })
   }
 
-  AddNewAddress(index) {
+  AddNewAddress(index: any) {
     console.log(" AddNewAddress ", index)
 
     if (this.flgModify == 'Y') {
@@ -1220,7 +1224,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
   }
 
-  checkAddressValidation(selectedIndex, callFrom): any {
+  checkAddressValidation(selectedIndex : any, callFrom : any): any {
 
     console.log(" checkAddressValidation **********")
 
@@ -1442,7 +1446,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
   }//end of func
 
 
-  getESetStateDropdown(index, usrStateCode) {
+  getESetStateDropdown(index : any, usrStateCode: any) {
 
     this.getrows = this.form.get('arrayEditAdress') as FormArray;
     this.aryTableControl = this.getrows.controls;
@@ -1457,7 +1461,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         return false;
       } else {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.stateELists[index] = data.responseData[0].map(item => {
+          this.stateELists[index] = data.responseData[0].map((item : any) => {
 
             if (item.st_code == usrStateCode) {
               this.stateArray[index] = usrStateCode
@@ -1472,7 +1476,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
   }
 
   //validate gst no 
-  validateGSTPAN(selectedIndex, callFrom): any {
+  validateGSTPAN(selectedIndex : any, callFrom : any): any {
     console.log(" validateGSTPAN **********")
 
     let startedIndex: number = 0;
@@ -1535,17 +1539,17 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
 
       this.payload = {
         userInformationDto: {
-          usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-          usr_name: atob(sessionStorage.getItem(btoa('username'))),
-          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
+          usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+          usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))  || ""),
+          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))   || ""),
         },
-        cd_pan_no: this.form.get("txtPanNo").value,
+        cd_pan_no: this.form.get("txtPanNo")?.value,
         callFrom: "complete",
         cust_code_flg: 'S',
       }
@@ -1571,17 +1575,17 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
 
       this.payload = {
         userInformationDto: {
-          usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-          usr_name: atob(sessionStorage.getItem(btoa('username'))),
-          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
+          usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+          usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ""),
         },
-        cd_pan_no: this.form.get("txtEPanNo").value,
+        cd_pan_no: this.form.get("txtEPanNo")?.value,
         callFrom: "complete",
         cust_code_flg: 'S',
         cd_cust_supplr_code: this.cust_supplr_code
@@ -1632,6 +1636,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
                       // )
                     }
                   }
+                  return true
                 }
               )
             }//defaultGst
@@ -1642,6 +1647,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
             }
           }
         }
+        return true
       }
     )
   } else {
@@ -1662,7 +1668,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
     //return true;
   }//func
 
-  callNextFunction(callFrom, selectedIndex) {
+  callNextFunction(callFrom : any, selectedIndex : any) {
 
     if (callFrom == "singleAddress") {
       if (this.flgModify == 'Y') {
@@ -1702,7 +1708,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
           this.formGroup.controls.txtAddrSecond.value + ',' +
           this.formGroup.controls.txtAddrThird.value + ',' +
           this.formGroup.controls.txtAddrFourth.value,
-        cdad_created_by: atob(sessionStorage.getItem(btoa('userId'))),
+        cdad_created_by: atob(sessionStorage.getItem(btoa('userId'))||""),
         cdad_deleted_flg: 'N',
         cdad_address1: this.formGroup.controls.txtAddrOne.value,
         cdad_address2: this.formGroup.controls.txtAddrSecond.value,
@@ -1742,7 +1748,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
     }
   }
 
-  checkModifyAddressValidation(selectedEditIndex): any {
+  checkModifyAddressValidation(selectedEditIndex : any): any {
 
     console.log(" checkModifyAddressValidation **********", selectedEditIndex)
 
@@ -1933,7 +1939,7 @@ if (this.formGroup.controls.txtGstNo.value == '' || this.formGroup.controls.txtG
     return true;
   }//end of func
 
-  validateEditGSTPAN(selectedEditIndex): any {
+  validateEditGSTPAN(selectedEditIndex : any): any {
     console.log(" validateEditGSTPAN **********")
 
     for (let index = 0; index <= selectedEditIndex; index++) {
@@ -1980,17 +1986,17 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
 
       this.payload = {
         userInformationDto: {
-          usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-          usr_name: atob(sessionStorage.getItem(btoa('username'))),
-          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code'))),
+          usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+          usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+          fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+          usr_br_acc_code: atob(sessionStorage.getItem(btoa('usr_br_acc_code')) || ''),
         },
-        cd_pan_no: this.form.get("txtEPanNo").value,
+        cd_pan_no: this.form.get("txtEPanNo")?.value,
         callFrom: "complete",
         cust_code_flg: 'S',
         cd_cust_supplr_code: this.cust_supplr_code
@@ -2123,13 +2129,13 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
         cdad_tax_type: this.formGroup.controls.cmbETaxType.value != undefined ? this.formGroup.controls.cmbETaxType.value : '',
         cdad_transporter_code: this.formGroup.controls.cmbETransporter.value != undefined ? this.formGroup.controls.cmbETransporter.value.tr_code : '',
         cdad_transporter: this.formGroup.controls.cmbETransporter.value != undefined ? this.formGroup.controls.cmbETransporter.value.tr_name : '',
-        cdad_edited_by: atob(sessionStorage.getItem(btoa('userId'))),
+        cdad_edited_by: atob(sessionStorage.getItem(btoa('userId')) || ""),
       }
       );
     }
   }
 
-  callNextEditFunction(selectedEditIndex) {
+  callNextEditFunction(selectedEditIndex: any) {
 
     this.getEditAddressData();
 
@@ -2138,29 +2144,29 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
     this.updateParty();
   }
 
-  initNewAddressRow(index) {
+  initNewAddressRow(index : any) {
     console.log("initNewAddressRow ", this.addressCode)
     this.addNewAddressRow(0)
     this.showIconFLg = false
   }
 
-  enableContact(event, i) {
+  enableContact(event : any , i : any) {
     if (event.checked) {
-      this.form.get('txtP' + i + 'Name').enable()
-      this.form.get('txtP' + i + 'Email').enable()
-      this.form.get('txtP' + i + 'StdCode').enable()
-      this.form.get('txtP' + i + 'Teleno').enable()
-      this.form.get('txtP' + i + 'FaxNo').enable()
-      this.form.get('txtP' + i + 'MobileNo').enable()
-      this.form.get('txtP' + i + 'AadharNo').enable()
+      this.form.get('txtP' + i + 'Name')?.enable()
+      this.form.get('txtP' + i + 'Email')?.enable()
+      this.form.get('txtP' + i + 'StdCode')?.enable()
+      this.form.get('txtP' + i + 'Teleno')?.enable()
+      this.form.get('txtP' + i + 'FaxNo')?.enable()
+      this.form.get('txtP' + i + 'MobileNo')?.enable()
+      this.form.get('txtP' + i + 'AadharNo')?.enable()
     } else {
-      this.form.get('txtP' + i + 'Name').disable()
-      this.form.get('txtP' + i + 'Email').disable()
-      this.form.get('txtP' + i + 'StdCode').disable()
-      this.form.get('txtP' + i + 'Teleno').disable()
-      this.form.get('txtP' + i + 'FaxNo').disable()
-      this.form.get('txtP' + i + 'MobileNo').disable()
-      this.form.get('txtP' + i + 'AadharNo').disable()
+      this.form.get('txtP' + i + 'Name')?.disable()
+      this.form.get('txtP' + i + 'Email')?.disable()
+      this.form.get('txtP' + i + 'StdCode')?.disable()
+      this.form.get('txtP' + i + 'Teleno')?.disable()
+      this.form.get('txtP' + i + 'FaxNo')?.disable()
+      this.form.get('txtP' + i + 'MobileNo')?.disable()
+      this.form.get('txtP' + i + 'AadharNo')?.disable()
     }
   }
 
@@ -2213,7 +2219,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
           condr_fax1: this.form.controls["txtP" + i + "FaxNo"].value,
           condr_mobile_no1: this.form.controls["txtP" + i + "MobileNo"].value,
           condr_aadhar_no: this.form.controls["txtP" + i + "AadharNo"].value,
-          condr_created_by: atob(sessionStorage.getItem(btoa('userId'))),
+          condr_created_by: atob(sessionStorage.getItem(btoa('userId'))||""),
           condr_deleted_flg: 'N',
         }
         );
@@ -2221,7 +2227,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
     }
   }
 
-  showMap(index) {
+  showMap(index : any) {
     this.getrows = this.form.get('arrayAddAdress') as FormArray;
     this.aryTableControl = this.getrows.controls;
     this.formGroup = this.aryTableControl[index] as FormGroup;
@@ -2269,7 +2275,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
       }
     }
 
-    const toSelectedCountry = this.countryLists[index].find(c => c.ctr_code == this.formGroup.controls.cmbCountry.value)
+    const toSelectedCountry = this.countryLists[index].find((c : any) => c.ctr_code == this.formGroup.controls.cmbCountry.value)
     console.log(" toSelectedCountry.ctr_desc ", toSelectedCountry.ctr_desc)
 
     /* let fullAddress: string
@@ -2295,10 +2301,11 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
     console.log(" fullAddress ", fullAddress)
 
     this.openMapDialog(fullAddress.toUpperCase(), index, "add");
+    return true;
   }
 
   //added addres map
-  showEMap(index) {
+  showEMap(index : any) {
     this.getrows = this.form.get('arrayEditAdress') as FormArray;
     this.aryTableControl = this.getrows.controls;
     this.formGroup = this.aryTableControl[index] as FormGroup;
@@ -2350,10 +2357,11 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
     console.log(" fullAddress ", fullAddress)
 
     this.openMapDialog(fullAddress.toUpperCase(), index, "edit");
+    return true;
 
   }
 
-  openMapDialog(fullAddress, index, callFrom) {
+  openMapDialog(fullAddress : any, index : any, callFrom : any) {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.height = '100% !important'
     dialogConfig.maxHeight = '200vh'
@@ -2405,10 +2413,11 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
           this.formGroup.controls.txtELongitude.setValue(item.split("::")[1])
         }
       }
+      return true
     })
   }
 
-  verifyEmail(i,cntrlName,flg,addr_code){
+  verifyEmail(i : any,cntrlName : any,flg : any,addr_code : any){
     let aryName='arrayAddAdress'
     if(flg=='M'){
       aryName='arrayEditAdress'
@@ -2416,14 +2425,14 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
     this.getrows = this.form.get(aryName) as FormArray;
     this.aryTableControl = this.getrows.controls;
     this.formGroup = this.aryTableControl[i] as FormGroup;
-    if(this.formGroup.get(cntrlName).value == null || this.formGroup.get(cntrlName).value == '')
+    if(this.formGroup.get(cntrlName)?.value == null || this.formGroup.get(cntrlName)?.value == '')
     {
       this.openSnackBar("Please Enter Email Id");
       return false;
     }
-    let payload:any={party_code:this.cust_supplr_code,email_id:this.formGroup.get(cntrlName).value,addr_code:addr_code}
+    let payload:any={party_code:this.cust_supplr_code,email_id:this.formGroup.get(cntrlName)?.value,addr_code:addr_code}
     this.utilityServiceAvaxPro.verifyEmail(payload).subscribe(
-      data => {
+      (data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           if(data.responseData.length == 0){
             this.openSnackBar("Email id does not exist. Please enter correct email id.")    
@@ -2440,15 +2449,16 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
           this.ngOnInit();          
         }
       },
-      error => {
+      (error : any) => {
         console.log(error)
       }
     )
+    return true;
   }
 
   getEmailVerificationFlag(){
     this.utilityServiceAvaxPro.getEmailVerificationFlag().subscribe(
-      data => {
+      (data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
          this.email_verification_flg = data.responseData[0]  
          this.gst_verification_flg = data.responseData[1]        
@@ -2459,7 +2469,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
         console.log("this.email_verification_flg -- " + this.email_verification_flg)
         console.log("this.gst_verification_flg -- " + this.gst_verification_flg)
       },
-      error => {
+      (error : any) => {
         console.log(error)
       }
     )
@@ -2473,9 +2483,9 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
       draftFlg:flg,
       addr_Code:addr_Code,
       userInformationDto: {
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
       },
     }
     this.lstAddedAdress=[]

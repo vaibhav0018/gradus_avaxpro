@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from 'src/app/core/services/http.service';
+import { HttpService } from '../../../../../../core/services/http.service';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { HttpServiceResponseModel } from 'src/app/core/models/HttpServiceResponseModel';
+import { environment } from '../../../../../../environments/environment';
+import { HttpServiceResponseModel } from '../../../../../../core/models/HttpServiceResponseModel';
 import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
 
 const GET_PARTY_LIST = 'getmiscpartyList'
 const GET_INDUSTRY_LIST = 'getIndustryList'
@@ -22,12 +24,13 @@ const POST_UPDATE_MISC_PARTY_DATA = 'updateMiscParty' */
 export class MiscPartyMaintenanceServiceService {
 
   payload: object = {}
-  req_params: object = {}
-  completeUrl: string
+  req_params: { party_code: string } = { party_code: '' };
+  completeUrl: string 
+  party_code: any ={}
 
   constructor(private httpService: HttpService) { }
 
-  getPartyList(party_code): Observable<any> {
+  getPartyList(party_code: any): Observable<any> {
     this.req_params = {
       party_code: party_code,
     }
@@ -44,7 +47,7 @@ export class MiscPartyMaintenanceServiceService {
     this.completeUrl = environment.baseUrl + '/' + GET_INDUSTRY_LIST
     return this.httpService.get(this.completeUrl).pipe(
       map((res: HttpServiceResponseModel) => res),
-      catchError((error: any) => Observable.throw(error.json().error || 'Server error'))
+      catchError((error: any) => throwError(() =>(error.json().error || 'Server error')))
     )
   }
 
@@ -52,15 +55,15 @@ export class MiscPartyMaintenanceServiceService {
     this.completeUrl = environment.baseUrl + '/' + GET_COUNTRY_LIST
     return this.httpService.get(this.completeUrl).pipe(
       map((res: HttpServiceResponseModel) => res),
-      catchError((error: any) => Observable.throw(error.json().error || 'Server error'))
+      catchError((error: any) => throwError(() =>(error.json().error || 'Server error')))
     )
   }
 
-  getMiscPartyMenuList(pageNumber, pageSize): Observable<any> {
+  getMiscPartyMenuList(pageNumber: any, pageSize: any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + GET_MIS_PARTY_MENU_LIST
     this.payload = {
       userInformationDto: {
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))||''),
       },
       pageDto: {
         pageNumber: pageNumber,
@@ -75,13 +78,13 @@ export class MiscPartyMaintenanceServiceService {
     )
   }
 
-  getMiscPartList(party_code): Observable<any> {
+  getMiscPartList(party_code : any): Observable<any> {
     console.log(party_code, ' party_code')
     this.completeUrl = environment.baseUrl + '/' + GET_MISC_PARTY_DATA
     this.payload = {
       mp_party_code: party_code,
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId'))||""),
       }
     }
     console.log('payload ', this.payload);
@@ -93,11 +96,11 @@ export class MiscPartyMaintenanceServiceService {
     )
   }
 
-  getStateListData(st_ctr_code): Observable<any> {
+  getStateListData(st_ctr_code : any): Observable<any> {
     this.completeUrl = environment.baseUrl + '/' + GET_STATE_LIST_DATA + '?' + 'st_ctr_code' + '=' + st_ctr_code
     return this.httpService.get(this.completeUrl).pipe(
       map((res: HttpServiceResponseModel) => res),
-      catchError((error: any) => Observable.throw(error.json().error || 'Server error'))
+      catchError((error: any) => throwError(() =>(error.json().error || 'Server error')))
     )
   }
 

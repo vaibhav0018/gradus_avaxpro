@@ -191,8 +191,12 @@ export class CustomerMasterService {
         switch (event.type) {
 
           case HttpEventType.UploadProgress:
-            const progress = Math.round(100 * event.loaded / event.total);
-            return { status: 'progress', message: progress };
+            if (event.total) {
+              const progress = Math.round(100 * event.loaded / event.total);
+              return { status: 'progress', message: progress }
+            }else {
+            return { status: 'progress', message: 0 };
+            }
 
           case HttpEventType.Response:
             return event.body;

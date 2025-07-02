@@ -13,7 +13,7 @@ import { QuotTypeModel } from '../../quotation.model';
 import { Observable } from 'rxjs';
 import { SnackbarComponent } from '../../../snackbar/snackbar/snackbar.component';
 import { QuotationPageList } from './constants';
-import { MiscPartyMaintenanceMenuComponent } from '../../../misc-party-maintenance/misc-party-maintenance-menu/misc-party-maintenance-menu.component';
+import { MiscPartyMaintenanceMenuComponent
 import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
