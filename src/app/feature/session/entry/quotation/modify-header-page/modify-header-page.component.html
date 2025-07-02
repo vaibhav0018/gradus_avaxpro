@@ -1,0 +1,400 @@
+<mat-dialog-content>
+  <div class="overflow-auto">
+    <div class="min-width">
+  <form [formGroup]="form">
+    <h5 mat-dialog-title></h5>
+
+    <mat-grid-list cols="6" rowHeight="1.5em" class="mw-1024px">
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> BILL TO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-300">
+            <input type="text" class="wp-250" placeholder="SEARCH BILL TO PARTY" matInput formControlName="txtBillTo"
+              [matAutocomplete]="autobilltolist" required>
+            <mat-icon class='float-right icon-h-15' (click)="searchSelectedParty('txtBillTo','CM','B');">search</mat-icon>
+            <mat-autocomplete #autobilltolist="matAutocomplete" [displayWith]="displaycslist"
+              (optionSelected)="getPartyDetail($event.option.value,'B','N')">
+              <mat-option *ngFor="let party of filteredCSLists" [value]="party">
+                {{ party.cs_code }} :: {{ party.cs_name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DISPATCH TO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-300">
+            <input type="text" class="wp-250" placeholder="SEARCH DISPATCH TO PARTY" matInput formControlName="txtDispatchTo"
+              [matAutocomplete]="autodispatchtolist" required>
+              <mat-icon class='float-right icon-h-15' (click)="searchSelectedParty('txtDispatchTo','CM','D');">search</mat-icon>
+            <mat-autocomplete #autodispatchtolist="matAutocomplete" [displayWith]="displaycslist"
+              (optionSelected)="getPartyDetail($event.option.value,'D','N')">
+              <mat-option *ngFor=" let party of filteredDispatchLists" [value]="party">
+                {{ party.cs_code }} :: {{ party.cs_name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ADDRESS : </div>
+      </mat-grid-tile>
+      <mat-grid-tile class="width-25" colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-250">
+            <mat-select placeholder="BILL TO ADDRESS" formControlName="cmbBillToAddress" [(ngModel)]="objBillAddress"
+              required>
+              <mat-option *ngFor="let rowBillAddr of lstBillAddr" [value]="rowBillAddr">
+                {{rowBillAddr.csad_address}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <a href="javascript:none" (click)="saveCcsPreferenceData('billtoaddr')">save</a>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ADDRESS : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-250">
+            <mat-select placeholder="DISPATCH TO ADDRESS" formControlName="cmbDispatchToAddress"
+              [(ngModel)]="objDispatchAddress" required>
+              <mat-option *ngFor="let rowDispAddr of lstDispatchAddr" [value]="rowDispAddr">
+                {{rowDispAddr.csad_address}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <a href="javascript:none" (click)="saveCcsPreferenceData('dispachtoaddr')">save</a>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> STATE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid"> {{objBillAddress['st_state']}}</div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> STATE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid"> {{objDispatchAddress['st_state']}}</div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> PAN NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        {{objBillAddress['csad_pan_no']}}
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='3'>
+        <div class="text-inside-grid"> </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GST NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid"> {{objBillAddress['csad_gst_no']}}</div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> GST NO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">{{objDispatchAddress['csad_gst_no']}}</div>
+      </mat-grid-tile>
+
+      <mat-grid-tile rowspan='2'>
+        <div class="text-inside-grid"> POLICY DETAIL : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='3' rowspan='2'>
+        <div class="text-inside-grid">
+          <textarea matInput value="{{objBillAddress['cs_policy']}}" maxlength="200" readonly>
+                </textarea>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='2' rowspan='2'>
+        <div class="text-inside-grid"></div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> QUOTATION SOURCE : </div>
+      </mat-grid-tile>
+      <!-- this hideQuotSource added as per pratik sir suggestion 16-12-19-->
+      <mat-grid-tile *ngIf="hideQuotSource" colspan='2'>
+        <div class="text-inside-grid"> FRESH </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile *ngIf="!hideQuotSource" colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field floatLabel="never">
+            <mat-label>--SELECT--</mat-label>
+            <mat-select formControlName="cmbQTSource" (selectionChange)="showDetailsFinalProcess($event)"
+              [(ngModel)]="quotSourceFresh" required [disabled]=true>
+              <mat-option *ngFor="let rowSource of lstSource" [value]="rowSource.lkt_code">
+                {{rowSource.lkt_desc}}
+              </mat-option>
+            </mat-select>
+            <input [hidden]="true" matInput id="hiddenDraftNo" formControlName="hiddenDraftNo" value="" />
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile colspan='3'>
+        <div class="text-inside-grid"></div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DELIVERY TERM: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-350">
+            <mat-select placeholder="DELIVERY TERM" formControlName="cmbDeliveryTerms">
+              <mat-option *ngFor="let rowTerms of lstDelTerms" [value]="rowTerms.cdl_challan_del_code">
+                {{rowTerms.cdl_desc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DELIVERY PERIOD: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtDeliveryDays" maxlength="100">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> NO. OF VALID DAYS: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput [value]="txtNoValidDays" formControlName="txtNoValidDays"
+              maxlength="5">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> QUOTATION TYPE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field floatLabel="never" class="wp-250">
+            <mat-label>--SELECT--</mat-label>
+
+            <mat-select formControlName="cmtQtType">
+              <mat-option *ngFor="let quotType of lstQuotType" [value]="quotType.qty_code">
+                {{quotType.qty_type}}
+              </mat-option>
+            </mat-select>
+
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ENQUIRY NO: </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtEnqNo" maxlength="30">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ENQUIRY DATE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field>
+            <input matInput #ref2 [matDatepicker]="pickerEnDate" formControlName="dtEnDate" readonly
+              [(ngModel)]="todayDate1" (click)="pickerEnDate.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerEnDate"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnDate></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> ATTENTION : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtAttention" maxlength="100">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DOC CC TO : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtDocCCTo" maxlength="100">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> DESTINATION : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtDestination" maxlength="100">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> REFERENCE : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="width-25">
+            <input matInput type="text" matInput value="" formControlName="txtReference" maxlength="100">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <!-- <mat-grid-tile colspan='4'>
+        <div class="text-inside-grid"> </div>
+      </mat-grid-tile>
+
+ -->
+      <mat-grid-tile>
+        <div class="text-inside-grid"> SPECIAL TAXES : </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field floatLabel="never" class="wp-250">
+            <mat-label>--SELECT--</mat-label>
+            <mat-select placeholder="SPECIAL TAX" formControlName="cmbSpecialTax">
+              <mat-option value=""> --RESET--</mat-option>
+              <mat-option *ngFor="let rowTax of lstSpecialTax" [value]="rowTax.spt_tax_code">
+                {{rowTax.spt_desc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> HANDLED BY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-350">
+            <input type="text" placeholder="SEARCH HANDLED BY" matInput formControlName="txtHandledBy"
+              [matAutocomplete]="autoHandledBy" required>
+            <mat-autocomplete #autoHandledBy="matAutocomplete" [displayWith]="displayHandledBy">
+              <mat-option *ngFor="let handledBy of filteredHandledByLists | async" [value]="handledBy">
+                {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> FOLLOWED BY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-350">
+            <input type="text" placeholder="SEARCH FOLLOWED BY" matInput formControlName="txtFollowedBy"
+              [matAutocomplete]="autofollowedbylist" required>
+            <mat-autocomplete #autofollowedbylist="matAutocomplete" [displayWith]="displayHandledBy">
+              <mat-option *ngFor="let handledBy of filteredFollowedByLists | async" [value]="handledBy">
+                {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="text-inside-grid"> INSTRUCTED BY : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-350">
+            <input type="text" placeholder="SEARCH INSTRUCTED BY" matInput formControlName="txtInstructedBy"
+              [matAutocomplete]="autoinstructedbylist" required>
+            <mat-autocomplete #autoinstructedbylist="matAutocomplete" [displayWith]="displayHandledBy">
+              <mat-option *ngFor="let handledBy of filteredInstructedByLists | async" [value]="handledBy">
+                {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> BROKER : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan='2'>
+        <div class="text-inside-grid">
+          <mat-form-field class="wp-350">
+            <mat-select placeholder="BROKER" formControlName="cmbBroker">
+              <mat-option *ngFor="let rowBroker of lstBroker" [value]="rowBroker">
+                {{rowBroker.brk_broker_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid"> PROJECT : </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2">
+        <div class="text-inside-grid">
+          <mat-form-field >
+            <mat-select placeholder="PROJECT NAME" formControlName="cmbProject" >
+              <mat-option value="-">--SELECT--</mat-option>
+              <mat-option *ngFor="let row of lstProject" [value]="row.prj_no">
+                {{row.prj_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+  </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button mat-dialog-close color="primary" (click)="updateBillTo()" tabindex="1">UPDATE</button>
+  <button mat-raised-button mat-dialog-close tabindex="-1">CANCEL</button>
+</mat-dialog-actions>

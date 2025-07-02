@@ -1,0 +1,329 @@
+<form [formGroup]="form">
+  <div class="example-container mat-elevation-z8">
+    <mat-tab-group (selectedTabChange)="OnTabChange($event)">
+      <mat-tab label="COMPLETED QUOTATION"> </mat-tab>
+      <mat-tab label="PENDING DRAFT"></mat-tab>
+    </mat-tab-group>
+
+    <mat-expansion-panel *ngIf="advanceSearchFlg">
+      <mat-expansion-panel-header>
+        <mat-panel-title>ADVANCE SEARCH</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-grid-list cols="6" rowHeight="2rem">
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            BRANCH :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <mat-select placeholder="BRANCH" formControlName="cmbBranch">
+                <mat-option *ngFor="let branch of branchList" [value]="branch">
+                  {{branch.br_city | uppercase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            FIN YEAR
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-form-field class="wp-200">
+              <mat-select placeholder="Select Financial Year" formControlName="cmbFinacialYr" required>
+                <mat-option *ngFor="let finYear of finanYearList" [value]="finYear">
+                  {{finYear.df_year_beg}} TO {{finYear.df_year_end}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            QUOTATION NO :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtQuotNo"
+              (change)="enabledTxtBox($event,'txtQuotNo')">
+            </mat-checkbox>&nbsp;&nbsp;
+
+            <mat-form-field class="wp-200">
+              <input matInput type="text" value="" formControlName="txtQuotNo" [disabled]=true required>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='3'>
+          <div class="text-inside-grid">
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            FROM DATE :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtQuotFromDate">
+            </mat-checkbox>&nbsp;&nbsp;
+
+            <mat-form-field class="wp-200">
+              <input matInput #datePicker1 [matDatepicker]="datePicker1" formControlName="txtQuotFromDate"
+                [(ngModel)]="todayDate1" (click)="datePicker1.open()" readonly>
+              <mat-datepicker-toggle matSuffix [for]="datePicker1"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            FOLLOW UP BY :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtFollowedBy"
+              (change)="enabledTxtBox($event,'txtFollowedBy')">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <input type="text" placeholder="SEARCH FOLLOWED BY" matInput [disabled]="true"
+                formControlName="txtFollowedBy" [matAutocomplete]="autofollowedbylist" required>
+              <mat-autocomplete #autofollowedbylist="matAutocomplete" [displayWith]="displayHandledBy">
+                <mat-option *ngFor="let followedBy of filteredFollowedByLists | async" [value]="followedBy">
+                  {{followedBy.usr_userid}} -- {{followedBy.usr_name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            TO DATE :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtQuotToDate">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <input matInput #datePicker2 [matDatepicker]="datePicker2" formControlName="txtQuotToDate"
+                [(ngModel)]="todayDate2" (click)="datePicker2.open()" readonly>
+              <mat-datepicker-toggle matSuffix [for]="datePicker2"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker2></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            HANDLED BY :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtHandledBy"
+              (change)="enabledTxtBox($event,'txtHandledBy')">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <input type="text" placeholder="SEARCH HANDLED BY" [disabled]="true" matInput
+                formControlName="txtHandledBy" [matAutocomplete]="autoHandledBy" required>
+              <mat-autocomplete #autoHandledBy="matAutocomplete" [displayWith]="displayHandledBy">
+                <mat-option *ngFor="let handledBy of filteredHandledByLists | async" [value]="handledBy">
+                  {{handledBy.usr_userid}} -- {{handledBy.usr_name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            SEARCH CUSTOMER
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chkcmbCustCode"
+              (change)="enabledTxtBox($event,'cmbCustCode')">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <input type="text" placeholder="SEARCH CUST CODE" matInput formControlName="cmbCustCode"
+                [matAutocomplete]="autobilltolist" [disabled]="true" required>
+              <mat-autocomplete #autobilltolist="matAutocomplete" [displayWith]="displaycslist">
+                <mat-option *ngFor="let party of filteredCSLists" [value]="party">
+                  {{ party.cs_code }} :: {{ party.cs_name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            INSTRUCTED BY :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtInstructedBy"
+              (change)="enabledTxtBox($event,'txtInstructedBy')">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <input type="text" placeholder="SEARCH INSTRUCTED BY" [disabled]="true" matInput
+                formControlName="txtInstructedBy" [matAutocomplete]="autoinstructedbylist" required>
+              <mat-autocomplete #autoinstructedbylist="matAutocomplete" [displayWith]="displayHandledBy">
+                <mat-option *ngFor="let instructedBy of filteredInstructedByLists | async" [value]="instructedBy">
+                  {{instructedBy.usr_userid}} -- {{instructedBy.usr_name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            NET AMOUNT :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chktxtChlNetAmt"
+              (change)="enabledTxtBox($event,'txtChlNetAmt')">
+            </mat-checkbox>&nbsp;&nbsp;
+
+            <mat-form-field class="wp-200">
+              <input matInput type="text" value="" formControlName="txtChlNetAmt" [disabled]="true" required>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            BROKER CODE :
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-checkbox class="margin-y" matPrefix formControlName="chkcmbBroker"
+              (change)="enabledTxtBox($event,'cmbBroker')">
+            </mat-checkbox>&nbsp;&nbsp;
+            <mat-form-field class="wp-200">
+              <mat-select placeholder="BROKER" formControlName="cmbBroker" [disabled]="true">
+                <mat-option *ngFor="let rowBroker of lstBroker" [value]="rowBroker.brk_broker_code">
+                  {{rowBroker.brk_broker_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="6">
+          <div class="text-center">
+            <button mat-raised-button color="primary" type="button" (click)=getCompleteQuotList();>
+              SEARCH
+            </button>&nbsp;&nbsp;
+          </div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-expansion-panel>
+
+    <div class="example-header">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value,false)" placeholder="Filter"
+          formControlName="txtFilter">
+      </mat-form-field>
+      <button mat-raised-button type="button" color="primary" (click)="addNewQuotation()">CREATE NEW QUOTATION</button>
+    </div>
+
+    <main class="scroll">
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="qt_draft_no">
+          <mat-header-cell *matHeaderCellDef>
+            <div *ngIf="pendingDraft">DRAFT NO</div>
+            <div *ngIf="!pendingDraft">QUOTATION NO</div>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="pendingDraft">{{element.qt_draft_no}}</span>
+            <span *ngIf="!pendingDraft">{{element.qt_quot_no}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qt_date">
+          <mat-header-cell *matHeaderCellDef> DATE </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="text-center">
+            {{element.qt_draft_date}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qt_cust_code">
+          <mat-header-cell *matHeaderCellDef>
+            <div *ngIf="pendingDraft">BILL TO</div>
+            <div *ngIf="!pendingDraft">BILL TO</div>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.qt_cust_code}}::{{element.qt_cust_name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qt_disp_to_code">
+          <mat-header-cell *matHeaderCellDef>
+            <div *ngIf="pendingDraft">DISP TO</div>
+            <div *ngIf="!pendingDraft">DISP TO</div>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.qt_disp_to_code}}::{{element.qt_disp_to_name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qt_inv_type_code">
+          <mat-header-cell *matHeaderCellDef> INV TYPE </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.qt_inv_type_code}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qt_gross">
+          <mat-header-cell *matHeaderCellDef>
+            <div *ngIf="!pendingDraft">GROSS AMT</div>
+            <div *ngIf="pendingDraft">QUOT AMT</div>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="text-right">
+            {{element.qt_gross_amt}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>SELECT </mat-header-cell>
+          <mat-cell *matCellDef="let element; let row" class="text-center">
+            <mat-icon *ngIf="pendingDraft" (click)="navigateToEdit(element,row,'N')"
+              matTooltip="click to edit quotation">
+              edit</mat-icon>
+            <mat-icon *ngIf="(!pendingDraft && quotModifyRights) && (flgOtherBranch =='N')" (click)="navigateToEdit(element,row,'N')"
+              matTooltip="click to edit quotation">edit</mat-icon>
+            <mat-icon *ngIf="!pendingDraft" (click)="navigateToView(element,row)" matTooltip="click to view quotation">
+              pageview</mat-icon>
+            <mat-icon *ngIf="(!pendingDraft && quotRevisionRights) && (flgOtherBranch =='N')" (click)="navigateToEdit(element,row,'Y')"
+              matTooltip="click to Add New Revision">rate_review</mat-icon>
+              <mat-icon *ngIf="!pendingDraft && (flgOtherBranch =='N')" (click)="fileUpload(element);" matTooltip="FILE UPLOAD">cloud_upload</mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </main>
+
+    <div *ngIf="message && pendingDraft" class={{message[0]}} fxLayoutAlign="space-evenly">{{message[1]}}</div>
+
+    <!-- <mat-paginator [length]="totalCount" [pageSizeOptions]="PAGE_SIZE_ARRAY" (page)="pagination($event)">
+    </mat-paginator> -->
+  </div>
+</form>

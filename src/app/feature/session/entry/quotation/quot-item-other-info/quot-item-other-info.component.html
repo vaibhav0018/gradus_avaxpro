@@ -1,0 +1,93 @@
+<mat-dialog-content>
+    <form [formGroup]="formItemOtherInfo" *ngIf="formItemOtherInfo">
+    <table class='html-table' border="0">
+      <tr>
+        <td colspan="2"> ITEM OTHER INFO </td>
+      </tr>
+      <tr>
+        <td>PARTY ITEM :</td>
+        <td>
+            <mat-form-field class="wp-150">
+                <input matInput type="text" value="" formControlName="txtPartyItemCode" />
+            </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>NOTE :</td>
+        <td>
+            <mat-form-field class="wp-150">
+                <input matInput type="text" value="" formControlName="txtItemNote" />
+            </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>REMARKS :</td>
+        <td>
+            <mat-form-field class="wp-150">
+                <input matInput type="text" value="" formControlName="txtItemRemarks" />
+            </mat-form-field>
+        </td>
+      </tr>
+      
+      <!-- <tr>
+        <td>AGREED RATE :</td>
+        <td>
+            <mat-form-field class="wp-50">
+                <input matInput type="text" value="" formControlName="txtAgreedRate" />
+            </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>AGREED PERCENTAGE :</td>
+        <td>
+            <mat-form-field class="wp-50">
+                <input matInput type="text" value="" formControlName="txtAgreedPerc" />
+            </mat-form-field>
+        </td>
+      </tr> -->
+
+      <tr>
+        <td>TOLERANCE :</td>
+        <td>
+            <mat-form-field class="wp-150">
+                <mat-select placeholder="TOLERANCE" formControlName="cmbTolerance"  >
+                    <!-- tableData -->
+                    <mat-option *ngFor="let obj of tableData" [value]="obj.var_code">
+                        {{obj.var_desc}}
+                      </mat-option>
+                  
+                </mat-select>
+              </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>TOLERANCE LENGTH :</td>
+        <td>
+            <mat-form-field class="wp-50">
+                <input matInput type="text" value="" formControlName="txtToleranceLength" />
+            </mat-form-field>
+        </td>
+      </tr>
+      
+     <!--  <tr>
+        <td>KEEP ABBEYANCE : <mat-checkbox formControlName="chkAbbeyance" [(ngModel)]="flgAbbeyance"></mat-checkbox></td>
+        <td>
+           <div *ngIf="flgAbbeyance==true">
+           PLANNING DATE : 
+           <mat-form-field class="wp-100">
+              <input matInput #ref1 [matDatepicker]="pickerPlanningDate" formControlName="txtPlanningDate" readonly
+                [value]="" (click)="pickerPlanningDate.open()">
+              <mat-datepicker-toggle matSuffix [for]="pickerPlanningDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerPlanningDate></mat-datepicker>
+          </mat-form-field>          
+        </div>
+        </td>
+      </tr> -->
+
+    </table>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" (click)="updateAOItemOtherInfo()" tabindex="1">SAVE</button>
+  <button mat-raised-button mat-dialog-close tabindex="-1">CANCEL</button>
+</mat-dialog-actions>

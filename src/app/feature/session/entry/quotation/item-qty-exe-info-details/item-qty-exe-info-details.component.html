@@ -1,0 +1,57 @@
+<h5 mat-dialog-title>
+  {{ modalTitle }}
+  <button mat-button class='float-right' color="primary" type="button" [mat-dialog-close]="true">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</h5>
+
+<app-custom-spinner></app-custom-spinner>
+
+<mat-table [dataSource]="dataSourceQuotQtyExeDtl">
+
+  <ng-container matColumnDef="sr_no">
+    <mat-header-cell *matHeaderCellDef>SR.NO</mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;" class="text-center">
+      {{element.me_doc_serial_no}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="doc_no">
+    <mat-header-cell *matHeaderCellDef>DOC NO </mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;">
+      {{element.me_doc_no}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="exe_date">
+    <mat-header-cell *matHeaderCellDef> EXE DATE</mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;">
+      {{element.me_ts_created}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="exe_qty">
+    <mat-header-cell *matHeaderCellDef> EXE QTY</mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;" class="text-right">
+      {{element.me_qty}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="reasion">
+    <mat-header-cell *matHeaderCellDef> REASON</mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;">
+      {{element.ax_desc}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="executed_by">
+    <mat-header-cell *matHeaderCellDef> EXECUTED BY</mat-header-cell>
+    <mat-cell *matCellDef="let element;let i= index ;">
+      {{element.usr_name}}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columnsQuotQtyExeDtl;sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsQuotQtyExeDtl;"></mat-row>
+
+</mat-table>

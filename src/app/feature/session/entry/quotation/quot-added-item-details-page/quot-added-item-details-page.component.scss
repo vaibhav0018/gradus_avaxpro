@@ -1,0 +1,59 @@
+//added by nitin 12-12-19
+
+.mat-header-row {
+    min-height: 25px !important;
+    background-color: #4072b4 !important;
+    text-align: center !important;
+    font-size: 12px !important;
+}
+.mat-header-cell {    
+    font-weight: bold !important;   
+    min-height: 25px !important;
+    font-size: 12px !important;
+}
+.mat-cell, .mat-footer-cell {
+    font-size: 12px;
+}
+mat-cell, mat-footer-cell, mat-header-cell {
+    flex: 1;
+    display: grid;
+    align-items: center;
+    word-wrap: anywhere;
+    min-height: inherit;
+    border-right: solid #e0e0e0 1px;
+    padding-left: 9px !important;
+    height: 30px;
+}
+.mat-header-row {
+     line-height: 20px !important;
+}
+
+.mat-column-cat_refno{
+    white-space: unset !important;
+    flex: 0 0 11% !important;
+    width: 9% !important;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-it_prod_code{
+    white-space: unset !important;
+    flex: 0 0 15% !important;
+    width: 9% !important;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-calratedesc{
+    white-space: unset !important;
+    flex: 0 0 15% !important;
+    width: 9% !important;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}

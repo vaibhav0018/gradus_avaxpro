@@ -1,0 +1,386 @@
+<app-custom-spinner></app-custom-spinner>
+<div class="overflow-auto">
+  <div class="min-width">
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-expansion-panel [expanded]=true>
+      <mat-grid-list cols="6" rowHeight="2rem" class="mw-1024px">
+
+        <mat-grid-tile colspan="6">
+          <div class="text-inside-grid">
+            <b>DISCOUNT DETAILS</b>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">COND DISC DAYS :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input matInput type="text" value="" formControlName="txCondDiscDays" maxlength="3">
+            </mat-form-field>
+            <a href="javascript:none" (click)="saveCcsPreferenceData('cdd')">save</a>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">CUST ORDER NO :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="text" matInput formControlName="txtPartyOrderNo" [value]="" maxlength="50">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+
+
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">COND DISC :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field floatLabel="never">
+              <b>(%)</b>
+              <!-- <input type="text" matInput formControlName="txCondDiscPerc" value="" maxlength="3"> -->
+              <input matInput type="text" value="" formControlName="txCondDiscPerc" (keyup)="setPercOrAmt('P')" maxlength="3">
+            </mat-form-field>
+            <a href="javascript:none" (click)="saveCcsPreferenceData('cdp')">save</a>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field floatLabel="never">
+              <b>(AMT)</b>
+              <!-- <input type="text" matInput formControlName="txCondDiscAmt" value="" maxlength="3"> -->
+              <input matInput type="text" value="" formControlName="txCondDiscAmt"(keyup)="setPercOrAmt('A')"  maxlength="3">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">CUST ORDER DATE :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field class="w-75">
+              <input matInput #ref1 [matDatepicker]="picker1" formControlName="txtPartyOrderDate" readonly
+                [(ngModel)]="todayDate" (click)="picker1.open()" [min]="minDate" [max]="maxDate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+        </mat-grid-tile>
+
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">CASH DISC UPTO :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field class="w-75">
+              <input matInput #ref3 [matDatepicker]="picker3" formControlName="txtCashDiscUptoDate" readonly
+                [(ngModel)]="todayDate1" (click)="picker3.open()" [min]="minDate" [max]="maxDate">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">CURRENCY</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <mat-select placeholder="select currency" formControlName="cmbCurrency">
+                <mat-option *ngFor="let curr of CurrencyList" [value]="curr">
+                  {{curr.curr_currency_desc}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile colspan="3">
+          <div class="text-inside-grid"><b>SELECT OR ENTER DELIVERY ADDRESS</b></div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="3">
+          <div class="text-inside-grid"><b>SELECT DOCUMENT DELIVERY ADDRESS</b></div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">ADDRESS :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field class='width-300'>
+              <mat-select placeholder="select billed address" formControlName="cmbBilledAddress">
+                <mat-option *ngFor="let billedaddr of billedAddrList" [value]="billedaddr"
+                  (selectionChange)="showBillAddrDtls($event)">
+                  {{billedaddr.csad_address}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">DOC DELV ADDR .:</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field class='width-300'>
+              <mat-select placeholder="dcoument delivery address" formControlName="cmbDocDelvAddress">
+                <mat-option *ngFor="let docdelvaddress of DocAddressList" [value]="docdelvaddress"
+                  (selectionChange)="showDocumentAddrDtls($event)">
+                  {{docdelvaddress.csad_address}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile rowspan='2'>
+          <div class="text-inside-grid">DETAIL :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2" rowspan='2'>
+          <div class="text-inside-grid">
+            <mat-form-field class='width-300'>
+              <textarea matInput formControlName="txtBillAddressDetail" value="" maxlength="300"></textarea>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile rowspan='2'>
+          <div class="text-inside-grid">DETAIL :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2" rowspan='2'>
+          <div class="text-inside-grid">
+            <mat-form-field class='width-300'>
+              <textarea matInput formControlName="txtDocDelvAddressDetail" value="" maxlength="150"></textarea>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <!-- <mat-grid-tile colspan="3">
+          <div class="text-inside-grid"></div>
+        </mat-grid-tile>
+ -->
+
+        <mat-grid-tile rowspan="2">
+          <div class="text-inside-grid">REMARKS :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2" rowspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field class='width-300' floatLabel="never">
+              <textarea matInput formControlName="txtRemarks" value="" maxlength="2000"></textarea>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="3" rowspan="2">
+          <div class="text-inside-grid"></div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="6">
+          <div class="text-inside-grid">
+            <b>MICS DATA</b>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            1st EMAIL TO :
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="textarea" matInput formControlName="txtEmailTo1" value="" maxlength="50">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            2nd EMAIL TO :
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="textarea" matInput formControlName="txtEmailTo2" value="" maxlength="50">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            3rd EMAIL TO :
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="textarea" matInput formControlName="txtEmailTo3" value="" maxlength="50">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            4th EMAIL TO :
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="textarea" matInput formControlName="txtEmailTo4" value="" maxlength="50">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            5th EMAIL TO :
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="textarea" matInput formControlName="txtEmailTo5" value="" maxlength="50">
+              <!-- <mat-checkbox formControlName="chkEmailTo5"></mat-checkbox> -->
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"></div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile colspan="6">
+          <div class="text-inside-grid">
+            <b>PAYMENT TERMS</b>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">NO OF DAYS :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <input type="text" matInput formControlName="txNoOfDays" placeholder="NO OF DAYS"
+              (ngModelChange)="getPaymentTerm()" value="" maxlength="3">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">PAYMENT TERMS :</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+          <div class="text-inside-grid">
+            <mat-form-field>
+              <mat-select placeholder="SELECT PAYTERM" formControlName="cmbPayTerms">
+                <mat-option *ngFor="let payterm of paytermsList" [value]="payterm.pt_code">
+                  {{payterm.pt_desc}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <table class='html-table' border="0">
+        <thead>
+          <tr>
+            <th>SR.NO</th>
+            <th>DOC TEMRS</th>
+            <th>TERM NAME</th>
+            <th>TERM NAME VALUE</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tr *ngFor="let comp of form.get('arrayAddItem')['controls']; let i=index" formArrayName="arrayAddItem">
+          <td align="center">{{i+1}}</td>
+          <td nowrap [formGroupName]="i">
+            <mat-form-field>
+              <mat-select placeholder="Select Doc Term" matTooltip="Please select Doc Term"
+                formControlName="cmbDocTerm">
+                <!-- (selectionChange)="onMakeCodeChange(i)" -->
+                <mat-option *ngFor="let obj of docTermList" [value]="obj">
+                  {{obj.dt_term_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+
+          <td nowrap align="center" [formGroupName]="i">
+            <mat-form-field class="wp-350">
+              <input matInput type="text" [value]="" formControlName="txtTermName" maxlength="50" />
+            </mat-form-field>
+          </td>
+
+          <td nowrap align="center" [formGroupName]="i">
+            <mat-form-field class="wp-450">
+              <input matInput type="text" [value]="" formControlName="txtTermNameValue" maxlength="200" />
+            </mat-form-field>
+          </td>
+          <td nowrap align="center">
+            <mat-icon matSuffix matTooltip="Add Row" *ngIf="controlsRowsLength ==i" (click)=addNewRow();>add
+            </mat-icon>
+            <mat-icon matSuffix matTooltip="delete Row" *ngIf="controlsRowsLength !=i" (click)=deleteRow(i);>delete
+            </mat-icon>
+          </td>
+        </tr>
+      </table>
+
+    </mat-expansion-panel>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button mat-dialog-close color="primary" (click)="updateOtherInfo()" tabindex="1">UPDATE</button>
+  <button mat-raised-button mat-dialog-close tabindex="-1">CANCEL</button>
+</mat-dialog-actions>
+</div>
+</div>

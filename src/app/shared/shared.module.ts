@@ -55,7 +55,7 @@ import { ReactiveFormsModule } from '@angular/forms'
 // import { StoppageClearancePageComponent } from '../feature/session/stoppage-clearance-page/stoppage-clearance-page.component'
 // import { ErrorMessageComponent } from 'src/app/feature/session/error-message/error-message.component';
 // import { CommonSnackbarComponent } from './components/common-snackbar/common-snackbar.component';
-// import { CommonConfirmationDialogComponent } from './components/common-confirmation-dialog/common-confirmation-dialog.component'
+import { CommonConfirmationDialogComponent } from './components/common-confirmation-dialog/common-confirmation-dialog.component'
 // import { CommonMatTableViewComponent } from '../feature/sModuleWithProvidersession/common-module/common-mat-table-view/common-mat-table-view.component'
 // import { SrDocumentDetailViewComponent } from '../feature/session/entry/stock/stock-receipt/components/stock-receipt-menu/sr-document-detail-view/sr-document-detail-view.component'
 // import { SharedMatTableCustomComponent } from './components/shared-mat-table-custom/shared-mat-table-custom.component'
@@ -95,6 +95,7 @@ const SHARED_COMPONENTS = [
   // UserInfoDetailsComponent,
   // ViewUserInfoComponent,
   // SharedCommanDialogBoxComponent
+  
 
 ]
 
@@ -131,6 +132,7 @@ const SHARED_COMPONENTS_AVAXPRO = [
   // SharedUtilityHtmlTableComponent,
   // ChallanAddedItemDetailsComponent,
   // OtherInfoViewPopupComponent
+  
 ]
 
 // const SHARED_DIRECTIVES = [SharedDirectivesModule]
@@ -142,14 +144,15 @@ const SHARED_COMPONENTS_AVAXPRO = [
     SharedMaterialModule,
     SHARED_COMPONENTS,
     SHARED_COMPONENTS_AVAXPRO,
-    ReactiveFormsModule
+    ReactiveFormsModule,
     // SharedTranslateModule,
     // PerfectScrollbarModule,
     // RouterModule,
     // PipesModule,
     // NgxSpinnerModule,
     // DirectivesModule,
-    // ScrollingModule
+    // ScrollingModule,
+  
   ],
   
   exports: [
@@ -181,7 +184,8 @@ const SHARED_COMPONENTS_AVAXPRO = [
     SHARED_SERVICES,
   ],
   declarations: [
-    MakeMasterCompanyListComponent
+    MakeMasterCompanyListComponent,
+      CommonConfirmationDialogComponent
   ],
   // entryComponents: [SettingsComponent, CommonSnackbarComponent, CommonConfirmationDialogComponent, UserInfoDetailsComponent, GroupOsPageComponent,
     // FollActEntryPageComponent, MiscPartyMaintenanceMenuComponent,ViewUserInfoComponent,SharedCommanDialogBoxComponent],
