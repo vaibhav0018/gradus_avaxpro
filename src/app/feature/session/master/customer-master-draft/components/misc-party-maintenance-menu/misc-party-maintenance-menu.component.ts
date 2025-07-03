@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, Optional } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl, FormArray, FormControl } from '@angular/forms';
-// import { MatDialog, MatSnackBar, MatDialogConfig, MatDialogRef, } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -12,7 +11,6 @@ import { CommonSnackbarComponent } from '../../../../../../shared/components/com
 import { CustomerMasterService } from '../../customer-master.service';
 import { Router } from '@angular/router';
 import { TableColumnHeaderViews as defaultGst } from '../constants'
-// import { PayMentModel, HandledByModel, PartyModel } from 'src/app/feature/session/entry/commons/commons.model';
 import { PayMentModel } from '../../../../entry/commons/commons.model';
 import { HandledByModel, PartyModel } from '../../../../entry/commons/commons.model';
 import { StateMasterListModel, CountryListModel } from './misc-party-maintenance.model';
@@ -228,7 +226,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
       this.getHandledByDropdown()
 
-      this.filteredHandledByLists = this.form.get('txtHandledBy')?.valueChanges.pipe(
+      this.filteredHandledByLists = this.form.get('txtHandledBy')!.valueChanges.pipe(
         startWith(''),
         map(value => {
           value =
@@ -772,7 +770,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
         return false;
       } else {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.stateLists[index] = data.responseData[0].map(item => {
+          this.stateLists[index] = data.responseData[0].map((item : any) => {
             return new StateMasterListModel(item.st_code, item.st_state)
           })
         }
@@ -958,7 +956,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
 
 
-        this.filteredHandledByLists = this.form.get('txtEHandledBy')?.valueChanges.pipe(
+        this.filteredHandledByLists = this.form.get('txtEHandledBy')!.valueChanges.pipe(
           startWith(''),
           map(value => {
             value =
@@ -1052,7 +1050,7 @@ export class MiscPartyMaintenanceMenuComponent implements OnInit {
 
 
 
-        this.filteredHandledByLists = this.form.get('txtEHandledBy')?.valueChanges.pipe(
+        this.filteredHandledByLists = this.form.get('txtEHandledBy')!.valueChanges.pipe(
           startWith(''),
           map(value => {
             value =
@@ -2047,6 +2045,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
                         // )
                       }
                     }
+                    return true
                   }
                 )
               }//defaultGst
@@ -2057,6 +2056,7 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
               }
             }
           }
+          return true
         }
       )
     }//txtPanNo
@@ -2340,10 +2340,10 @@ if (this.formGroup.controls.txtEGstNo.value == '' || this.formGroup.controls.txt
       }
     }
 
-    const toSelectedCountry = this.countryELists[index].find(c => c.ctr_code == this.formGroup.controls.cmbECountry.value)
+    const toSelectedCountry = this.countryELists[index].find((c: any) => c.ctr_code == this.formGroup.controls.cmbECountry.value)
     console.log(" toSelectedCountry.ctr_desc ", toSelectedCountry.ctr_desc)
 
-    const toSelectedState = this.stateELists[index].find(c => c.st_code == this.formGroup.controls.cmbEState.value)
+    const toSelectedState = this.stateELists[index].find((c: any) => c.st_code == this.formGroup.controls.cmbEState.value)
     console.log(" toSelectedState ", toSelectedState.st_state)
 
 
