@@ -138,7 +138,7 @@ export class ModifyOtherInfoComponent implements OnInit {
 
   paymentTermsDays: any = {};
 
-  docTermsArray = []
+  docTermsArray  : any = []
 
   
 
