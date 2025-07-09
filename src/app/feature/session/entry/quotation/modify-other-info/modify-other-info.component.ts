@@ -116,11 +116,9 @@ export class ModifyOtherInfoComponent implements OnInit {
   qt_amt: string
   qt_curr_code: string = "";
 
+  tempObj: any
 
-   tempObj: {
-    qt_term: any;
-    qt_term_data: any;
-  }
+  
 
 
   isFromDraft: string = 'N';
