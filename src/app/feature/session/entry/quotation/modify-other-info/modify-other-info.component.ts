@@ -1,13 +1,18 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatSnackBar,  TooltipPosition, DateAdapter, MAT_DATE_FORMATS, MAT_DIALOG_DATA } from '@angular/material'
+// import { MatSnackBar,  TooltipPosition, DateAdapter, MAT_DATE_FORMATS, MAT_DIALOG_DATA } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TooltipPosition } from '@angular/material/tooltip';
+import { DateAdapter } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Router } from '@angular/router'
-import { UtilityServiceAvaxPro } from 'src/app/core/services/utility/utility_avaxpro.service';
-import { SnackbarComponent } from 'src/app/feature/session/entry/snackbar/snackbar.component';
-import { ConfirmValidParentMatcher, errorMessages } from 'src/app/core/services/custom-validations/custom-validators';
+import { UtilityServiceAvaxPro } from '../../../../../core/services/utility/utility_avaxpro.service';
+import { SnackbarComponent } from '../../snackbar/snackbar/snackbar.component';
+import { ConfirmValidParentMatcher, errorMessages } from '../../../../../core/services/utility/error-messages';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/feature/session/reports/stock-report/sr-register/components/sr-register-report/sr-register-filter/date.adapter';
 import { CurrencyModel, DocAddressModel } from '../../challan/components/challan-menu.model';
 
-import * as moment from 'moment'
+import moment from 'moment';
 import { QuotationService } from '../quotation.service';
 import { DocTermsModel } from '../quotation.model';
 import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from '@angular/forms';
@@ -35,7 +40,7 @@ export class ModifyOtherInfoComponent implements OnInit {
   positionOptions: TooltipPosition[] = ['after', 'before', 'above', 'below', 'left', 'right',]
   confirmValidParentMatcher = new ConfirmValidParentMatcher()
   errors = errorMessages
-  queryParams = {}
+  queryParams : any = {}
   stateData: any
   // form: FormGroup
   calculatorDesc: any;
@@ -45,9 +50,9 @@ export class ModifyOtherInfoComponent implements OnInit {
   docCalcId: any
   docCalcData: any;
   docCalcDataInArray = []
-  payload: object = {}
+  payload: any 
 
-  controlValue = new Date(atob(sessionStorage.getItem(btoa('fin_year_beg'))))
+  controlValue = new Date(atob(sessionStorage.getItem(btoa('fin_year_beg')) ||""))
   minDate = new Date(this.controlValue.getFullYear(), 3, 1);
   maxDate = new Date(new Date().setDate(new Date().getDate()))
 
@@ -112,6 +117,12 @@ export class ModifyOtherInfoComponent implements OnInit {
   qt_curr_code: string = "";
 
 
+   tempObj: {
+    qt_term: any;
+    qt_term_data: any;
+  }
+
+
   isFromDraft: string = 'N';
   isFromPendingDraft: string = 'N';
 
@@ -130,6 +141,8 @@ export class ModifyOtherInfoComponent implements OnInit {
   paymentTermsDays: any = {};
 
   docTermsArray = []
+
+  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: any,
@@ -187,7 +200,7 @@ export class ModifyOtherInfoComponent implements OnInit {
 
   }
 
-  date_ymd(dateValue) {
+  date_ymd(dateValue : any) {
     return moment(dateValue).format(this.DATE_YMD)
   }
 
@@ -214,10 +227,11 @@ export class ModifyOtherInfoComponent implements OnInit {
       this.getrows = this.form.get('arrayAddItem') as FormArray;
       this.controlsRowsLength = this.getrows.controls.length - 1;
     }
+    return true;
 
   }
 
-  deleteRow(index) {
+  deleteRow(index : any) {
     const control = <FormArray>this.form.controls['arrayAddItem'];
     control.removeAt(index);
 
@@ -244,7 +258,7 @@ export class ModifyOtherInfoComponent implements OnInit {
 
     for (let i = 0; i < this.getrows.controls.length; i++) {
       this.formGroup = this.aryTableControl[i] as FormGroup;
-      let tempObj = {
+      let tempObj : any = {
         //:this.formGroup.controls.cmbDocTerm.value(),
         qt_term: this.formGroup.controls.txtTermName.value(),
         qt_term_data: this.formGroup.controls.txtTermNameValue.value(),
@@ -270,20 +284,20 @@ export class ModifyOtherInfoComponent implements OnInit {
 
     this.payload = {
       qt_quot_no: this.dialogData.qt_quot_no,
-      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) ||""),
+      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))  ||""),
+      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  ||""),
       callFrom: "Complete",
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) ||""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) ||""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) ||""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) ||""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) ||""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ||""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ||""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) ||""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) ||""),
       }
     }
 
@@ -304,31 +318,31 @@ export class ModifyOtherInfoComponent implements OnInit {
 
           this.qt_ts_ult_cust = this.tableData.qt_ts_ult_cust
 
-          this.form.get('txtPartyOrderNo').setValue(this.tableData.qtcustorderno);
+          this.form.get('txtPartyOrderNo')?.setValue(this.tableData.qtcustorderno);
 
           this.qt_cash_disc_days = this.tableData.qt_cash_disc_days
-          this.form.get('txCondDiscDays').setValue(this.qt_cash_disc_days)
+          this.form.get('txCondDiscDays')?.setValue(this.qt_cash_disc_days)
 
           this.qt_cond_disc_amt = this.tableData.qtconddiscamt
-          this.form.get('txCondDiscAmt').setValue(this.qt_cond_disc_amt)
+          this.form.get('txCondDiscAmt')?.setValue(this.qt_cond_disc_amt)
           this.qt_cond_disc_perc = this.tableData.qtconddiscperc
-          this.form.get('txCondDiscPerc').setValue(this.qt_cond_disc_perc)
+          this.form.get('txCondDiscPerc')?.setValue(this.qt_cond_disc_perc)
           this.qt_email1 = this.tableData.qt_email1 == null || this.tableData.qt_email1 == undefined || this.tableData.qt_email1.trim()==''?null:this.tableData.qt_email1 
-          this.form.get('txtEmailTo1').setValue(this.qt_email1)
+          this.form.get('txtEmailTo1')?.setValue(this.qt_email1)
           this.qt_email2 = this.tableData.qt_email2 == null || this.tableData.qt_email2 == undefined || this.tableData.qt_email2.trim()==''?null:this.tableData.qt_email2 
-          this.form.get('txtEmailTo2').setValue(this.qt_email2)
+          this.form.get('txtEmailTo2')?.setValue(this.qt_email2)
           this.qt_email3 = this.tableData.qt_email3 == null || this.tableData.qt_email3 == undefined || this.tableData.qt_email3.trim()==''?null:this.tableData.qt_email3
-          this.form.get('txtEmailTo3').setValue(this.qt_email3)
+          this.form.get('txtEmailTo3')?.setValue(this.qt_email3)
           this.qt_email4 = this.tableData.qt_email4 == null || this.tableData.qt_email4 == undefined || this.tableData.qt_email4.trim()==''?null:this.tableData.qt_email4
-          this.form.get('txtEmailTo4').setValue(this.qt_email4)
+          this.form.get('txtEmailTo4')?.setValue(this.qt_email4)
           this.qt_email5 = this.tableData.qt_email5 == null || this.tableData.qt_email5 == undefined || this.tableData.qt_email5.trim()==''?null:this.tableData.qt_email5
-          this.form.get('txtEmailTo5').setValue(this.qt_email5)
+          this.form.get('txtEmailTo5')?.setValue(this.qt_email5)
           this.qt_inspec_note = this.tableData.qt_inspec_note
-          this.form.get('txtInspNote').setValue(this.qt_inspec_note)
+          this.form.get('txtInspNote')?.setValue(this.qt_inspec_note)
           this.qt_other_doc_note = this.tableData.qt_other_doc_note
           this.qt_inter_info = this.tableData.qt_inter_info
           this.qt_remarks = this.tableData.qtremarks
-          this.form.get('txtRemarks').setValue(this.qt_remarks)
+          this.form.get('txtRemarks')?.setValue(this.qt_remarks)
 
           this.qt_normal_tc_flg = this.tableData.qt_normal_tc_flg
           this.qt_routine_tc_flg = this.tableData.qt_routine_tc_flg
@@ -366,19 +380,19 @@ export class ModifyOtherInfoComponent implements OnInit {
       callFrom: "Complete",
       qt_cust_code: this.dialogData.qt_cust_code,
       qt_quot_no: this.dialogData.qt_quot_no,
-      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ||""),
+      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))  ||""),
+      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  ||""),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) ||""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) ||""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) ||""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) ||""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) ||""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ||""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ||""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) ||""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) ||""),
       },
     }
 
@@ -401,7 +415,7 @@ export class ModifyOtherInfoComponent implements OnInit {
 
           this.dataSourceDocTerms = data.responseData[0][5];
 
-          data.responseData[0][5].forEach(item => {
+          data.responseData[0][5].forEach((item : any) => {
             this.addNewRow();
           })
 
@@ -429,7 +443,7 @@ export class ModifyOtherInfoComponent implements OnInit {
     subscribe(data => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
         this.paytermsList = data.responseData[0];
-        let objPayterm = this.paytermsList.find(({ pt_code }) => pt_code == this.paymentTermsDays.ccs_pay_code);
+        let objPayterm = this.paytermsList.find(({ pt_code } : any) => pt_code == this.paymentTermsDays.ccs_pay_code);
         if(objPayterm!=undefined){
           this.form.controls.cmbPayTerms.setValue(objPayterm.pt_code);
         }
@@ -439,6 +453,7 @@ export class ModifyOtherInfoComponent implements OnInit {
         
       }
     })
+    return true;
   }
 
   getBilledAddressDropdown() {
@@ -450,10 +465,10 @@ export class ModifyOtherInfoComponent implements OnInit {
 
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           this.billedAddrList = data.responseData[0][2]
-          const toSelect = this.billedAddrList.find(c => c.csad_addr_code == "1")
-          this.form.get('cmbBilledAddress').setValue(toSelect);
-          const toSelectedAddr = this.billedAddrList.find(c => c.csad_addr_code == "1")
-          this.form.get('txtBillAddressDetail').setValue(toSelectedAddr.csad_address);
+          const toSelect = this.billedAddrList.find((c : any) => c.csad_addr_code == "1")
+          this.form.get('cmbBilledAddress')?.setValue(toSelect);
+          const toSelectedAddr = this.billedAddrList.find((c : any) => c.csad_addr_code == "1")
+          this.form.get('txtBillAddressDetail')?.setValue(toSelectedAddr.csad_address);
         }
       });
 
@@ -464,7 +479,7 @@ export class ModifyOtherInfoComponent implements OnInit {
     this.utilityServiceAvaxPro.getOtherinfoCommonList(this.dialogData.qt_cust_code).subscribe(
       data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.billedAddrList = data.responseData[0][5].map(item => {
+          this.billedAddrList = data.responseData[0][5].map((item : any) => {
             return new DocAddressModel(item.csad_addr_code, item.csad_address)
           })
 
@@ -473,43 +488,43 @@ export class ModifyOtherInfoComponent implements OnInit {
 
           if (this.qt_del_addr_code == "0" || this.qt_del_addr_code == undefined) {
 
-            const toSelect = this.billedAddrList.find(c => c.csad_addr_code == "1")
-            this.form.get('cmbBilledAddress').setValue(toSelect);
+            const toSelect = this.billedAddrList.find((c : any) => c.csad_addr_code == "1")
+            this.form.get('cmbBilledAddress')?.setValue(toSelect);
 
-            const toSelectedAddr = this.billedAddrList.find(c => c.csad_addr_code == "1")
-            this.form.get('txtBillAddressDetail').setValue(toSelectedAddr.csad_address);
+            const toSelectedAddr = this.billedAddrList.find((c : any) => c.csad_addr_code == "1")
+            this.form.get('txtBillAddressDetail')?.setValue(toSelectedAddr.csad_address);
           }
           else {
-            const toSelect = this.billedAddrList.find(c => c.csad_addr_code == this.qt_del_addr_code)
-            this.form.get('cmbBilledAddress').setValue(toSelect);
+            const toSelect = this.billedAddrList.find(( c : any) => c.csad_addr_code == this.qt_del_addr_code)
+            this.form.get('cmbBilledAddress')?.setValue(toSelect);
 
-            const toSelectedAddr = this.billedAddrList.find(c => c.csad_addr_code == this.qt_del_addr_code)
-            this.form.get('txtBillAddressDetail').setValue(toSelectedAddr.csad_address);
+            const toSelectedAddr = this.billedAddrList.find((c : any) => (c : any) => c.csad_addr_code == this.qt_del_addr_code)
+            this.form.get('txtBillAddressDetail')?.setValue(toSelectedAddr.csad_address);
           }
 
-          this.DocAddressList = data.responseData[0][5].map(item => {
+          this.DocAddressList = data.responseData[0][5].map((item : any) => {
             return new DocAddressModel(item.csad_addr_code, item.csad_address)
           })
 
           if (this.qt_doc_del_addr_code == "0" || this.qt_doc_del_addr_code == undefined) {
 
-            const toSelect = this.DocAddressList.find(c => c.csad_addr_code == "1")
-            this.form.get('cmbDocDelvAddress').setValue(toSelect);
+            const toSelect = this.DocAddressList.find((c : any) => c.csad_addr_code == "1")
+            this.form.get('cmbDocDelvAddress')?.setValue(toSelect);
 
-            const toSelectedAddr = this.DocAddressList.find(c => c.csad_addr_code == "1")
-            this.form.get('txtDocDelvAddressDetail').setValue(toSelectedAddr.csad_address);
+            const toSelectedAddr = this.DocAddressList.find((c : any) => c.csad_addr_code == "1")
+            this.form.get('txtDocDelvAddressDetail')?.setValue(toSelectedAddr.csad_address);
           }
           else {
-            const toSelect = this.DocAddressList.find(c => c.csad_addr_code == this.qt_doc_del_addr_code)
-            this.form.get('cmbDocDelvAddress').setValue(toSelect);
+            const toSelect = this.DocAddressList.find((c : any) => c.csad_addr_code == this.qt_doc_del_addr_code)
+            this.form.get('cmbDocDelvAddress')?.setValue(toSelect);
 
-            const toSelectedAddr = this.DocAddressList.find(c => c.csad_addr_code == this.qt_doc_del_addr_code)
-            this.form.get('txtDocDelvAddressDetail').setValue(toSelectedAddr.csad_address);
+            const toSelectedAddr = this.DocAddressList.find((c : any) => c.csad_addr_code == this.qt_doc_del_addr_code)
+            this.form.get('txtDocDelvAddressDetail')?.setValue(toSelectedAddr.csad_address);
           }
 
 
 
-          this.CurrencyList = data.responseData[0][6].map(item => {
+          this.CurrencyList = data.responseData[0][6].map((item : any) => {
             return new CurrencyModel(item.curr_currency_code, item.curr_currency_desc)
           })
 
@@ -521,18 +536,18 @@ export class ModifyOtherInfoComponent implements OnInit {
   }
 
 
-  showBillAddrDtls(event) {
-    this.form.get("txtBillAddressDetail").setValue(event.source.value.csad_address)
+  showBillAddrDtls(event : any) {
+    this.form.get("txtBillAddressDetail")?.setValue(event.source.value.csad_address)
   }
 
-  showDocumentAddrDtls(event) {
-    this.form.get("txtDocDelvAddressDetail").setValue(event.source.value.csad_address)
+  showDocumentAddrDtls(event : any) {
+    this.form.get("txtDocDelvAddressDetail")?.setValue(event.source.value.csad_address)
   }
 
-  checkTermsConditions(event) {
+  checkTermsConditions(event : any) {
   }
 
-  setPercOrAmt(flg) {
+  setPercOrAmt(flg : any) {
     if (flg == "P") {
       this.form.controls.txCondDiscAmt.setValue('');
     } else {
@@ -659,25 +674,27 @@ export class ModifyOtherInfoComponent implements OnInit {
     this.payload = {
 
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) ||""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) ||""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) ||""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) ||""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) ||""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ||""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ||""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) ||""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) ||""),
+ 
       },
       callFrom: 'COMPLETE',
       qt_quot_no: this.dialogData.qt_quot_no,
       qtd_quot_no: this.dialogData.qt_quot_no,
-      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-      qtd_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qtd_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-      qtd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))  ||""),
+      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))  ||""),
+      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  ||""),
+      qtd_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))  ||""),
+      qtd_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))  ||""),
+      qtd_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  ||""),
+
 
       qt_cash_disc_days: this.form.controls.txCondDiscDays.value == "" ? '0' : this.form.controls.txCondDiscDays.value,
       qt_cond_disc_perc: this.form.controls.txCondDiscPerc.value == "" ? '0' : this.form.controls.txCondDiscPerc.value,      
@@ -753,10 +770,10 @@ export class ModifyOtherInfoComponent implements OnInit {
             this.queryParams["callFrom"] = "COMPLETE";
             this.queryParams["isForViewQuotation"] = "Y";
             this.queryParams["userInformationDto"] = {
-              usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-              usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-              usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-              usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
+              usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ||""),
+              usr_userid: atob(sessionStorage.getItem(btoa('userId')) ||""),
+              usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ||""),
+              usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) ||""),
             }
             sessionStorage.removeItem("data");
             sessionStorage.setItem("stateData", JSON.stringify(this.queryParams));
@@ -766,12 +783,13 @@ export class ModifyOtherInfoComponent implements OnInit {
 
         }
       })
+      return true;
   }
 
-  saveCcsPreferenceData(flg) {
+  saveCcsPreferenceData(flg : any) {
     this.payload = {
       party_code: this.dialogData.qt_cust_code,
-      company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ||""),
       user_preference_flg:flg
     }  
     if(flg =='cdd'){
@@ -801,10 +819,11 @@ export class ModifyOtherInfoComponent implements OnInit {
         console.log(" Successfully saveCcsPreferenceData")
       }
     })
+    return true;
   
   }
 
-  openSnackBar(message) {
+  openSnackBar(message : any) {
     this.snackBar.openFromComponent(SnackbarComponent, {
       data: message,
       duration: 10000

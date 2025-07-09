@@ -385,6 +385,155 @@ export class UtilityServiceAvaxPro {
     )
   }
 
+    getBrokerList(): Observable<any> {
+    let company_code = atob(sessionStorage.getItem(btoa('usr_company_code'))  || '');
+    this.completeUrl = environment.baseUrl + '/' + GET_BROKER_LIST + '?company_code=' + company_code
+    this.payload = {
+      company_code,
+      userInformationDto: {
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ''),
+      }
+    }
+    return this.httpService.post_wo_spinner(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    getQuotDelTermsList(): Observable<any> {
+
+    this.payload = {
+      siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+    }
+    this.completeUrl = environment.baseUrl + '/' + GET_QUOT_DEL_TERMS_LIST
+
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+
+   getSpecialtax(): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + GET_SPECIAL_TAX
+
+    this.payload = {
+      //   company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      userInformationDto: {
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+      },
+    }
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+    getProjectList(payload : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/get-project-list'
+
+    payload['userInformationDto'] ={
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    }
+    return this.httpService.post(this.completeUrl, payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+    searchParty(party_code : any, party_name : any, typeFlg : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + SEARCH_PARTY
+    this.payload = {
+      party_code, party_name, typeFlg,
+      userInformationDto: {
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))   || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId') )  || ''),
+      }
+    }
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    checkParty(cust_code : any){
+    this.payload={}
+    this.payload ={
+      party_code:cust_code,
+      userInformationDto:{
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format') ) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      }
+    }
+    this.completeUrl = environment.baseUrl + '/checkPartyHandFollBy'
+    return this.httpService.post(this.completeUrl,this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    saveCcsPreference(payload : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + SAVE_CCS_PREFERENCE
+    return this.httpService.post(this.completeUrl, payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+    getFinancialYear(filter :): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + GET_FINANCIAL_YEAR;
+    //return this.httpService.post(this.completeUrl, filter).pipe(
+    return this.httpService.post_wo_spinner(this.completeUrl, filter).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
 
 }
 

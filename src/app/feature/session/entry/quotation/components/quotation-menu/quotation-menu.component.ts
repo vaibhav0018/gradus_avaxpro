@@ -1,27 +1,34 @@
-import { MatTableDataSource, PageEvent, MatPaginator, MatSort, MatSnackBar, DateAdapter, MAT_DATE_FORMATS, MatDialogConfig, MatDialog } from '@angular/material';
-import { ConstantsService } from 'src/app/core/services/constants.service';
+
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { ConstantsService } from '../../../../../../core/services/constants.service';
 import { Router } from '@angular/router';
-import { CommonsService } from 'src/app/shared/services/commons.service';
+import { CommonsService } from '../../../../../../shared/services/commons.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { QuotationService } from '../../quotation.service';
 import { QuotationModel } from '../../quotation.model';
-import { SnackbarComponent } from '../../../snackbar/snackbar.component';
+import { SnackbarComponent } from '../../../snackbar/snackbar/snackbar.component';
 import { ItemModelwithLP } from '../../../commons/commons.model';
 import { HandledByModel } from '../../../commons/commons.model';
 import { debounceTime, switchMap, tap, startWith, map } from 'rxjs/operators'
 import { BrokerModel } from '../../../commons/commons.model';
-import { ItemServiceAvaxPro } from 'src/app/core/services/utility/utilities/item_avaxpro.service'
-import { PartyModel } from 'src/app/feature/session/entry/commons/commons.model';
-import { UtilityService } from 'src/app/core/services/utility/utility.service';
-import { UtilityServiceAvaxPro } from 'src/app/core/services/utility/utility_avaxpro.service';
-import { PartyDetailsModel } from 'src/app/shared/models'
-import { UserFinYearModel } from 'src/app/shared/models/common.model'
+import { ItemServiceAvaxPro } from '../../../../../../core/services/utilities/item_avaxpro.service';
+import { PartyModel } from '../../../commons/commons.model';
+import { UtilityService } from '../../../../../../core/services/utility/utility.service';
+import { UtilityServiceAvaxPro } from '../../../../../../core/services/utility/utility_avaxpro.service';
+import { PartyDetailsModel } from '../../../../../../shared/models/model/party-details.model';
+import { UserFinYearModel } from '../../../../../../shared/models/model/common.model';
 import { DatePipe, formatDate } from '@angular/common';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../../../commons/date-adapter/app-date-adapter.service';
-import { UserRightsModel } from 'src/app/shared/models'
-import { GenericDialogComponent } from 'src/app/feature/session/generic-dialog/generic-dialog.component';
+import { UserRightsModel } from '../../../../../../shared/models/model/user-rights.model';
+import { GenericDialogComponent } from '../../../../generic-dialog/generic-dialog.component';
 @Component({
   selector: 'app-quotation-menu',
   templateUrl: './quotation-menu.component.html',
@@ -34,7 +41,7 @@ import { GenericDialogComponent } from 'src/app/feature/session/generic-dialog/g
 
 export class QuotationMenuComponent implements OnInit {
 
-  queryParams = {}
+  queryParams: any = {}
   displayedColumns: string[] = [
     'qt_draft_no',
     'qt_date',
@@ -45,8 +52,8 @@ export class QuotationMenuComponent implements OnInit {
     'select',
   ]
 
-  payload = {}
-  filterValues = {}
+  payload: any = {}
+  filterValues: any = {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator
   @ViewChild(MatSort) sort: MatSort
@@ -210,12 +217,12 @@ export class QuotationMenuComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getUserMenuRights(this.qtnModifyPageId, atob(sessionStorage.getItem(btoa('userId'))))
+    this.getUserMenuRights(this.qtnModifyPageId, atob(sessionStorage.getItem(btoa('userId'))  || ""))
 
-    this.getUserMenuRights(this.qtnRevisionPageId, atob(sessionStorage.getItem(btoa('userId'))))
+    this.getUserMenuRights(this.qtnRevisionPageId, atob(sessionStorage.getItem(btoa('userId'))  || ""))
 
     this.advanceSearchExpandFlg = false;
-    this.form.get("txtFilter").setValue("")
+    this.form.get("txtFilter")?.setValue("")
     this.getBranchList();
     this.getFinanYearList();
 
@@ -227,52 +234,55 @@ export class QuotationMenuComponent implements OnInit {
     this.quotModifyRights = false;
 
     /*PartyDetails */
-    this.form.get('cmbCustCode').valueChanges.pipe(debounceTime(100), tap(() => {
+    this.form.get('cmbCustCode')?.valueChanges.pipe(debounceTime(100), tap(() => {
       this.filteredCSLists = new Array<PartyModel>()
     }),
       switchMap(value => {
         value = typeof value == 'string' || value instanceof String ? value : value.cs_code || value.cs_name
         return value.length > 2 ? this.utilityServiceAvaxPro.searchParty(value, '', '') : ['']
       })
-    ).subscribe(data => {
+    ).subscribe({
+      next:(data: any) => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-        this.filteredCSLists = data.responseData[0].map(item => {
+        this.filteredCSLists = data.responseData[0].map((item: any) => {
           return new PartyModel(item.cs_code, item.cs_name)
         })
       }
       return this.filteredCSLists
     },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
 
     /*cmbDispTo */
-    this.form.get('cmbDispTo').valueChanges.pipe(debounceTime(100), tap(() => {
+    this.form.get('cmbDispTo')?.valueChanges.pipe(debounceTime(100), tap(() => {
       this.filteredCSLists1 = new Array<PartyModel>()
     }),
       switchMap(value => {
         value = typeof value == 'string' || value instanceof String ? value : value.cs_code || value.cs_name
         return value.length > 2 ? this.utilityServiceAvaxPro.searchParty(value, '', '') : ['']
       })
-    ).subscribe(data => {
+    ).subscribe(  {
+      next:(data : any) => {  
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-        this.filteredCSLists1 = data.responseData[0].map(item => {
+        this.filteredCSLists1 = data.responseData[0].map((item : any) => {
           return new PartyModel(item.cs_code, item.cs_name)
         })
       }
       return this.filteredCSLists1
     },
-      error => {
+      error:(error) => {
         console.log(error)
-      }
+      }}
     )
 
 
     /*followed by */
 
     this.getHandledByDropdown();
-    this.filteredHandledByLists = this.form.get('txtHandledBy').valueChanges.pipe(
+    this.filteredHandledByLists = this.form.get('txtHandledBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -284,7 +294,7 @@ export class QuotationMenuComponent implements OnInit {
     )
 
     //this.getFollowedUpByDropdown();
-    this.filteredFollowedByLists = this.form.get('txtFollowedBy').valueChanges.pipe(
+    this.filteredFollowedByLists = this.form.get('txtFollowedBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -296,7 +306,7 @@ export class QuotationMenuComponent implements OnInit {
     )
 
     // this.getInstructedByDropdown();
-    this.filteredInstructedByLists = this.form.get('txtInstructedBy').valueChanges.pipe(
+    this.filteredInstructedByLists = this.form.get('txtInstructedBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -311,22 +321,22 @@ export class QuotationMenuComponent implements OnInit {
     this.commonsService.show();
     this.filterValues = {
       advanceSearchFlag: 'N',
-      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg') )  || ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
       },
-      qt_created_by: atob(sessionStorage.getItem(btoa('userId'))),
-      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')))
+      qt_created_by: atob(sessionStorage.getItem(btoa('userId'))  || ''),
+      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))  || '')
     }
 
     this.getCompletedQuotationList(1, this.PAGE_SIZE_ARRAY[0], this.filterValues);
@@ -336,9 +346,10 @@ export class QuotationMenuComponent implements OnInit {
 
 
 
+
   getBranchList() {
-    this.utilityService.getBranchList().subscribe(
-      data => {
+    this.utilityService.getBranchList().subscribe({
+     next: (data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           console.log('branch list = ', data.responseData);
           this.branchList = data.responseData;
@@ -346,18 +357,19 @@ export class QuotationMenuComponent implements OnInit {
         this.branchList.splice(0, 1);
         //return this.branchList
 
-        let brValue = atob(sessionStorage.getItem(btoa('usr_of_branch')));
-        let loggedBrObj = this.branchList.find(({ br_branch_code }) => br_branch_code
+        let brValue = atob(sessionStorage.getItem(btoa('usr_of_branch'))  || '');
+        let loggedBrObj = this.branchList.find(({ br_branch_code }: { br_branch_code: string }) => br_branch_code
           == brValue);
 
         console.log(' inside getBranchList  loggedBrObj = ', loggedBrObj);
 
-        this.form.get('cmbBranch').setValue(loggedBrObj);
+        this.form.get('cmbBranch')?.setValue(loggedBrObj);
 
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
@@ -366,15 +378,15 @@ export class QuotationMenuComponent implements OnInit {
     }
 
 
-    let selectedObj;
-    let dc_no_fmt = atob(sessionStorage.getItem(btoa('fin_year_format')));
+    let selectedObj : any;
+    let dc_no_fmt = atob(sessionStorage.getItem(btoa('fin_year_format'))  ||"");
 
-    this.utilityServiceAvaxPro.getFinancialYear(this.payload).subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getFinancialYear(this.payload).subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
 
           //this.finanYearList = data.responseData[0].finYear.map(item => {
-          this.finanYearList = data.responseData[0].finyear.map(item => {
+          this.finanYearList = data.responseData[0].finyear.map((item : any) => {
 
             if (dc_no_fmt == item.df_doc_no_ts_format) {
               selectedObj = new UserFinYearModel(
@@ -393,62 +405,64 @@ export class QuotationMenuComponent implements OnInit {
               )
           })
         }
-        this.form.get('cmbFinacialYr').setValue(selectedObj);
+        this.form.get('cmbFinacialYr')?.setValue(selectedObj);
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
   getHandledByDropdown() {
-    this.utilityServiceAvaxPro.getHandledByList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getHandledByList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstHandledBy = data.responseData[0].map(item => {
+          this.lstHandledBy = data.responseData[0].map((item : any) => {
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
         }
         return this.lstHandledBy
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
   filterHandledBy(val: string) {
-    return this.lstHandledBy.filter(option => {
+    return this.lstHandledBy.filter((option : any) => {
       return option.usr_name.toLowerCase().includes(val.toLowerCase())
     })
   }
-  displayHandledBy(value): string | undefined {
+  displayHandledBy(value : any): string | undefined {
     return value ? value.usr_name : undefined
   }
 
   getFollowedUpByDropdown() {
-    this.utilityServiceAvaxPro.getHandledByList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getHandledByList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstFollowedBy = data.responseData[0].map(item => {
+          this.lstFollowedBy = data.responseData[0].map((item : any) => {
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
         }
         return this.lstFollowedBy
       },
-      error => {
+      error: (error) => {
         console.log(error)
-      }
+      }}
     )
   }
 
 
   filterFollowedUpBy(val: string) {
-    return this.lstFollowedBy.filter(option => {
+    return this.lstFollowedBy.filter((option : any) => {
       return option.usr_name.toLowerCase().includes(val.toLowerCase())
     })
   }
-  displayFollowedUpBy(value): string | undefined {
+  displayFollowedUpBy(value : any): string | undefined {
     return value ? value.usr_name : undefined
   }
 
@@ -457,7 +471,7 @@ export class QuotationMenuComponent implements OnInit {
     this.utilityServiceAvaxPro.getHandledByList().subscribe(
       data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstInstructedBy = data.responseData[0].map(item => {
+          this.lstInstructedBy = data.responseData[0].map((item: any) => {
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
         }
@@ -470,39 +484,39 @@ export class QuotationMenuComponent implements OnInit {
   }
 
   filterInstructedBy(val: string) {
-    return this.lstInstructedBy.filter(option => {
+    return this.lstInstructedBy.filter((option: any) => {
       return option.usr_name.toLowerCase().includes(val.toLowerCase())
     })
   }
-  displayInstructedBy(value): string | undefined {
+  displayInstructedBy(value: any): string | undefined {
     return value ? value.usr_name : undefined
   }
 
 
-  displaycslist(value): string | undefined {
+  displaycslist(value: any): string | undefined {
     return value ? value.cs_code + ' :: ' + value.cs_name : undefined
   }
 
-  displaycslist1(value): string | undefined {
+  displaycslist1(value: any): string | undefined {
     return value ? value.cs_code + ' :: ' + value.cs_name : undefined
   }
 
 
 
-  getPartyDetails(partySearchKeyword, reportType): Observable<any> {
+  getPartyDetails(partySearchKeyword: any, reportType: any): Observable<any> {
     return this.utilityService.getPartyDetails(partySearchKeyword, reportType)
   }
 
-  displayParty(value): string | undefined {
+  displayParty(value: any): string | undefined {
     return value ? value.party_name : undefined
   }
 
 
-  getPartyDetails1(partySearchKeyword, reportType): Observable<any> {
+  getPartyDetails1(partySearchKeyword: any, reportType: any): Observable<any> {
     return this.utilityService.getPartyDetails(partySearchKeyword, reportType)
   }
 
-  displayParty1(value): string | undefined {
+  displayParty1(value: any): string | undefined {
     return value ? value.party_name : undefined
   }
 
@@ -511,7 +525,7 @@ export class QuotationMenuComponent implements OnInit {
     this.utilityServiceAvaxPro.getBrokerList().
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstBroker = data.responseData[0].map(item => {
+          this.lstBroker = data.responseData[0].map((item: any) => {
             return new BrokerModel(item.brk_broker_code, item.brk_broker_name)
           })
         }
@@ -532,7 +546,7 @@ export class QuotationMenuComponent implements OnInit {
       .subscribe(
         data => {
           if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-            this.itemList = data.responseData[0].map(item => {
+            this.itemList = data.responseData[0].map((item: any) => {
               return new ItemModelwithLP(item.it_code, item.it_name, item.catrefno, item.it_make, item.mmx_lp)
             })
           }
@@ -557,7 +571,7 @@ export class QuotationMenuComponent implements OnInit {
       .subscribe(
         data => {
           if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-            this.itemList1 = data.responseData[0].map(item => {
+            this.itemList1 = data.responseData[0].map((item: any) => {
               return new ItemModelwithLP(item.it_code, item.it_name, item.catrefno, item.it_make, item.mmx_lp)
             })
           }
@@ -573,26 +587,26 @@ export class QuotationMenuComponent implements OnInit {
     throw new Error("Method not implemented.");
   }
 
-  getItemListByCode(itemCode): Observable<any> {
+  getItemListByCode(itemCode: any): Observable<any> {
     return this.itemService.getItemList1(itemCode)
   }
 
-  displayItem(value): string | undefined {
+  displayItem(value: any): string | undefined {
     return value ? value.item_code : undefined
   }
 
 
-  getItemListByCode1(itemCode): Observable<any> {
+  getItemListByCode1(itemCode: any): Observable<any> {
     return this.itemService.getItemList1(itemCode)
   }
 
-  displayItem1(value): string | undefined {
+  displayItem1(value: any): string | undefined {
     return value ? value.item_code : undefined
   }
 
 
   public pagination(e: any) {
-    this.form.get("txtFilter").setValue("")
+    this.form.get("txtFilter")?.setValue("")
     if (this.pendingDraft == true) {
       this.getPendingQuotationList(e.pageIndex + 1, this.PAGE_SIZE_ARRAY[0]);
     }
@@ -602,24 +616,25 @@ export class QuotationMenuComponent implements OnInit {
   }
 
 
-  OnTabChange(tab) {
+  OnTabChange(tab: any) {
 
-    this.getUserMenuRights(this.qtnModifyPageId, atob(sessionStorage.getItem(btoa('userId'))))
+    this.getUserMenuRights(this.qtnModifyPageId, atob(sessionStorage.getItem(btoa('userId'))  || ""))
 
-    this.getUserMenuRights(this.qtnRevisionPageId, atob(sessionStorage.getItem(btoa('userId'))))
+    this.getUserMenuRights(this.qtnRevisionPageId, atob(sessionStorage.getItem(btoa('userId'))  || ""))
 
-    this.form.get("txtFilter").setValue("")
+    this.form.get("txtFilter")?.setValue("")
     if (tab.index == 0) {
       this.pendingDraft = false;
-      this.dataSource = null;
+      this.dataSource.data = [];
       this.advanceSearchFlg = true;
       this.payload = {
         advanceSearchFlag: 'N',
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        qt_created_by: atob(sessionStorage.getItem(btoa('userId'))),
-        qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')))
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        qt_created_by: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || "")
+
       }
       this.getCompletedQuotationList(1, this.PAGE_SIZE_ARRAY[0], this.payload);
     }
@@ -632,7 +647,7 @@ export class QuotationMenuComponent implements OnInit {
   }
 
 
-  applyFilter(filterValue: string, flg) {
+  applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches    
     this.dataSource.filter = filterValue;
@@ -641,38 +656,39 @@ export class QuotationMenuComponent implements OnInit {
   getPendingQuotationList(
     pageNumber: number,
     pageSize: number,
-    sortOrder?,
-    sortBy?
+    sortOrder?: any,
+    sortBy?: any
+
   ) {
 
     this.payload = {
-      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       }
 
     };
-    this.dataSource = null
+    this.dataSource;
     this.quotationService.getQuotationList(sortBy, sortOrder, pageNumber, pageSize, "Pending", this.payload)
-      .subscribe(
-        data => {
+      .subscribe({
+        next:(data : any) => {
           if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
 
             this.message = "";
             // if (data.responseData[0].length == 0) {
             //   this.openSnackBar("No Records Found.");
             // } else {
-              this.tableData = null;
-              this.tableData = data.responseData[0].map(item => {
+              this.tableData = [];
+              this.tableData = data.responseData[0].map((item: any) => {
                 this.totalCount = item.total_count
                 this.pf_party_name = item.csname
                 if (this.pf_party_name == null || this.pf_party_name == "-") {
@@ -706,10 +722,12 @@ export class QuotationMenuComponent implements OnInit {
           }
           this.dataSource = new MatTableDataSource(this.tableData)
           this.dataSource.sort = this.sort
+          return true;
         },
-        error => {
+        error:(error : any) => {
           this.loading = false
         }
+      }
       )
   }
 
@@ -717,13 +735,13 @@ export class QuotationMenuComponent implements OnInit {
     pageNumber: number,
     pageSize: number,
     payload: any,
-    sortOrder?,
-    sortBy?,
+    sortOrder? : any,
+    sortBy? : any,
   ) {
-    this.dataSource = null
+    this.dataSource.data = [];
     this.quotationService.getQuotationList(sortBy, sortOrder, pageNumber, pageSize, "Complete", payload)
-      .subscribe(
-        data => {
+      .subscribe({
+        next:(data : any) => {
           if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
 
             this.message = "";
@@ -745,8 +763,8 @@ export class QuotationMenuComponent implements OnInit {
               console.log('this.quotModifyRights = ', this.quotModifyRights); */
 
 
-              this.tableData = null;
-              this.tableData = data.responseData[0][0].map(item => {
+              this.tableData = [];
+              this.tableData = data.responseData[0][0].map((item: any) => {
                 this.totalCount = item.total_count
                 this.pf_party_name = item.csname
                 if (this.pf_party_name == null || this.pf_party_name == "-") {
@@ -779,25 +797,27 @@ export class QuotationMenuComponent implements OnInit {
           }
           this.dataSource = new MatTableDataSource(this.tableData)
           this.dataSource.sort = this.sort
+          return true;
         },
-        error => {
+        error:(error) => {
           this.loading = false
         }
+      }
       )
   }
 
 
-  navigateToView(element, row) {
+  navigateToView(element: any, row: any) {
 
     this.payload = row;
     this.payload["generateDraftFlg"] = 'N';
 
     this.payload["userInformationDto"] = {
-      usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
     }
-    if (row.qt_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')))) {
+    if (row.qt_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')) || "")) {
       this.payload["flgOtherBranch"] = 'Y';
       this.payload["oth_siscon"] = row.qt_siscon_code;
       this.payload["oth_branch"] = row.qt_branch_code;
@@ -814,7 +834,7 @@ export class QuotationMenuComponent implements OnInit {
       this.queryParams["isFromPendingDraft"] = "N";
       this.queryParams["isForViewQuotation"] = "Y";
 
-      if (row.qt_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')))) {
+      if (row.qt_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')) || "")) {
         this.queryParams["flgOtherBranch"] = 'Y';
         this.queryParams["oth_siscon"] = row.qt_siscon_code;
         this.queryParams["oth_branch"] = row.qt_branch_code;
@@ -826,12 +846,13 @@ export class QuotationMenuComponent implements OnInit {
         this.queryParams["docNo"] = quot_no;
         this.queryParams["qt_quot_no"] = quot_no;
         this.queryParams["userInformationDto"] = {
-          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-          usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
+          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+          usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        
         }
 
         
@@ -852,7 +873,7 @@ export class QuotationMenuComponent implements OnInit {
 
   }
 
-  fileUpload(row) {
+  fileUpload(row: any) {
     console.log('row=', row);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -874,7 +895,7 @@ export class QuotationMenuComponent implements OnInit {
     })
   }
 
-  navigateToEdit(element, row, revisionFlag) {
+  navigateToEdit(element: any, row: any, revisionFlag: any) {
     console.log('row', row);
     console.log('pendingDraft', this.pendingDraft);
 
@@ -882,9 +903,9 @@ export class QuotationMenuComponent implements OnInit {
     this.payload["generateDraftFlg"] = 'N';
 
     this.payload["userInformationDto"] = {
-      usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
     }
 
     this.quotationService.generateDraft(this.payload).toPromise().then(data => {
@@ -900,13 +921,13 @@ export class QuotationMenuComponent implements OnInit {
         this.queryParams["docNo"] = quot_no;
         this.queryParams["qt_quot_no"] = quot_no;
         this.queryParams["userInformationDto"] = {
-          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-          usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        }
+          usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+          usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+          usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+          usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+          fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+          fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+                  }
 
       }
 
@@ -973,7 +994,7 @@ export class QuotationMenuComponent implements OnInit {
     this.router.navigate(['session/entry/quotation/addnewquotation'])
   }
 
-  openSnackBar(message) {
+  openSnackBar(message: any) {
     // this.snackBar.openFromComponent(SnackbarComponent, {
     //   data: message,
     //   duration: 1000,
@@ -984,19 +1005,20 @@ export class QuotationMenuComponent implements OnInit {
   getCompleteQuotList() {
     this.filterValues = {
       advanceSearchFlag: 'Y',
-      qt_created_by: atob(sessionStorage.getItem(btoa('userId'))),
-      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
+      qt_created_by: atob(sessionStorage.getItem(btoa('userId')) || ""),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
+       
       }
     }
 
@@ -1023,7 +1045,7 @@ export class QuotationMenuComponent implements OnInit {
     this.filterValues["qt_branch_code"] = this.form.controls.cmbBranch.value.br_branch_code;
     this.filterValues["qt_siscon_code"] = this.form.controls.cmbBranch.value.br_siscon_code;
 
-    if (this.form.controls.cmbBranch.value.br_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')))) {
+    if (this.form.controls.cmbBranch.value.br_siscon_code != atob(sessionStorage.getItem(btoa('usr_of_siscon')) || "")) {
       this.flgOtherBranch = 'Y'
       this.oth_siscon = this.form.controls.cmbBranch.value.br_siscon_code
       this.oth_branch = this.form.controls.cmbBranch.value.br_branch_code
@@ -1095,14 +1117,14 @@ export class QuotationMenuComponent implements OnInit {
     }
 
     if (this.form.controls.chktxtQuotFromDate.value) {
-      this.filterValues["qt_from_date"] = this.getFormattedDate(this.form.get("txtQuotFromDate").value);
+      this.filterValues["qt_from_date"] = this.getFormattedDate(this.form.get("txtQuotFromDate")?.value);
       if (this.form.controls.chktxtQuotToDate.value == false) {
         this.openSnackBar("Please select To Date");
         return false
       }
     }
     if (this.form.controls.chktxtQuotToDate.value) {
-      this.filterValues["qt_to_date"] = this.getFormattedDate(this.form.get("txtQuotToDate").value);
+      this.filterValues["qt_to_date"] = this.getFormattedDate(this.form.get("txtQuotToDate")?.value);
     }
 
     if (this.form.controls.chktxtQuotFromDate.value && this.form.controls.chktxtQuotToDate.value) {
@@ -1117,14 +1139,15 @@ export class QuotationMenuComponent implements OnInit {
     console.log('this.filterValues = ', this.filterValues);
 
 
-    let df_year_format = this.form.get("cmbFinacialYr").value != null ?
-      this.form.get("cmbFinacialYr").value.df_year_format : atob(sessionStorage.getItem(btoa('fin_year_format')));
+    let df_year_format = this.form.get("cmbFinacialYr")?.value != null ?
+      this.form.get("cmbFinacialYr")?.value.df_year_format : atob(sessionStorage.getItem(btoa('fin_year_format')) || "");
     this.filterValues["df_year_format"] = df_year_format;
 
     this.pendingDraft = false;
     this.commonsService.show();
     this.advanceSearchExpandFlg = false;
     this.getCompletedQuotationList(1, this.PAGE_SIZE_ARRAY[0], this.filterValues);
+    return true;
 
   }
 
@@ -1136,7 +1159,7 @@ export class QuotationMenuComponent implements OnInit {
     return formattedDate
   }
 
-  enabledTxtBox(event, formcontrolnamestr) {
+  enabledTxtBox(event: any, formcontrolnamestr: any) {
     if (event.checked) {
       this.form.controls[formcontrolnamestr].enable();
     } else {
@@ -1151,32 +1174,32 @@ export class QuotationMenuComponent implements OnInit {
   }
 
   resetField() {
-    this.form.get("cmbBranch").setValue("")
+    this.form.get("cmbBranch")?.setValue("")
     this.getBranchList();
     this.getFinanYearList();
     this.todayDate1 = new Date();
     this.todayDate2 = new Date();
-    this.form.get("chktxtQuotNo").setValue(false);
-    this.form.get("txtQuotNo").setValue("")
-    this.form.get("chktxtQuotFromDate").setValue(false);
-    this.form.get("chktxtQuotToDate").setValue(false);
-    this.form.get("chktxtFollowedBy").setValue(false);
-    this.form.get("txtFollowedBy").setValue("")
-    this.form.get("txtHandledBy").setValue("");
-    this.form.get("chktxtHandledBy").setValue(false);
-    this.form.get("chkcmbCustCode").setValue(false);
-    this.form.get("cmbCustCode").setValue("")
-    this.form.get("chktxtInstructedBy").setValue(false);
-    this.form.get("txtInstructedBy").setValue("")
-    this.form.get("txtChlNetAmt").setValue("")
-    this.form.get("cmbBroker").setValue("")
-    this.form.get("chkcmbBroker").setValue(false)
-    this.form.get("chktxtChlNetAmt").setValue(false);
+    this.form.get("chktxtQuotNo")?.setValue(false);
+    this.form.get("txtQuotNo")?.setValue("")
+    this.form.get("chktxtQuotFromDate")?.setValue(false);
+    this.form.get("chktxtQuotToDate")?.setValue(false);
+    this.form.get("chktxtFollowedBy")?.setValue(false);
+    this.form.get("txtFollowedBy")?.setValue("")
+    this.form.get("txtHandledBy")?.setValue("");
+    this.form.get("chktxtHandledBy")?.setValue(false);
+    this.form.get("chkcmbCustCode")?.setValue(false);
+    this.form.get("cmbCustCode")?.setValue("")
+    this.form.get("chktxtInstructedBy")?.setValue(false);
+    this.form.get("txtInstructedBy")?.setValue("")
+    this.form.get("txtChlNetAmt")?.setValue("")
+    this.form.get("cmbBroker")?.setValue("")
+    this.form.get("chkcmbBroker")?.setValue(false)
+    this.form.get("chktxtChlNetAmt")?.setValue(false);
   }
 
-  getUserMenuRights(reportTypePageId, userCode) {
-    this.utilityService.getHandledByUserRights(reportTypePageId, userCode).subscribe(
-      data => {
+  getUserMenuRights(reportTypePageId: any, userCode: any) {
+    this.utilityService.getHandledByUserRights(reportTypePageId, userCode).subscribe({
+      next:(data: any) => {
         let userRightsData = data[0]
         if (userRightsData.responseStatus === 'SUCCESS' && userRightsData.responseCode === 'RES_200') {
           this.userRightsList = new UserRightsModel({
@@ -1206,9 +1229,10 @@ export class QuotationMenuComponent implements OnInit {
           console.log(" this.quotModifyRights ", this.quotModifyRights)
         }
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
     //return this.userRightsList
   }

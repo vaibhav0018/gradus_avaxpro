@@ -1,4 +1,4 @@
-export const QuotationPageList = {
+export const QuotationPageList: any = {
   qt_delivery_06: {
     description_key: '121',
     description_value: 'FRT PAID'

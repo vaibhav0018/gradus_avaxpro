@@ -1,7 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { SnackbarComponent } from '../../snackbar/snackbar.component';
+import { SnackbarComponent } from '../../snackbar/snackbar/snackbar.component';
 import { QuotationService } from '../quotation.service';
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+// import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-item-qty-exe-info-details',
@@ -31,18 +33,18 @@ export class ItemQtyExeInfoDetailsComponent implements OnInit {
   getQuotExeQtyDtlList() {
     this.payload = {
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ""),
       },
       qt_quot_no: this.data.qt_quot_no,
       qtd_serial_no: this.data.qtd_serial_no,
-      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-      qt_created_by: atob(sessionStorage.getItem(btoa('userId'))),
-      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      qt_siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""),
+      qt_branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch'))  || ""),
+      qt_created_by: atob(sessionStorage.getItem(btoa('userId'))  || ""),
+      qt_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ""),
     }
     this.quotationService.getQuotExeQtyDtlList(this.payload).subscribe(data => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
@@ -61,7 +63,7 @@ export class ItemQtyExeInfoDetailsComponent implements OnInit {
 
   }
 
-  openSnackBar(message) {
+  openSnackBar(message : any) {
     this.snackBar.openFromComponent(SnackbarComponent, {
       data: message,
       duration: 1000,

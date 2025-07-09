@@ -15,6 +15,9 @@ import { SnackbarComponent } from '../../../snackbar/snackbar/snackbar.component
 import { QuotationPageList } from './constants';
 import { MiscPartyMaintenanceMenuComponent } from '../../../../master/customer-master-draft/components/misc-party-maintenance-menu/misc-party-maintenance-menu.component';
 import { DatePipe, formatDate } from '@angular/common';
+import { F } from '@angular/cdk/keycodes';
+import { firstValueFrom } from 'rxjs';
+
 
 @Component({
   selector: 'app-add-new-quotation-filter',
@@ -28,8 +31,8 @@ import { DatePipe, formatDate } from '@angular/common';
 
 export class AddNewQuotationFilterComponent implements OnInit {
 
-  queryParams = {}
-  payload = {}
+  queryParams : any
+  payload : any
   form: FormGroup = this.formBuilder.group({});
   todayDate = new Date();
   todayDate1 = new Date();
@@ -136,7 +139,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
     this.getProjectList()
 
     this.getHandledByDropdown()
-    this.filteredHandledByLists = this.form.get('txtHandledBy').valueChanges.pipe(
+    this.filteredHandledByLists = this.form.get('txtHandledBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -147,7 +150,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
       })
     )
 
-    this.filteredFollowedByLists = this.form.get('txtFollowedBy').valueChanges.pipe(
+    this.filteredFollowedByLists = this.form.get('txtFollowedBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -157,7 +160,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
         return this.filterHandledBy(value)
       })
     )
-    this.filteredInstructedByLists = this.form.get('txtInstructedBy').valueChanges.pipe(
+    this.filteredInstructedByLists = this.form.get('txtInstructedBy')!.valueChanges.pipe(
       startWith(''),
       map(value => {
         value =
@@ -174,7 +177,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
     this.utilityServiceAvaxPro.getBrokerList().
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstBroker = data.responseData[0].map(item => {
+          this.lstBroker = data.responseData[0].map((item : any) => {
             return new BrokerModel(
               item.brk_broker_code,
               item.brk_broker_name
@@ -186,31 +189,32 @@ export class AddNewQuotationFilterComponent implements OnInit {
 
   getHandledByDropdown() {
 
-    this.utilityServiceAvaxPro.getHandledByList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getHandledByList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstHandledBy = data.responseData[0].map(item => {
-            if (item.usr_userid == atob(sessionStorage.getItem(btoa('userId')))) {
-              this.form.get('txtHandledBy').setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
-              this.form.get('txtFollowedBy').setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
-              this.form.get('txtInstructedBy').setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
+          this.lstHandledBy = data.responseData[0].map((item : any) => {
+            if (item.usr_userid == atob(sessionStorage.getItem(btoa('userId'))  || "")) {
+              this.form.get('txtHandledBy')?.setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
+              this.form.get('txtFollowedBy')?.setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
+              this.form.get('txtInstructedBy')?.setValue(new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code));
             }
             return new HandledByModel(item.usr_userid, item.usr_name, item.usr_acc_code)
           })
         }
         return this.lstHandledBy
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
   filterHandledBy(val: string) {
-    return this.lstHandledBy.filter(option => {
+    return this.lstHandledBy.filter((option : any) => {
       return option.usr_name.toLowerCase().includes(val.toLowerCase())
     })
   }
-  displayHandledBy(value): string | undefined {
+  displayHandledBy(value : any): string | undefined {
     return value ? value.usr_name : undefined
   }
 
@@ -219,7 +223,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
     this.quotationService.getQuotType().subscribe(data => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
         //this.lstQuotType = data.responseData[0].quotType.map(item => {
-        this.lstQuotType = data.responseData[0].quottype.map(item => {
+        this.lstQuotType = data.responseData[0].quottype.map((item : any) => {
           return new QuotTypeModel(
             item.qty_code,
             item.qty_type
@@ -229,12 +233,12 @@ export class AddNewQuotationFilterComponent implements OnInit {
     })
   }
 
-  getSource(flg) {
+  getSource(flg : any) {
     this.quotationService.getSource('ao', 'source').
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
           if (flg == 'D') {
-            this.lstSource = data.responseData[0].map(item => {
+            this.lstSource = data.responseData[0].map((item : any) => {
               return new LookupModel(
                 item.lkt_group,
                 item.lkt_sub_group,
@@ -254,7 +258,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
     this.quotationService.getSource('ao', 'type').
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstInvType = data.responseData[0].map(item => {
+          this.lstInvType = data.responseData[0].map((item : any) => {
             return new LookupModel(
               item.lkt_group,
               item.lkt_sub_group,
@@ -270,10 +274,10 @@ export class AddNewQuotationFilterComponent implements OnInit {
 
 
   getDeliveryTermsDropdown() {
-    this.utilityServiceAvaxPro.getQuotDelTermsList().subscribe(
-      data => {
+    this.utilityServiceAvaxPro.getQuotDelTermsList().subscribe({
+      next:(data : any) => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstDelTerms = data.responseData[0].map(item => {
+          this.lstDelTerms = data.responseData[0].map((item : any) => {
             return new DeliveryTermsModel(item.dlt_del_terms_code, item.dlt_desc)
           })
 
@@ -281,18 +285,19 @@ export class AddNewQuotationFilterComponent implements OnInit {
             this.toSelectedDelCode = data.responseData[1]
           }
           else{
-            let usrBrCode = atob(sessionStorage.getItem(btoa('usr_of_branch')))
-            let key: any = 'qt_delivery_' + usrBrCode
-            this.def_qt_delivery = QuotationPageList[key].description_key
+            let usrBrCode = atob(sessionStorage.getItem(btoa('usr_of_branch'))  || "")
+            let key : any = 'qt_delivery_' + usrBrCode
+            this.def_qt_delivery = QuotationPageList[key].description_key 
             if (this.def_qt_delivery != null) {
               this.toSelectedDelCode = this.def_qt_delivery
             }  
           }
         }
       },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
@@ -300,7 +305,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
     this.utilityServiceAvaxPro.getSpecialtax().
       subscribe(data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.lstSpecialTax = data.responseData[0].map(item => {
+          this.lstSpecialTax = data.responseData[0].map((item : any) => {
             return new SpecialTaxListModel(
               item.spt_tax_code,
               item.spt_tax_flg,
@@ -314,7 +319,7 @@ export class AddNewQuotationFilterComponent implements OnInit {
 
   getProjectList() {
     let payload = {
-      common_row:{siscon_code:atob(sessionStorage.getItem(btoa('usr_of_siscon'))),branch_code:atob(sessionStorage.getItem(btoa('usr_of_branch')))}
+      common_row:{siscon_code:atob(sessionStorage.getItem(btoa('usr_of_siscon'))  || ""),branch_code:atob(sessionStorage.getItem(btoa('usr_of_branch'))  || "")}
     }
     this.utilityServiceAvaxPro.getProjectList(payload).
       subscribe(data => {
@@ -324,24 +329,24 @@ export class AddNewQuotationFilterComponent implements OnInit {
       })
   }
 
-  searchSelectedParty(txtid, party_flg, flg) {
-    if (this.form.get(txtid).value == '' || this.form.get(txtid).value == null) {
+  searchSelectedParty(txtid : any, party_flg: any, flg : any) {
+    if (this.form.get(txtid)?.value == '' || this.form.get(txtid)?.value == null) {
       this.openSnackBar('Please Enter Party Code to procced  ');
       return false;
-    } else if (this.form.get(txtid).value.length < 3) {
+    } else if (this.form.get(txtid)?.value.length < 3) {
       this.openSnackBar('Please Enter More Then 2 Characters');
       return false;
     } else {
-      this.utilityServiceAvaxPro.searchParty(this.form.get(txtid).value, party_flg, '').subscribe(
+      this.utilityServiceAvaxPro.searchParty(this.form.get(txtid)?.value, party_flg, '').subscribe(
         data => {
           if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
             if (flg == 'B') {
-              this.filteredCSLists = data.responseData[0].map(item => {
+              this.filteredCSLists = data.responseData[0].map((item : any) => {
                 return new PartyModel(item.cs_code, item.cs_name)
               })
             }
             else {
-              this.filteredDispatchLists = data.responseData[0].map(item => {
+              this.filteredDispatchLists = data.responseData[0].map((item : any) => {
                 return new PartyModel(item.cs_code, item.cs_name)
               })
             }
@@ -350,13 +355,15 @@ export class AddNewQuotationFilterComponent implements OnInit {
             this.openSnackBar(data.message);
             return false;
           }
+          return false;
         },
       )
     }
+    return true;
   }
 
-  getParty(txtid, flgCust, flg) {
-    this.form.get(txtid).valueChanges.pipe(debounceTime(100), tap(() => {
+  getParty(txtid : any, flgCust : any, flg : any) {
+    this.form.get(txtid)?.valueChanges.pipe(debounceTime(100), tap(() => {
       if (flg == 'B') {
         this.filteredCSLists = new Array<PartyModel>()
       }
@@ -374,24 +381,25 @@ export class AddNewQuotationFilterComponent implements OnInit {
         value = typeof value == 'string' || value instanceof String ? value : value.cs_code || value.cs_name
         return value.length > 2 ? this.utilityServiceAvaxPro.searchParty(value, flgCust, '') : ['']
       })
-    ).subscribe(data => {
+    ).subscribe({
+      next:(data : any) => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
         if (flg == 'B') {
-          this.filteredCSLists = data.responseData[0].map(item => {
+          this.filteredCSLists = data.responseData[0].map((item : any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
         }
         else if (flg == 'D') {
-          this.filteredDispatchLists = data.responseData[0].map(item => {
+          this.filteredDispatchLists = data.responseData[0].map((item : any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
 
-          this.filteredCSLists = data.responseData[0].map(item => {
+          this.filteredCSLists = data.responseData[0].map((item : any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
         }
         else {
-          this.filteredSupplier = data.responseData[0].map(item => {
+          this.filteredSupplier = data.responseData[0].map((item : any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
         }
@@ -406,16 +414,17 @@ export class AddNewQuotationFilterComponent implements OnInit {
         return this.filteredSupplier
       }
     },
-      error => {
+      error:(error) => {
         console.log(error)
       }
+    }
     )
   }
 
-getCcsPreferenceData(party_code, flg) {
+getCcsPreferenceData(party_code: any, flg : any) {
   let data = {
     party_code: party_code,
-    company_code: atob(sessionStorage.getItem(btoa('usr_company_code')))
+    company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || "")
   }
   this.utilityServiceAvaxPro.getCcsPreferenceData(data).
   subscribe(data => {
@@ -427,7 +436,7 @@ getCcsPreferenceData(party_code, flg) {
           let save_dispatch_addr_code =  data.responseData[0].ccs_dispatch_addr_code
           let addrDisp : any;
           
-         this.lstDispatchAddr.map(value => {                                
+         this.lstDispatchAddr.map((value : any) => {                                
                 if(value['csad_addr_code'] == save_dispatch_addr_code
                 && value['csad_addr_code'] > 0){
                   addrDisp = value
@@ -436,9 +445,9 @@ getCcsPreferenceData(party_code, flg) {
 
               if(addrDisp== null || addrDisp== undefined){
                 let addrDispFirst = this.lstDispatchAddr[0];
-                this.form.get('cmbDispatchToAddress').setValue(addrDispFirst);
+                this.form.get('cmbDispatchToAddress')?.setValue(addrDispFirst);
               }else{
-                this.form.get('cmbDispatchToAddress').setValue(addrDisp);
+                this.form.get('cmbDispatchToAddress')?.setValue(addrDisp);
               }
 
         }
@@ -447,7 +456,7 @@ getCcsPreferenceData(party_code, flg) {
           let save_billto_addr_code =  data.responseData[0].ccs_billto_addr_code
           let addrBillto : any;
           
-         this.lstBillAddr.map(value => {                                
+         this.lstBillAddr.map((value : any) => {                                
                 if(value['csad_addr_code'] == save_billto_addr_code
                 && value['csad_addr_code'] > 0){
                   addrBillto = value
@@ -456,9 +465,9 @@ getCcsPreferenceData(party_code, flg) {
 
               if(addrBillto== null || addrBillto== undefined){
                 let addrBilltoFirst = this.lstBillAddr[0];
-                this.form.get('cmbBillToAddress').setValue(addrBilltoFirst);
+                this.form.get('cmbBillToAddress')?.setValue(addrBilltoFirst);
               }else{
-                this.form.get('cmbBillToAddress').setValue(addrBillto);
+                this.form.get('cmbBillToAddress')?.setValue(addrBillto);
               }
           
         }
@@ -468,7 +477,7 @@ getCcsPreferenceData(party_code, flg) {
   })
 }
 
-  getPartyDetail(party_code, flg) {
+  getPartyDetail(party_code: any, flg : any) {
 
     this.quotationService.getPartyDetail(party_code.cs_code).
       subscribe(data => {
@@ -505,28 +514,29 @@ getCcsPreferenceData(party_code, flg) {
           this.openSnackBar(data.message);
           return false;
         }
+        return false;
       })
   }
 
-  displaycslist(value): string | undefined {
+  displaycslist(value : any): string | undefined {
     return value ? value.cs_code + ' :: ' + value.cs_name : undefined
   }
 
   selectBillTo() {
-    this.getPartyDetail(this.form.get('txtBillTo').value, 'B')
+    this.getPartyDetail(this.form.get('txtBillTo')?.value, 'B')
     this.filteredDispatchLists[0] = this.filteredCSLists[0]
-    this.form.get('txtDispatchTo').setValue(this.form.get('txtBillTo').value)
-    this.getPartyDetail(this.form.get('txtDispatchTo').value, 'D')
+    this.form.get('txtDispatchTo')?.setValue(this.form.get('txtBillTo')?.value)
+    this.getPartyDetail(this.form.get('txtDispatchTo')?.value, 'D')
   }
 
   selectDispatchTo() {
-    this.getPartyDetail(this.form.get('txtDispatchTo').value, 'D')
+    this.getPartyDetail(this.form.get('txtDispatchTo')?.value, 'D')
   }
 
-  setPartyDetail(flg) {
+  setPartyDetail(flg : any) {
     // this.hideQuotSource =false
   }
-  setQuotDetail(flg) {
+  setQuotDetail(flg : any) {
 
   }
 
@@ -534,7 +544,7 @@ getCcsPreferenceData(party_code, flg) {
     this.form.controls.cmbSpecialTax.setValue("");
   }
 
-  openSnackBar(message) {
+  openSnackBar(message : any) {
     // this.snackBar.openFromComponent(SnackbarComponent, {
     //   data: message,
     //   duration: 10000
@@ -602,10 +612,10 @@ getCcsPreferenceData(party_code, flg) {
     this.queryParams["qt_instructed_by_name"] = this.form.controls.txtInstructedBy.value.usr_name
     this.queryParams["qt_broker_code"] = this.form.controls.cmbBroker.value.brk_broker_code
     this.queryParams["qt_broker_by_name"] = this.form.controls.cmbBroker.value.brk_broker_name
-    this.queryParams["qt_created_by"] = atob(sessionStorage.getItem(btoa('userId')))
-    this.queryParams["qt_siscon_code"] = atob(sessionStorage.getItem(btoa('usr_of_siscon')))
-    this.queryParams["qt_branch_code"] = atob(sessionStorage.getItem(btoa('usr_of_branch')))
-    this.queryParams["qt_company_code"] = atob(sessionStorage.getItem(btoa('usr_company_code')))
+    this.queryParams["qt_created_by"] = atob(sessionStorage.getItem(btoa('userId'))  || "")
+    this.queryParams["qt_siscon_code"] = atob(sessionStorage.getItem(btoa('usr_of_siscon')) || "")
+    this.queryParams["qt_branch_code"] = atob(sessionStorage.getItem(btoa('usr_of_branch')) || "")
+    this.queryParams["qt_company_code"] = atob(sessionStorage.getItem(btoa('usr_company_code')) || "")
     this.queryParams["qt_deleted_flg"] = "N"
 
     if (this.form.controls.txtDeliveryDays.value == '') {
@@ -621,15 +631,15 @@ getCcsPreferenceData(party_code, flg) {
     this.payload = {
 
       userInformationDto: {
-        usr_userid: atob(sessionStorage.getItem(btoa('userId'))),
-        usr_name: atob(sessionStorage.getItem(btoa('username'))),
-        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg'))),
-        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end'))),
-        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format'))),
-        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
-        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon'))),
-        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch'))),
-        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ""),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ""),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg') )  || ""),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ""),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ""),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ""),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ""), 
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ""),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code'))   || ""),
       },
       qt_cust_code: this.form.controls.txtBillTo.value.cs_code,
       qt_bill_addr_code: this.form.controls.cmbBillToAddress.value.csad_addr_code,
@@ -640,7 +650,7 @@ getCcsPreferenceData(party_code, flg) {
         this.openSnackBar(data.message);
         return false;
       } else {
-        this.quotationService.getQuoatationNewDraftData(this.payload).toPromise().then(data => {
+        firstValueFrom(this.quotationService.getQuoatationNewDraftData(this.payload)).then(data => {
           this.queryParams["qt_inv_type_code"] = data.responseData[0].qt_inv_type_code
           this.queryParams["qt_inv_type_code_desc"] = data.responseData[0].qt_inv_type_code_desc
 
@@ -651,7 +661,9 @@ getCcsPreferenceData(party_code, flg) {
           .catch(err => {
           });
         }
+        return false;
     })
+    return true;
   }
 
   // call misc master program
@@ -671,9 +683,9 @@ getCcsPreferenceData(party_code, flg) {
     });
     dialogRef.afterClosed().subscribe(item => {
       if (sessionStorage.refData)
-        this.stateDataStr = sessionStorage.getItem("refData");
+        this.stateDataStr = sessionStorage.getItem("refData") || "";
       else {
-        this.stateDataStr = sessionStorage.getItem("stateData");
+        this.stateDataStr = sessionStorage.getItem("stateData") || "";
         sessionStorage.removeItem("stateData");
         sessionStorage.setItem("refData", this.stateDataStr);
       }
@@ -687,25 +699,26 @@ getCcsPreferenceData(party_code, flg) {
 
   }
 
-  searchSelectedParty1(party_code, party_flg) {
+  searchSelectedParty1(party_code : any, party_flg : any) {
     this.utilityServiceAvaxPro.searchParty(party_code, party_flg, '').subscribe(
       data => {
         if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
-          this.filteredCSLists = data.responseData[0].map(item => {
+          this.filteredCSLists = data.responseData[0].map((item: any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
-          this.filteredDispatchLists = data.responseData[0].map(item => {
+          this.filteredDispatchLists = data.responseData[0].map((item : any) => {
             return new PartyModel(item.cs_code, item.cs_name)
           })
-          this.form.get('txtBillTo').setValue(this.filteredCSLists[0])
-          this.getPartyDetail(this.form.get('txtBillTo').value, 'B')
-          this.form.get('txtDispatchTo').setValue(this.filteredDispatchLists[0])
-          this.getPartyDetail(this.form.get('txtDispatchTo').value, 'D')
+          this.form.get('txtBillTo')?.setValue(this.filteredCSLists[0])
+          this.getPartyDetail(this.form.get('txtBillTo')?.value, 'B')
+          this.form.get('txtDispatchTo')?.setValue(this.filteredDispatchLists[0])
+          this.getPartyDetail(this.form.get('txtDispatchTo')?.value, 'D')
         }
         else if(data.responseStatus === 'FAILURE' && data.responseCode === 'RES_109') {
           this.openSnackBar(data.message);
           return false;
         }
+        return false;
       },
     )
   }
@@ -721,10 +734,10 @@ getCcsPreferenceData(party_code, flg) {
     return formattedDate
   }
 
-  saveCcsPreferenceData(flg) {
+  saveCcsPreferenceData(flg : any) {
     this.payload = {
       // party_code: this.dialogData.qt_cust_code,
-      company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ""),
       user_preference_flg:flg
     }
     if(flg =='billtoaddr'){
@@ -766,11 +779,12 @@ getCcsPreferenceData(party_code, flg) {
     }
 
     this.utilityServiceAvaxPro.saveCcsPreference(this.payload).
-    subscribe(data => {
+    subscribe((data : any) => {
       if (data.responseStatus === 'SUCCESS' && data.responseCode === 'RES_200') {
         console.log(" Successfully saveCcsPreferenceData")
       }
     })
+    return true;
   
   }
 
