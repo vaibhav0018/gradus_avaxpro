@@ -4,7 +4,7 @@
     .mat-mdc-button {
         width: 100%;
         font-weight: 400;
-        height: 42px;
+        height: 27px;
         padding-left: 16px;
         .mat-icon.menu-icon {
             margin-right: 12px;
@@ -32,10 +32,10 @@
     -moz-transition: max-height 0.25s ease-out;  
     transition: max-height 0.25s ease-out;    
     .mat-mdc-button {
-        padding-left: 40px;      
+        padding-left: 20px;      
     } 
     &.show{
-        max-height: 500px;
+        max-height: fit-content;
         -webkit-transition: max-height 0.25s ease-in;
         -moz-transition: max-height 0.25s ease-in;
         transition: max-height 0.25s ease-in;
@@ -43,14 +43,14 @@
 }
 
 
-.menu-icon{
-    margin-right: 12px;
-}
-.menu-expand-icon{
-    position: absolute;
-    right: 10px;
-    top: 10px;
-}
+// .menu-icon{
+//     margin-right: 12px;
+// }
+// .menu-expand-icon{
+//     position: absolute;
+//     right: 10px;
+//     top: 10px;
+// }
 
 // .menu-item{
 //     .mat-button{
@@ -91,10 +91,10 @@
 //     } 
 // }
 
-.mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
-    line-height: 25px !important;
-}
+// .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
+//     line-height: 25px !important;
+// }
 .menu-title{
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: normal;
 }

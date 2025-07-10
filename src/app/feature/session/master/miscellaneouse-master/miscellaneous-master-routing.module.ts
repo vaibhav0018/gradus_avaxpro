@@ -151,11 +151,10 @@ export const routes: Routes = [
       //   loadChildren: './country-state-master/country-state-master.module#CountryStateMasterModule',
       //   data: { breadcrumb: 'Country/State Master' },
       // },
-      // {
-      //   path: ConstantsServiceAvaxPro.ROUTE_OPEN_NEW_GODWON,
-      //   loadChildren: './open-new-godown/open-new-godown.module#OpenNewGodownModule',
-      //   data: { breadcrumb: 'Open New Godwon' },
-      // },
+      {
+        path: ConstantsServiceAvaxPro.ROUTE_OPEN_NEW_GODWON,
+        loadChildren: () => import('./open-new-godown/open-new-godown.module').then(m => m.OpenNewGodownModule),
+      },
       // {
       //   path: ConstantsServiceAvaxPro.ROUTE_UPDATE_DECLARATION,
       //   loadChildren: './update-declaration/update-declaration.module#UpdateDeclarationModule',

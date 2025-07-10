@@ -57,7 +57,8 @@ import { MenuService } from '../../shared/components/menu/menu.service';
         CommonModule
   ],
   templateUrl: './session.component.html',
-  styleUrl: './session.component.scss'
+  styleUrl: './session.component.scss',
+
 })
 export class SessionComponent {
   @ViewChild('sidenav') sidenav: any

@@ -1,0 +1,33 @@
+agm-map {
+    height: 400px;
+}
+
+body {
+    font-family: Roboto, Arial, sans-serif;
+    margin: 0;
+}
+
+.basic-container {
+    padding: 5px;
+}
+
+.mat-button {
+    transform: scale(0.8);
+    line-height: 30px;
+}
+
+input {
+    width: 450px !important;
+}
+
+.mat-raised-button {
+    margin-left: 5px;
+    padding: 0px 5px !important;
+    line-height: 25px;
+    font-size: 12px !important;
+    text-align: center;
+}
+
+.margin-top5p {
+    margin-top: 5px;
+}
