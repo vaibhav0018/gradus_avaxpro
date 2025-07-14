@@ -14,8 +14,8 @@ import { NgClass } from '@angular/common';
     imports: [
     RouterOutlet,
     NgClass,
-    MatProgressSpinnerModule,
-    // LoginComponent,
+    MatProgressSpinnerModule
+
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
@@ -37,8 +37,3 @@ export class AppComponent {
   //    console.log('app component -- opendialog2')
   // }
 }
-
-
-//vaibhav
-//eger
-//kljdvslfkjkfdjsfklvbjsfkjvbfkjnbdskxbbdklngvb 

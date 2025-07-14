@@ -22,6 +22,7 @@ import { map } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { HttpServiceResponseModel } from '../../models/HttpServiceResponseModel';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -136,6 +137,9 @@ const GET_USER_LIST = 'getusercodelist'
   })
 
 export class UtilityServiceAvaxPro {
+  static showErrMessage(snackBar: MatSnackBar, message: any) {
+    throw new Error('Method not implemented.');
+  }
     payload: any = {}
     completeUrl: string
     req_params: { [key: string]: string } = {}
@@ -250,13 +254,6 @@ export class UtilityServiceAvaxPro {
 
   getUomMasterList = (item_code: any): Observable<any> => this.uomService.getUomMasterList(item_code)
 
-  getIndustryDropdown = (): Observable<any> => this.masterservice.getIndustryDropdown()
-
-  getSubIndustryDropdown = (indCode: any): Observable<any> => this.masterservice.getSubIndustryDropdown(indCode)
-
-  getSubSubIndustryDropdown = (indCode: any): Observable<any> => this.masterservice.getSubSubIndustryDropdown(indCode)
-
-
 
   convertDate(date: any, seprator: any) {
     let ary = date.split(seprator)
@@ -297,6 +294,239 @@ export class UtilityServiceAvaxPro {
       this.req_params['userid']
     console.log(this.completeUrl, ' completeUrl')
     return this.httpService.get(this.completeUrl).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+  getCcsPreferenceData(payload : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + GET_CCS_PREFERENCE
+    return this.httpService.post(this.completeUrl, payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+  getOtherinfoCommonList(party_code: any, disp_to_code?: any): Observable<any> {
+    this.payload = {
+      userInformationDto: {
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) ?? ''),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) ?? ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) ?? ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) ?? ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) ?? ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) ?? ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) ?? ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) ?? ''),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) ?? ''),
+      },
+      party_code: party_code
+    }
+    if(disp_to_code!=undefined && disp_to_code!=null){
+      this.payload['dispatch_to_code']=disp_to_code
+    }
+    this.completeUrl = environment.baseUrl + '/' + GET_OTHER_INFO_COMMON_LIST
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        //console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+
+    verifyEmail(payload: any): Observable<any> {
+    payload.userInformationDto= {
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    }
+    this.completeUrl = environment.baseUrl + '/verify-email'
+    return this.httpService.post(this.completeUrl, { common_row: payload }).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+    getEmailVerificationFlag(): Observable<any> {
+    this.payload.userInformationDto= {
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    }
+    this.completeUrl = environment.baseUrl + '/getEmailVerificationFlag'
+    return this.httpService.post(this.completeUrl,this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    getBrokerList(): Observable<any> {
+    let company_code = atob(sessionStorage.getItem(btoa('usr_company_code'))  || '');
+    this.completeUrl = environment.baseUrl + '/' + GET_BROKER_LIST + '?company_code=' + company_code
+    this.payload = {
+      company_code,
+      userInformationDto: {
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))  || ''),
+      }
+    }
+    return this.httpService.post_wo_spinner(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    getQuotDelTermsList(): Observable<any> {
+
+    this.payload = {
+      siscon_code: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      branch_code: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+    }
+    this.completeUrl = environment.baseUrl + '/' + GET_QUOT_DEL_TERMS_LIST
+
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+
+   getSpecialtax(): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + GET_SPECIAL_TAX
+
+    this.payload = {
+      //   company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))),
+      userInformationDto: {
+        usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+        usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+        fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+        fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+        fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+      },
+    }
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+    getProjectList(payload : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/get-project-list'
+
+    payload['userInformationDto'] ={
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format')) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      usr_state_code: atob(sessionStorage.getItem(btoa('usr_state_code')) || ''),
+    }
+    return this.httpService.post(this.completeUrl, payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+
+    searchParty(party_code : any, party_name : any, typeFlg : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + SEARCH_PARTY
+    this.payload = {
+      party_code, party_name, typeFlg,
+      userInformationDto: {
+        usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code'))   || ''),
+        usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+        usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+        usr_userid: atob(sessionStorage.getItem(btoa('userId') )  || ''),
+      }
+    }
+    return this.httpService.post(this.completeUrl, this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    checkParty(cust_code : any){
+    this.payload={}
+    this.payload ={
+      party_code:cust_code,
+      userInformationDto:{
+      usr_userid: atob(sessionStorage.getItem(btoa('userId')) || ''),
+      usr_name: atob(sessionStorage.getItem(btoa('username')) || ''),
+      fin_year_beg: atob(sessionStorage.getItem(btoa('fin_year_beg')) || ''),
+      fin_year_end: atob(sessionStorage.getItem(btoa('fin_year_end')) || ''),
+      fin_year_format: atob(sessionStorage.getItem(btoa('fin_year_format') ) || ''),
+      usr_company_code: atob(sessionStorage.getItem(btoa('usr_company_code')) || ''),
+      usr_of_siscon: atob(sessionStorage.getItem(btoa('usr_of_siscon')) || ''),
+      usr_of_branch: atob(sessionStorage.getItem(btoa('usr_of_branch')) || ''),
+      }
+    }
+    this.completeUrl = environment.baseUrl + '/checkPartyHandFollBy'
+    return this.httpService.post(this.completeUrl,this.payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        return res['payload']
+      })
+    )
+  }
+
+    saveCcsPreference(payload : any): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + SAVE_CCS_PREFERENCE
+    return this.httpService.post(this.completeUrl, payload).pipe(
+      map((res: HttpServiceResponseModel) => {
+        res['payload'] = res
+        console.log(res)
+        return res['payload']
+      })
+    )
+  }
+
+    getFinancialYear(filter :): Observable<any> {
+    this.completeUrl = environment.baseUrl + '/' + GET_FINANCIAL_YEAR;
+    //return this.httpService.post(this.completeUrl, filter).pipe(
+    return this.httpService.post_wo_spinner(this.completeUrl, filter).pipe(
       map((res: HttpServiceResponseModel) => {
         res['payload'] = res
         return res['payload']

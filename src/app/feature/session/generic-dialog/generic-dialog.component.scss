@@ -1,0 +1,38 @@
+.min-width-1600{
+  min-width: 1600px;
+}
+.min-width{
+  min-width: 1024px;
+}
+.overflow-auto{
+  overflow: auto;
+}
+.mat-grid-tile{
+    border : 1px solid #d1d1d1;
+    flex: 1;
+    display: grid;
+    align-items: center;
+    word-wrap: anywhere !important; 
+}  
+.text-inside-grid {
+    position: absolute;
+    left: 5px;
+    font-size: 12px;
+    font-weight: 400;
+}
+.text-center {
+    text-align: center !important;
+  }
+  
+  .float-right {
+    float: right !important;
+  }
+
+  .scroll {
+    overflow: scroll;
+    max-height: 65vh;
+    // width: 80vw;
+    // display: flex;
+    // flex-direction: column;
+    // margin: 20px 20px 20px 20px;
+  }

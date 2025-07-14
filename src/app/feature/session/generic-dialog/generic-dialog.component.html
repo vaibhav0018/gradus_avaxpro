@@ -1,0 +1,178 @@
+<h2 mat-dialog-title align='center'>
+  {{ modalTitle }}
+  <button mat-button class='float-right' color="primary" type="button" (click)="closeDialog();">
+    <mat-icon>highlight_off</mat-icon>
+  </button>
+</h2>
+<h4>{{modalSubTitle}}</h4>
+
+<app-custom-spinner></app-custom-spinner>
+<div class="overflow-auto">
+  <div class="min-width">
+<span *ngIf="flgUtilityTable==true">
+  <main class="scroll">
+    <app-utility-mat-table-view (commonFunOutput)="commonFunc($event)" [utilityData]="utilityData">
+    </app-utility-mat-table-view>
+  </main>
+</span>
+
+<form [formGroup]="form">
+<span *ngIf="flgFileUpload==true">
+  
+    <!-- file uploading logic start -->
+    <mat-card>
+      <mat-card-content>
+        <mat-grid-list cols="5" rowHeight="2em">
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              DESCRIPTION :
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field floatLabel="never">
+                <mat-label>--SELECT--</mat-label>
+                <mat-select formControlName="cmbFileDesc" (selectionChange)="otherDescFlgFun($event)">
+                  <mat-option *ngFor="let filedesc of fileDescriptionLists" [value]="filedesc">
+                    {{filedesc.fd_description |uppercase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngIf="otherDescFlg">
+            <div class="text-inside-grid">
+              <mat-form-field style="width:150px;" floatLabel="never">
+                <mat-label>Enter Description</mat-label>
+                <input matInput type="text" formControlName="txtFileUploadDesc">
+                <!-- [disabled]="isTxtDescEnable" -->
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngIf="!otherDescFlg">
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              SELECT FILE :
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <input type="file" id="file" formControlName="txtUploadFile" (change)="onFileChange($event)">
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan='5'>
+            <div class="text-center">
+              <button mat-raised-button color="primary" type="button" (click)="uploadFile();">
+                UPLOAD
+              </button>
+            </div>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+    <!-- file uploading logic end  -->
+  
+</span>
+
+<span *ngIf="flgPartyOrderDetails==true">
+  
+    <mat-card>
+      <mat-card-content>
+        <mat-grid-list cols="2" rowHeight="2em" class="mw-1024px">
+          
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PARTY ORDER REFERENCE : </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="wp-250">
+                <mat-select placeholder="PARTY ORDER REFRENCE" (ngModelChange)="setOrderFlag()"
+                  formControlName="cmbPartyOrderRef" required>
+                  <mat-option *ngFor="let row of lstPartyOrderRef" [value]="row">
+                    {{row}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile *ngIf="flgPartyOrderNo==true">
+            <div class="text-inside-grid">PARTY ORDER NO : </div>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="flgPartyOrderNo==true">
+            <div class="text-inside-grid">
+              <mat-form-field class="wp-250">
+                <input matInput placeholder="PARTY ORDER NO" formControlName="txtPartyOrderNo" 
+                title="PARTY ORDER NO" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile *ngIf="flgOrderByName==true">
+            <div class="text-inside-grid">ORDERED BY NAME : </div>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="flgOrderByName==true">
+            <div class="text-inside-grid">
+              <mat-form-field class="wp-250">
+                <input matInput placeholder="ORDERED BY NAME" formControlName="txtOrderByName" 
+                title="ORDERED BY NAME" maxlength="50">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>
+            <div class="text-inside-grid"> PARTY ORDER DATE : </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">
+              <mat-form-field class="wp-150">
+                <input matInput #ref1 [matDatepicker]="pickerPartyOrderDate" formControlName="dtPartyOrderDate" 
+                  [value]="" (click)="pickerPartyOrderDate.open()">
+                <mat-datepicker-toggle matSuffix [for]="pickerPartyOrderDate"></mat-datepicker-toggle>
+                <mat-datepicker #pickerPartyOrderDate></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field style="width: 50px;">
+                <mat-select formControlName="timeHrs" class="mat-select-hm">
+                  <mat-option *ngFor="let hr of hrs" [value]="hr.value">
+                    {{hr.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> hrs &nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field style="width: 50px;">
+                <mat-select formControlName="timeMin" class="mat-select-hm">
+                  <mat-option *ngFor="let min of mins" [value]="min.value">
+                    {{min.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> min
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile colspan='2'>
+            <div class="text-center">
+              <button mat-raised-button color="primary" type="button" (click)="updatePartyOrderDetails();">
+                UPDATE
+              </button>
+            </div>
+          </mat-grid-tile>
+
+  
+        </mat-grid-list>
+        
+      </mat-card-content>
+    </mat-card>
+    
+</span>
+
+</form>
+</div>
+</div>

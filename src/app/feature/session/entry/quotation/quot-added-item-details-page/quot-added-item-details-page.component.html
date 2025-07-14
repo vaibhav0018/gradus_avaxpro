@@ -1,0 +1,79 @@
+<div class="overflow-auto">
+  <div class="min-width-1600">
+<div class="example-container mat-elevation-z8">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]=true>
+      <mat-expansion-panel-header>
+        <mat-panel-title>QUOTATION ITEM</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="serial_no">
+          <mat-header-cell *matHeaderCellDef> SR NO </mat-header-cell>
+          <!-- <mat-cell *matCellDef="let element"> {{element.serial_no}} </mat-cell> -->
+          <mat-cell *matCellDef="let element let i = index;"> {{i+1}} </mat-cell>
+          
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <mat-header-cell *matHeaderCellDef> ITEM CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.item_code}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cat_refno">
+          <mat-header-cell *matHeaderCellDef>CATALOG REF NO</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.cat_refno}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="it_prod_code">
+          <mat-header-cell *matHeaderCellDef> PRODUCT CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.it_prod_code}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mk_desc">
+          <mat-header-cell *matHeaderCellDef>MAKE</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.mk_desc}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="qty">
+          <mat-header-cell *matHeaderCellDef> QTY </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.qty}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="um_short_desc">
+          <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.um_short_desc}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <mat-header-cell *matHeaderCellDef> RATE </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.rate}} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="amt">
+          <mat-header-cell *matHeaderCellDef> AMOUNT </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.amt}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="calratedesc">
+          <mat-header-cell *matHeaderCellDef> CALCULATOR </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.calratedesc}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef>SELECT</mat-header-cell>
+          <mat-cell *matCellDef="let row;let element">
+            <button mat-button>
+              <mat-icon (click)="deleteAoItem(row)">delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayColumn;sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayColumn;"></mat-row>
+      </mat-table>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+</div>
+</div>

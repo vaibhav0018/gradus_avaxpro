@@ -16,4 +16,3 @@ export class CustomSpinnerComponent implements OnInit {
   }
 
 }
-//vaibhav

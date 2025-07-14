@@ -1,0 +1,1234 @@
+<app-custom-spinner></app-custom-spinner>
+<div class="overflow-auto">
+  <div class="min-width-1600">
+<form [formGroup]="form">
+
+  <div *ngIf="(isFromPendingDraft =='N')">
+    <table>
+      <tr>
+        <td class="w-70">  QUOTATION NO : </td>
+        <td> <input matInput type="text" formControlName="txtQtnNo" placeholder="ENTER QUOTATION NO" maxlength="6"/> </td>
+        <td> <div style="text-align:left; width:100%; padding:0;">
+          <button button mat-raised-button color="primary" (click)="ShowQtn()">SHOW</button>
+        </div> </td>
+      </tr>
+    </table>
+  </div>
+
+  <mat-card-content class="btn-align top-btn" *ngIf="revisionFlag=='Y'">
+    <button mat-raised-button color="primary" type="button" (click)="addNewRevision();">
+      ADD NEW REVISION
+    </button>
+    <button mat-raised-button color="primary" type="button" (click)="getQuotRevisionList();">
+      SHOW ALL REVISION
+    </button>
+  </mat-card-content>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-panel-title>
+            <div >
+              <div style="float: left;">
+                <b>QUOTATION NO : </b> {{objDraftHeader.qt_quot_no}}
+              </div>
+              <div style="float: left;" *ngIf="modifyHeaderFlag &&
+                isForViewQuotation=='N' && revisionFlag!='Y'">
+                <mat-icon (click)="deleteQuotation(element,row)" matTooltip="click to delete quotation">delete
+                </mat-icon>
+                &nbsp;
+                <mat-icon matTooltip="Modify other info" (click)="modifyOtherInfo()">info
+                </mat-icon>&nbsp;
+                <!-- <mat-icon matTooltip="Upload file for quotation" (click)="showFileUploadDiv()">
+                  cloud_upload
+                </mat-icon>&nbsp; -->
+                <mat-icon matTooltip="Generate Excel and upload" (click)="showGenerateUploadDiv()">
+                  cloud_upload
+                </mat-icon>&nbsp;
+              </div>
+              <div  style="float: left;" *ngIf="modifyHeaderFlag &&
+                (isForViewQuotation=='N' && revisionFlag=='Y')">
+              </div>
+              <div class="margin-left100p" style="float: left;">
+                <b>QUOTATION TYPE : </b>
+                {{objDraftHeader.qt_inv_type_code_desc}}
+              </div>
+
+            </div>
+          </mat-panel-title>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <mat-card> -->
+      <mat-grid-list cols="6" rowHeight="1.5rem" class="mw-1024px">
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QUOTATION NO : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_quot_no}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> DATE :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_quotation_date}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QUOTATION SOURCE :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_source_type}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QUOTATION REV NO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_revision_no}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> BILL TO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            <mat-icon *ngIf="modifyHeaderFlag && isForViewQuotation=='N' &&
+              revisionFlag!='Y'" (click)="modifyHeader(objDraftHeader)">
+              edit</mat-icon>&nbsp;
+            {{objDraftHeader.qt_bill_to_name}}
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">DISP TO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_disp_to_name}}</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> BILL ADDRESS :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_bill_to_address}}</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">DISP ADDRESS :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_disp_address}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> PARTY HANDLE BY :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_handled_by_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> DOC CC TO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qtccto}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> HANDLE BY :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.loggedin_handledby}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> INSTRUCTED BY :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+            {{objDraftHeader.qt_instructed_by_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">BROKER NAME :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_broker_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">CREATED BY :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_created_by_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">PAYMENT RESP NAME :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_payment_res_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> EDITED BY :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_edited_by_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">ENQUIRY DATE :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_enq_date}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">QUOTATION TYPE :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">{{objDraftHeader.qt_type}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">ATTENTION :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_attention}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">VALID_DAYS :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">{{objDraftHeader.qt_valid_days}} </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> ENQ_NO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_enq_no}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QT_REF_NUM :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">{{objDraftHeader.qt_ref_num}} </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">DELIVERY TERMS :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">{{objDraftHeader.qt_del_terms_code_desc}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid">DELIVERY PERIOD :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">{{objDraftHeader.qt_delivery_days}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> DESTINATION :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_destination}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> REFERENCE :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_reference}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> PROJECT NAME :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid"> {{objDraftHeader.prj_name}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> ATTACHED DOC LIST :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='2'>
+          <div class="text-inside-grid">
+
+            <mat-form-field style="width:230px;" floatLabel="never">
+              <mat-label>Document List</mat-label>
+              <mat-select formControlName="cmbDocList">
+                <mat-option *ngFor="let file of fileList" [value]="file.docname">
+                  {{file.docname}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- *ngIf="fileList.length>0 && showFileUploadFlg" -->
+            <button *ngIf="fileList.length>0" class="border-none" mat-stroked-button color="primary"
+              matTooltip="Download File" (click)="downloadFile();">
+              <mat-icon class="mt-icon">file_download</mat-icon>
+            </button>
+
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> ALLIED QUOT NO :</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='5'>
+          <div class="text-inside-grid"></div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+      <!--       </mat-card>
+ -->
+      <mat-card-content class="btn-align other-dtl">
+        <button mat-raised-button color="primary" type="button" (click)="toggle('otherRelatedDtl');">
+          OTHER INFO DETAILS
+        </button>
+        <!-- NOTE : Display following button incase of complete and view quotation -->
+        <button mat-raised-button color="primary" type="button" (click)="toggle('relatedDocs');">
+          RELATED DOCS
+        </button>
+        <!-- NOTE : Display following button incase of special rights -->
+        <button mat-raised-button color="primary" type="button" *ngIf="showHistoryOfChangesFlg"
+          (click)="toggle('historyOfChanges');">
+          HISTORY OF CHANGES
+        </button>
+        <!-- NOTE : Display following button incase of complete and view quotation -->
+        <button mat-raised-button color="primary" type="button" (click)="toggle('docTerms');">
+          DOC TERMS
+        </button>
+      </mat-card-content>
+
+      <mat-card *ngIf="showOtherDocs" class='inner-card'>
+        <mat-grid-list cols="4" rowHeight="1.5rem">
+          <mat-grid-tile colspan='4'>
+            <div class="text-inside-grid"><b>OTHER RELATED DOC DETAILS</b>
+            </div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">QT_EMAIL1 </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_email1}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">QT_EMAIL2 </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_email2}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">QT_EMAIL3 </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_email3}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">QT_EMAIL4 </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_email4}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">QT_EMAIL5 </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_email5}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">ACCOUNT </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_account}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">DOC CC NO </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtccto}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">ROUND OFF </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_round_off}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">DOC DELIVERY ADDRESS</div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='3'>
+            <div class="text-inside-grid">{{objDraftHeader.qt_doc_del_addr}}</div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">DELIVERY ADDRESS</div>
+          </mat-grid-tile>
+          <mat-grid-tile colspan='3'>
+            <div class="text-inside-grid">{{objDraftHeader.qt_delivery_addr}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">CUST ORDER NO</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtcustorderno}}</div>
+          </mat-grid-tile>
+
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">ORDER DATE</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qttscustorderno}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">UTL CUSTORD NO</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtultcustordno}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">UTL CUST ORD DT</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qttsultcust}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">PAY TERMS</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtpaycode}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">COND DISC AMT </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtconddiscamt}}
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">COND DISC PER </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtconddiscperc}}</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">NO OF DAYS </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtnpaydays}} </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">INSU INTIME </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_insur_intm_flg}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">INSU MODE </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_insur_mode}}
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">INSU DATE </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_insur_intm_date}}</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">TYPE TC </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_type_tc_flg}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">NORMAL TC </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_normal_tc_flg}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">ROUTINE TC </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_routine_tc_flg}}</div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="text-inside-grid">DOCS REQD </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtosstmtreq}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">INSP TC </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_insp_rep_flg}}
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">REMARKS </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qtremarks}}</div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">CASH_DISC_DAYS </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <div class="text-inside-grid">{{objDraftHeader.qt_cash_disc_days}}</div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
+
+      <mat-table [dataSource]="dataSourceOtherInfo" *ngIf="relatedDocs" class='inner-card'>
+        <ng-container matColumnDef="sr_no">
+          <mat-header-cell *matHeaderCellDef>SR NO </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-center">
+            {{i+1}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="item_code">
+          <mat-header-cell *matHeaderCellDef>ITEM CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index">
+            {{element.item_code}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ao_no">
+          <mat-header-cell *matHeaderCellDef>AO_NO </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.aod_ao_no}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ao_date">
+          <mat-header-cell *matHeaderCellDef>AO DATE </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.ao_ao_date}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ao_qty">
+          <mat-header-cell *matHeaderCellDef>AO_QTY </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.aod_qty}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ao_src">
+          <mat-header-cell *matHeaderCellDef>AO_SRC</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.aod_src_code}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="challan_no">
+          <mat-header-cell *matHeaderCellDef>CHL NO </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.chd_challan_no}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="challan_date">
+          <mat-header-cell *matHeaderCellDef>CHL DATE </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.chd_date}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="challan_item_qty">
+          <mat-header-cell *matHeaderCellDef>CHL_ITEM_QTY </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.chd_qty}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="po_no">
+          <mat-header-cell *matHeaderCellDef>PO NO </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.po_no}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="po_date">
+          <mat-header-cell *matHeaderCellDef>PO DATE </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.po_date}}
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="po_item_qty">
+          <mat-header-cell *matHeaderCellDef>PO ITM QTY </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.pod_qty}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="po_party">
+          <mat-header-cell *matHeaderCellDef>PO PARTY </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columnsOtherInfo;"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnsOtherInfo;"></mat-row>
+      </mat-table>
+
+      <div *ngIf="relatedDocs && dataSourceOtherInfo.length==0" fxLayoutAlign="space-evenly">
+        <b>NO RECORDS FOUND !</b>
+      </div>
+
+      <mat-table [dataSource]="dataSourceModifyTracking" *ngIf="historyOfChanges" class='inner-card'>
+        <ng-container matColumnDef="sr_no">
+          <mat-header-cell *matHeaderCellDef>SR NO </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-center">
+            {{i+1}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="voucher_no">
+          <mat-header-cell *matHeaderCellDef>VOUCHER NO</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y" class="text-center">
+            {{element.mt_voucher_no}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modify_date">
+          <mat-header-cell *matHeaderCellDef>MODIFY DATE</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index">
+            {{element.mt_ts_created}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="modified_by">
+          <mat-header-cell *matHeaderCellDef>MODIFIED BY</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.mt_created_by}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="column_name">
+          <mat-header-cell *matHeaderCellDef>COLUMN NAME</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.mt_column_name}}
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="column_value">
+          <mat-header-cell *matHeaderCellDef>COLUMN VALUE</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.mt_old_value}}
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="columnsModifyTracking;"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnsModifyTracking;"></mat-row>
+      </mat-table>
+
+      <div *ngIf="historyOfChanges && dataSourceModifyTracking.length==0" fxLayoutAlign="space-evenly">
+        <b>NO RECORDS FOUND !</b>
+      </div>
+
+      <div *ngIf="docTerms">
+        <mat-table [dataSource]="dataSourceDocTerms" class='inner-card'>
+          <ng-container matColumnDef="sr_no">
+            <mat-header-cell *matHeaderCellDef>SR NO </mat-header-cell>
+            <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-center">
+              {{element.sr_no}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="trans_name">
+            <mat-header-cell *matHeaderCellDef>TERMS NAME</mat-header-cell>
+            <mat-cell *matCellDef="let element; let i=index">
+              {{element.qt_term}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="trans_name_value">
+            <mat-header-cell *matHeaderCellDef>TERMS NAME VALUE</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.qt_term_data}}
+            </mat-cell>
+          </ng-container>&nbsp;&nbsp;
+          <mat-header-row *matHeaderRowDef="columnsDocTerms;"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnsDocTerms;"></mat-row>
+        </mat-table>
+
+        <div *ngIf="dataSourceDocTerms.length==0" fxLayoutAlign="space-evenly">
+          <b>NO RECORDS FOUND !</b>
+        </div>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-card-content *ngIf="showGenerateUploadFlg">
+    <mat-grid-list cols="5" rowHeight="2rem">
+      <mat-grid-tile>
+        <div class="text-inside-grid"> FILE </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <div class="text-inside-grid">
+          <input type="file" name="fileUpload" (change)="onFileChange1($event)" #fileInput1 />
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan='5'>
+        <div fxLayout="row" fxLayoutAlign="center">
+          <button mat-raised-button color="primary" type="button" (click)="generateExcel();">
+            GENERATE EXCEL
+          </button>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center">
+          <button mat-raised-button color="primary" type="button" (click)="uploadQuotExcelFile();">
+            UPLOAD
+          </button>
+        </div>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+  </mat-card-content>
+
+  <mat-expansion-panel [expanded]="true" *ngIf="showFileUploadFlg">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        FILE UPLOAD
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-card-content>
+      <mat-grid-list cols="5" rowHeight="2em">
+        <mat-grid-tile>
+          <div class="text-inside-grid"> DESCRIPTION </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <mat-form-field floatLabel="never">
+              <mat-label>--SELECT--</mat-label>
+              <mat-select formControlName="cmbFileDesc" (onSelectionChange)="otherDescFlgFun($event)">
+                <mat-option *ngFor="let filedesc of fileDescriptionLists" [value]="filedesc"
+                  (onSelectionChange)="otherDescFlgFun($event)">
+                  {{filedesc.fd_description |uppercase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile *ngIf="otherDescFlg">
+          <div class="text-inside-grid">
+            <mat-form-field style="width:150px;" floatLabel="never">
+              <mat-label>Enter Description</mat-label>
+              <input matInput type="text" formControlName="txtFileUploadDesc">
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile *ngIf="!otherDescFlg">
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">SELECT FILE </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid">
+            <input type="file" id="file" #fileUploader (change)="onFileChange($event)">
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan='5'>
+          <div class="text-center">
+            <button mat-raised-button color="primary" type="button" (click)="uploadFile();">
+              UPLOAD
+            </button>
+          </div>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="true" *ngIf="quotRevisionFlag">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-panel-title>
+          ITEM DETAILS
+          &nbsp;&nbsp;&nbsp;<mat-icon *ngIf="revisionFlag!='Y'" (click)="$event.stopPropagation();openBulkAddition()"
+            matTooltip="Bulk Addition">add</mat-icon>
+          &nbsp;&nbsp;&nbsp;<mat-icon *ngIf="revisionFlag!='Y'"
+            (click)="$event.stopPropagation();openBulkAdditionExcel()" matTooltip="Bulk Addition Through Excel">
+            cloud_upload</mat-icon>
+        </mat-panel-title>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="mat-elevation-z8">
+
+      <mat-table [dataSource]="dataSource" formArrayName="arrayAddItem">
+        <ng-container matColumnDef="serial_no">
+          <mat-header-cell *matHeaderCellDef>SR NO</mat-header-cell>
+          <mat-cell *matCellDef="let element let i= index;" [formGroupName]="i" class="text-center">
+            {{i+1}}.
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="item_code">
+          <mat-header-cell *matHeaderCellDef> ITEM CODE</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let index= index" [formGroupName]="index">
+            <!-- <div *ngIf="!element.showEditIcon"> -->
+            <div *ngIf="element.readonly">
+              <mat-icon (click)="openShowItemHistoryDetails(row)">history</mat-icon>
+              {{element.item_code}}
+              <mat-icon (click)="itemOtherInfoDetails(row)" *ngIf="isFromPendingDraft!='N'">
+                link
+              </mat-icon>
+            </div>
+
+            <mat-form-field class="w-100" *ngIf="element.showEditIcon &&
+              !element.readonly">
+              <!-- <input type="text" matInput formControlName="cmbItem" [matAutocomplete]="autoItemName">
+              <mat-autocomplete #autoItemName="matAutocomplete" [displayWith]="displayItem">
+                <mat-option *ngFor="let item of itemList[index]" [value]="item"
+                  (onSelectionChange)="onItemCodeChange($event, item,index)">
+                  {{ item.item_code }} -- {{item.item_name}} --
+                  {{item.catrefno}} --{{item.item_make}}
+                </mat-option>
+              </mat-autocomplete> -->
+
+              <input type="text" class="w-50" aria-label="Number" matInput formControlName="cmbItem"
+                [matAutocomplete]="autoItemName" (keyup)='filterItemsList(index)'
+                [errorStateMatcher]="confirmValidParentMatcher" value="">
+              <mat-autocomplete #autoItemName="matAutocomplete" [displayWith]="displayItem" class="wp-300">
+                <mat-option *ngFor="let item of filteredItem[index]" [value]="item"
+                  (onSelectionChange)="onItemCodeChange($event, item,index)">
+                  {{ item.item_code }} -- {{item.item_name}} -- {{item.catrefno}}
+                  --{{item.item_make}}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-icon class='float-right' (click)="searchItemCatRef($event,index);">search</mat-icon>
+              <mat-icon class='float-right' *ngIf="showItmHistryIconFlg" (click)="$event.stopPropagation();openShowItemHistoryDetails('N',index)">history</mat-icon>
+
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="it_product_code">
+          <mat-header-cell *matHeaderCellDef> PRODUCT CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element ; let row; let i= index" [formGroupName]="i">
+            <div *ngIf="element.readonly">
+              {{element.it_prod_code}}
+            </div>
+            <mat-form-field class="w-75" *ngIf="element.showEditIcon &&
+              !element.readonly">
+              <input matInput type="text" value="{{element.it_prod_code}}" formControlName="txtProductCode" readonly />
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="itm_catalog_ref_no">
+          <mat-header-cell *matHeaderCellDef> CATREF NO</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let i= index" [formGroupName]="i">
+            <div *ngIf="element.readonly">
+              {{element.cat_refno}}
+            </div>
+
+            <mat-form-field class="w-75" *ngIf="element.showEditIcon &&
+              !element.readonly">
+              <input matInput type="text" value="{{element.cat_refno}}" formControlName="txtCatRef" readonly />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="make">
+          <mat-header-cell *matHeaderCellDef> MAKE</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let i= index" [formGroupName]="i">
+            <!-- <div *ngIf="element.readonly">
+              {{element.make}}
+            </div>
+            <mat-form-field *ngIf="element.showEditIcon && !element.readonly">
+              <input matInput type="text" value="{{element.make}}" formControlName="cmbMake" readonly />
+            </mat-form-field> -->
+
+            <div *ngIf="!element.showEditIcon">
+              {{element.make}}
+            </div>
+
+            <mat-form-field class="wp-90" *ngIf="element.showEditIcon">
+              <mat-select formControlName="cmbMake" required (selectionChange)="onMakeCodeChange(i,element)">
+                <mat-option *ngFor="let make of makeList[i]" [value]="make.mk_code">
+                  {{make.mk_short_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="layout">
+          <mat-header-cell *matHeaderCellDef> LAYOUT</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let i= index" [formGroupName]="i">
+            <div *ngIf="!element.showEditIcon">
+              {{element.prjd_layout_type}}
+            </div>
+            <mat-form-field class="wp-70" *ngIf="element.showEditIcon">
+              <select matNativeControl formControlName="cmbLayout" >
+                <option value="0">--SELECT--</option>
+                <option *ngFor="let row of lstProjectDtl" [value]="row.prjd_serial">
+                  {{row.prjd_layout_type}}
+                </option>
+              </select>
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="uom_code">
+          <mat-header-cell *matHeaderCellDef> UOM </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i= index" [formGroupName]="i">
+            <div *ngIf="!element.showEditIcon">
+              {{element.um_short_desc}}
+            </div>
+            <mat-form-field class="wp-70" *ngIf="element.showEditIcon">
+              <mat-select formControlName="cmbUom" required (selectionChange)="setLp(i,element)">
+                <mat-option *ngFor="let uomListsObj of uomLists[i]" [value]="uomListsObj">
+                  {{uomListsObj.uom_desc}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="quot_qty">
+          <mat-header-cell *matHeaderCellDef> QTY</mat-header-cell>
+          <mat-cell *matCellDef="let element ; let row; let index= index" [formGroupName]="index" class="text-right">
+            <div *ngIf="!element.showEditIcon">
+              {{element.qty}}
+            </div>
+
+            <mat-form-field class="wp-50" *ngIf="element.showEditIcon">
+              <input matInput type="text" [value]="element.qty" formControlName="txtQty" />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="exe_qty">
+          <mat-header-cell *matHeaderCellDef> EXE QTY</mat-header-cell>
+          <mat-cell *matCellDef="let element ; let row; let index= index" [formGroupName]="index" class="text-right">
+
+            <div *ngIf="element.qtd_deleted_flg=='N'">
+              <a mat-list-item href="javascript: void(0);" (click)="showExeQtyDtls(element)">
+                {{element.qtd_executed_qty}}
+              </a>
+            </div>
+            <span *ngIf="element.qtd_deleted_flg=='Y'">{{element.qtd_executed_qty}}</span>
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="salable_stk">
+          <mat-header-cell *matHeaderCellDef>SALABLE STK</mat-header-cell>
+          <mat-cell *matCellDef="let element ; let row; let index= index" [formGroupName]="index" class="text-right">
+
+            <div *ngIf="element.qtd_deleted_flg=='N'">
+              <a mat-list-item href="javascript: void(0);" (click)="showStockQuery(element)">
+                {{element.qtd_saleable_stock}}
+              </a>
+            </div>
+            <span *ngIf="element.qtd_deleted_flg=='Y'">{{element.qtd_saleable_stock}}</span>
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="list_price">
+          <mat-header-cell *matHeaderCellDef> LP </mat-header-cell>
+          <mat-cell *matCellDef="let element ; let row; let i= index" [formGroupName]="i" class="text-right">
+            <div *ngIf="!element.showEditIcon">
+              {{element.lp}}
+            </div>
+
+            <mat-form-field class="wp-50" *ngIf="element.showEditIcon">
+              <input matInput type="text" value="{{element.lp}}" formControlName="txtListPrice" />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <mat-header-cell *matHeaderCellDef> RATE</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let index= index" [formGroupName]="index" class="text-right">
+            <div *ngIf="!element.showEditIcon">
+              {{element.rate}}
+            </div>
+            <mat-form-field class="wp-50" *ngIf="element.showEditIcon">
+              <input matInput type="text" [value]="element.rate" formControlName="txtInputRate"
+                (keyup)="setCalcDesc($event.target.value,index,element)" />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="amt">
+          <mat-header-cell *matHeaderCellDef> AMOUNT</mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let index= index" [formGroupName]="index" class="text-right">
+            <div *ngIf="!element.showEditIcon">
+              {{element.amt}}
+            </div>
+
+            <mat-form-field class="wp-70" *ngIf="element.showEditIcon">
+              <input matInput type="text" value="{{element.amt}}" formControlName="txtAmt" readonly />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="calculator">
+          <mat-header-cell *matHeaderCellDef> CALCULATOR </mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let index= index" [formGroupName]="index">
+            <div *ngIf="!element.showEditIcon">
+              <span class='cancel'>{{element.cal_flg}}</span>{{element.calratedesc}}
+            </div>
+
+            <mat-form-field class="w-100" *ngIf="element.showEditIcon">
+              <input matInput type="text" value="{{element.calratedesc}}" placeholder="" readonly
+                formControlName="txtCalcDesc" />
+            </mat-form-field>
+
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select" style="display: table-row;">
+          <mat-header-cell *matHeaderCellDef>
+            <mat-checkbox class="margin-y" matTooltip="Select All Item" formControlName="chkItem" [checked]="flgChkAll"
+              value="ALL" (change)="tickAllItem($event);">
+            </mat-checkbox>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element ;let row; let i= index" [formGroupName]="i">
+            <span *ngIf="element.qtd_deleted_flg=='N'" class="text-center">
+              <mat-checkbox class="margin-y" matTooltip="Select Item" formControlName="chkItem" *ngIf="!element.addFLg"
+                [checked]="element.chk_flag=='Y'" value="{{element}}" (change)="tickItem($event,element);">
+              </mat-checkbox>
+              <button mat-button>
+              <mat-icon (click)="addItemRow(i,arrayAddItem)" *ngIf="element.addFLg">add </mat-icon>
+              <mat-icon (click)="updateItemRow(i,row,arrayAddItem)" *ngIf="element.readonly && element.showEditIcon">
+                save</mat-icon>
+              <mat-icon (click)=loadEditItem(i,row,arrayAddItem); *ngIf="element.readonly && !element.showEditIcon">
+                edit
+              </mat-icon>
+              <mat-icon (click)="deleteItemRow(i,row,arrayAddItem)" *ngIf="element.readonly && !element.showEditIcon">
+                delete</mat-icon>
+              <mat-icon matSuffix matTooltip="Add/Edit Other Item Info"
+                *ngIf="element.readonly && !element.showEditIcon" (click)=editOtherItemInfo(i,row);>add_circle_outline
+              </mat-icon>
+              </button>
+            </span>
+            <span *ngIf="element.qtd_deleted_flg=='Y'" class="cancel" title="{{row.delremarks}}">CANCELLED</span>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayItemColumns;sticky:true;"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayItemColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </mat-expansion-panel>
+
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="isForViewQuotation!='Y' && revisionFlag!='Y'">
+    <button mat-raised-button type="button" color="primary" (click)="openItemCalcDialog();">FORWARD CALC</button>
+  </div>
+
+  <mat-accordion *ngIf="isFromPendingDraft=='N' && quotRevisionFlag">
+    <mat-expansion-panel expanded style="margin-top:1%">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          DOC CALC DETAILS &nbsp;&nbsp;&nbsp;<mat-icon *ngIf="isForViewQuotation!='Y' && revisionFlag!='Y'"
+            (click)="$event.stopPropagation();modifyDocCalc();" matTooltip="CLICK TO MODIFY DOCUMENT CALCULATOR">edit
+          </mat-icon>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-doc-calc-view [docCalcData]="docCalcDataInput">
+      </app-doc-calc-view>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+  <div *ngIf="quotRevisionShowFlag">
+    <mat-card>
+      <mat-grid-list cols="4" rowHeight="1.5rem">
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QUOTATION NO : </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_quot_no}}</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> QUOTATION DATE : </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_quotation_date}}</div>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+          <div class="text-inside-grid"> PARTY : </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan='3'>
+          <div class="text-inside-grid"> {{objDraftHeader.qt_bill_to_name}}</div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card>
+
+    <div class="example-container">
+      <mat-table [dataSource]="dataSourceQuotRevision">
+
+        <ng-container matColumnDef="quot_rev_no">
+          <mat-header-cell *matHeaderCellDef>QUOT REV NO </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-center">
+            <a mat-list-item href="javascript: void(0);" (click)="viewQuotRevision(element)">
+              {{element.qtr_revision_no}} </a>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="handled_by">
+          <mat-header-cell *matHeaderCellDef>HANDLE BY </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.hand_by}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="instructed_by">
+          <mat-header-cell *matHeaderCellDef> INSTRUCTED BY</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.qtr_instructed_nm}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tax_code">
+          <mat-header-cell *matHeaderCellDef> TAX CODE</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.qtr_tax_type_code}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cond_disc_amt">
+          <mat-header-cell *matHeaderCellDef> COND DISC AMT</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.qtconddiscamt}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="gross_amt">
+          <mat-header-cell *matHeaderCellDef>GROSS AMT </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.prfgrossamt}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tax_amt">
+          <mat-header-cell *matHeaderCellDef> TAX AMT</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.prfgrossamt}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="net_amt">
+          <mat-header-cell *matHeaderCellDef>NET AMT </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.qtr_net_amt}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="round_off">
+          <mat-header-cell *matHeaderCellDef> ROUND OFF</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.qtr_round_off}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="del_term_code">
+          <mat-header-cell *matHeaderCellDef>DEL TERM CODE </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.qtr_del_terms_code}} :: {{element.dlt_desc}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="valid_days">
+          <mat-header-cell *matHeaderCellDef>VALID DAYS </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-right">
+            {{element.qtr_valid_days}}
+          </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="delivery_addr">
+          <mat-header-cell *matHeaderCellDef>DELIVERY ADDRS </mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.qtr_delivery_addr}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="bill_addr">
+          <mat-header-cell *matHeaderCellDef> BILL ADDRS</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.csad_address}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="disp_addr">
+          <mat-header-cell *matHeaderCellDef> DISP ADDRS</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y">
+            {{element.disp_address}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select_rad">
+          <mat-header-cell *matHeaderCellDef> select</mat-header-cell>
+          <mat-cell *matCellDef="let element;let i= index ;" class="margin-y text-center">
+
+            <!--  
+            <mat-radio-group formControlName="rdbRevertQuot">               
+              <mat-radio-button value="Y"  [disabled]="rdbTransitFlg=='Y'"></mat-radio-button>&nbsp;
+            </mat-radio-group> 
+            -->
+            <mat-radio-button [disabled]="false"></mat-radio-button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="columnsQuotRevision;sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columnsQuotRevision;"></mat-row>
+      </mat-table>
+    </div>
+
+    <mat-card-content class="btn-align">
+      <button mat-raised-button color="primary" type="button" (click)="revertQuotRevision();">
+        REVERT
+      </button>
+    </mat-card-content>
+
+  </div>
+
+</form>
+</div>
+</div>
